@@ -1,0 +1,209 @@
+{
+  "case_id": "murder_at_blackwood_manor",
+  "solution_visibility": "hidden_from_player",
+  "culprit": {
+    "suspect_id": "henry_ashford",
+    "name": "Dr. Henry Ashford"
+  },
+  "true_motive": {
+    "id": "exposure_hidden_medical_crime",
+    "label": "Exposure of hidden medical crime",
+    "description": "Edward Blackwood had discovered that Dr. Henry Ashford falsified medical records years earlier connected to the death of Edward's wife. Edward intended to expose Henry, which would have destroyed Henry's reputation and possibly led to criminal consequences."
+  },
+  "false_motives": [
+    {
+      "id": "inheritance",
+      "label": "Inheritance",
+      "points_to": "clara_vale",
+      "description": "Clara Vale feared losing her expected inheritance after Edward threatened to revise his will. This is a real motive for dishonesty, but not for the murder."
+    },
+    {
+      "id": "romantic_rejection",
+      "label": "Romantic rejection",
+      "points_to": "beatrice_ashford",
+      "description": "Beatrice Ashford was devastated after Edward ended their affair. Her letters make her look emotionally unstable, but her secret explains her lies rather than the murder."
+    },
+    {
+      "id": "jealousy_over_affair",
+      "label": "Jealousy over affair",
+      "points_to": "henry_ashford",
+      "description": "Henry appears to have a jealousy motive once the affair is revealed. This is misleading because Henry knew about the affair and was largely indifferent to it."
+    },
+    {
+      "id": "old_family_grudge",
+      "label": "Old family grudge",
+      "points_to": "julian_blackwood",
+      "description": "Julian Blackwood hated Edward for years of neglect and mistreatment. His anger was real, but the method and timeline do not fit him."
+    }
+  ],
+  "method": {
+    "id": "drugged_brandy_and_staged_stabbing",
+    "label": "Drugged brandy and staged stabbing",
+    "description": "Henry used his medical knowledge and access to medicine to weaken Edward by adding a sedative or cardiac drug to Edward's brandy. After Edward was weakened, Henry used the silver letter opener to stage the murder as a sudden violent attack and redirect suspicion toward Clara, Julian, or Beatrice."
+  },
+  "opportunity": {
+    "description": "Edward had arranged to meet Henry privately after dinner. Henry entered the library around 9:22 PM, drugged Edward's brandy, killed him, staged the scene, and returned to his study before the body was discovered.",
+    "supporting_clues": [
+      "final_appointment_note"
+    ]
+  },
+  "required_evidence_ids": [
+    "medical_vial",
+    "brandy_glass_residue",
+    "altered_death_certificate"
+  ],
+  "supporting_evidence_ids": [
+    "final_appointment_note",
+    "letter_opener"
+  ],
+  "red_herring_evidence_ids": [
+    "torn_will_note",
+    "beatrice_letters",
+    "broken_watch"
+  ],
+  "correct_accusation": {
+    "culprit_id": "henry_ashford",
+    "motive_id": "exposure_hidden_medical_crime",
+    "method_id": "drugged_brandy_and_staged_stabbing",
+    "minimum_required_evidence_ids": [
+      "medical_vial",
+      "brandy_glass_residue",
+      "altered_death_certificate"
+    ],
+    "ideal_supporting_evidence_ids": [
+      "final_appointment_note",
+      "letter_opener"
+    ]
+  },
+  "scoring": {
+    "max_score": 5,
+    "score_components": {
+      "correct_culprit": 1,
+      "correct_motive": 1,
+      "correct_method": 1,
+      "required_evidence": 2
+    },
+    "required_evidence_scoring": {
+      "medical_vial": 0.67,
+      "brandy_glass_residue": 0.67,
+      "altered_death_certificate": 0.66
+    },
+    "full_success_threshold": 5,
+    "partial_success_threshold": 3
+  },
+  "accusation_options": {
+    "culprits": [
+      {
+        "id": "clara_vale",
+        "label": "Clara Vale"
+      },
+      {
+        "id": "julian_blackwood",
+        "label": "Julian Blackwood"
+      },
+      {
+        "id": "beatrice_ashford",
+        "label": "Beatrice Ashford"
+      },
+      {
+        "id": "henry_ashford",
+        "label": "Dr. Henry Ashford"
+      }
+    ],
+    "motives": [
+      {
+        "id": "inheritance",
+        "label": "Inheritance"
+      },
+      {
+        "id": "romantic_rejection",
+        "label": "Romantic rejection"
+      },
+      {
+        "id": "jealousy_over_affair",
+        "label": "Jealousy over affair"
+      },
+      {
+        "id": "old_family_grudge",
+        "label": "Old family grudge"
+      },
+      {
+        "id": "exposure_hidden_medical_crime",
+        "label": "Exposure of hidden medical crime"
+      }
+    ],
+    "methods": [
+      {
+        "id": "sudden_stabbing_with_letter_opener",
+        "label": "Stabbed in sudden anger with the letter opener"
+      },
+      {
+        "id": "drugged_brandy_and_staged_stabbing",
+        "label": "Poisoned/drugged through the brandy, then staged with the letter opener"
+      },
+      {
+        "id": "hidden_revolver",
+        "label": "Shot with a hidden revolver"
+      },
+      {
+        "id": "pushed_from_library_window",
+        "label": "Pushed from the library window"
+      },
+      {
+        "id": "physical_fight",
+        "label": "Killed during a physical fight"
+      }
+    ]
+  },
+  "feedback": {
+    "correct": {
+      "title": "Correct Accusation",
+      "message": "You are correct. Dr. Henry Ashford killed Edward Blackwood. The apparent motives of inheritance, romantic rejection, jealousy, and family resentment all obscured the deeper truth: Edward had discovered Henry's old medical cover-up and intended to expose him. Henry used medicine to weaken Edward through the brandy, then staged the scene with the letter opener to redirect suspicion toward the others."
+    },
+    "partial_correct_culprit_wrong_motive": {
+      "title": "Right Culprit, Wrong Motive",
+      "message": "You identified Henry, but for the wrong reason. The affair between Beatrice and Edward was a distraction. Henry knew about it and was not truly driven by jealousy. His real fear was exposure of the old medical cover-up."
+    },
+    "partial_correct_culprit_wrong_method": {
+      "title": "Right Culprit, Wrong Method",
+      "message": "You identified Henry, but missed the medical method. The letter opener was part of the staging; the brandy residue and medical vial reveal that Edward was weakened before the final attack."
+    },
+    "partial_correct_culprit_weak_evidence": {
+      "title": "Right Culprit, Insufficient Evidence",
+      "message": "You identified Henry, but your evidence is incomplete. To prove the accusation, you need to connect Henry to the medical vial, the residue on the brandy glass, and the altered death certificate."
+    },
+    "wrong_clara": {
+      "title": "Incorrect Accusation: Clara Vale",
+      "message": "Clara had a financial motive, and the letter opener points toward her, but the medical evidence does not fit her. The inheritance conflict was real, but the letter opener was used to mislead you."
+    },
+    "wrong_beatrice": {
+      "title": "Incorrect Accusation: Beatrice Ashford",
+      "message": "Beatrice had an emotional motive and lied about the affair, but her letters explain her shame and desperation, not Edward's death. She had no connection to the medical evidence."
+    },
+    "wrong_julian": {
+      "title": "Incorrect Accusation: Julian Blackwood",
+      "message": "Julian's anger was real, but his broken watch supports that he left the library after the argument. His motive was emotional, but the method points elsewhere."
+    },
+    "wrong_generic": {
+      "title": "Incorrect Accusation",
+      "message": "Your accusation does not fully explain the motive, method, and evidence. Review the clues carefully and consider which suspect had the means, opportunity, and strongest reason to prevent Edward from speaking."
+    }
+  },
+  "ending_text": {
+    "correct_ending": "The room falls silent as the pieces come together. The vial, the bitter residue in the brandy glass, the altered death certificate, and Edward's final appointment note form a chain Henry cannot break. The scandal of Beatrice's letters, Clara's fear over the will, and Julian's rage were all real, but they were shadows cast by a deeper crime. Henry did not kill for love, money, or anger. He killed because Edward Blackwood was about to drag an old death back into the light.",
+    "incorrect_ending": "The accusation leaves too many questions unanswered. The suspect may have had motive, but the method and evidence do not align. The truth remains hidden somewhere among the clues."
+  },
+  "free_form_accusation_stretch_goal": {
+    "enabled_for_mvp": false,
+    "description": "In a future version, the player may write a free-form accusation. An LLM can evaluate whether the explanation identifies the correct culprit, motive, method, evidence, and red herrings.",
+    "expected_llm_evaluation_schema": {
+      "culprit_correct": "boolean",
+      "motive_correct": "boolean",
+      "method_correct": "boolean",
+      "evidence_correct": "boolean",
+      "red_herring_understanding": "boolean",
+      "score": "integer",
+      "feedback": "string"
+    }
+  }
+}
