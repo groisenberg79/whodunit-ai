@@ -1,0 +1,314 @@
+{
+  "locations": [
+    {
+      "id": "library",
+      "name": "The Library",
+      "image_path": "assets/locations/library.png",
+      "short_description": "Edward Blackwood's private library, where his body was found.",
+      "description": "Edward Blackwood's private library is the murder scene. It is a dark, wood-paneled room lined with bookshelves, legal documents, and locked cabinets. A large desk sits near the fireplace. The storm outside rattles the windows, and the room still smells faintly of brandy and smoke.",
+      "function_in_mystery": "The library is the central crime scene. It contains clues about the method of the murder and the staging of the weapon.",
+      "available_from_start": true,
+      "clue_ids": [
+        "brandy_glass_residue",
+        "letter_opener"
+      ],
+      "inspectable_areas": [
+        {
+          "id": "brandy_glass",
+          "label": "Brandy glass",
+          "description": "A half-empty brandy glass sits near Edward's chair.",
+          "result_text": "The brandy glass near Edward's chair has been wiped, but not perfectly. A faint bitter-smelling residue remains at the bottom.",
+          "clue_id": "brandy_glass_residue",
+          "has_clue": true
+        },
+        {
+          "id": "letter_opener_area",
+          "label": "Silver letter opener",
+          "description": "A silver letter opener lies near Edward's desk.",
+          "result_text": "A silver letter opener lies near Edward's desk. Its polished handle catches the firelight. It seems too conveniently placed.",
+          "clue_id": "letter_opener",
+          "has_clue": true
+        },
+        {
+          "id": "library_desk",
+          "label": "Edward's desk",
+          "description": "Edward's desk is covered in papers, envelopes, and half-finished notes.",
+          "result_text": "Papers are scattered across the desk, but nothing here seems decisive. The more private documents may have been kept elsewhere.",
+          "clue_id": null,
+          "has_clue": false
+        },
+        {
+          "id": "fireplace",
+          "label": "Fireplace",
+          "description": "A low fire burns in the hearth.",
+          "result_text": "The fire is low. The ashes show signs of burned paper, but nothing readable remains.",
+          "clue_id": null,
+          "has_clue": false
+        },
+        {
+          "id": "library_window",
+          "label": "Library window",
+          "description": "The rain lashes against the window.",
+          "result_text": "The window is closed from the inside. It does not look like anyone escaped this way.",
+          "clue_id": null,
+          "has_clue": false
+        }
+      ],
+      "rag_tags": [
+        "location",
+        "library",
+        "crime_scene",
+        "brandy",
+        "letter_opener",
+        "method"
+      ]
+    },
+    {
+      "id": "edward_study",
+      "name": "Edward's Study",
+      "image_path": "assets/locations/edward_study.png",
+      "short_description": "Edward's private study, where he kept correspondence, legal papers, and personal notes.",
+      "description": "Edward's study is smaller and more private than the library. This is where he kept business papers, personal correspondence, and drafts of legal documents. Unlike the grand library, this room feels cramped, secretive, and practical.",
+      "function_in_mystery": "Edward's study reveals his private plans before his death, including the will and the final appointment note.",
+      "available_from_start": true,
+      "clue_ids": [
+        "torn_will_note",
+        "final_appointment_note"
+      ],
+      "inspectable_areas": [
+        {
+          "id": "wastebasket",
+          "label": "Wastebasket",
+          "description": "A small wastebasket sits beside Edward's writing desk.",
+          "result_text": "Inside the wastebasket, you find a torn note. Several words are missing, but Clara's name and the phrase 'revision of the will' are still visible.",
+          "clue_id": "torn_will_note",
+          "has_clue": true
+        },
+        {
+          "id": "writing_desk",
+          "label": "Writing desk",
+          "description": "Edward's writing desk is covered with ink, folded paper, and a small appointment notebook.",
+          "result_text": "On Edward's writing desk, you find a short note in his handwriting: 'H. after dinner. No more delays.'",
+          "clue_id": "final_appointment_note",
+          "has_clue": true
+        },
+        {
+          "id": "correspondence_box",
+          "label": "Correspondence box",
+          "description": "A wooden box contains old letters and business correspondence.",
+          "result_text": "The box contains business letters and old publishing contracts. Nothing here seems directly connected to the murder.",
+          "clue_id": null,
+          "has_clue": false
+        },
+        {
+          "id": "study_bookshelf",
+          "label": "Bookshelf",
+          "description": "Several legal volumes are arranged unevenly on the shelf.",
+          "result_text": "Several legal volumes have been recently disturbed, but you find no clear evidence inside them.",
+          "clue_id": null,
+          "has_clue": false
+        },
+        {
+          "id": "edward_locked_drawer",
+          "label": "Locked drawer",
+          "description": "A narrow drawer beneath the desk is locked.",
+          "result_text": "The drawer is locked. It may have held something important, but you cannot open it for now.",
+          "clue_id": null,
+          "has_clue": false
+        }
+      ],
+      "rag_tags": [
+        "location",
+        "edward_study",
+        "will",
+        "appointment_note",
+        "private_documents"
+      ]
+    },
+    {
+      "id": "beatrice_room",
+      "name": "Beatrice's Room",
+      "image_path": "assets/locations/beatrice_room.png",
+      "short_description": "Beatrice Ashford's room, elegant but visibly disturbed.",
+      "description": "Beatrice's room is elegant but disordered. A perfume bottle lies open on the dressing table, gloves are tossed onto a chair, and several torn pieces of stationery are hidden beneath a folded shawl. The room suggests someone trying to preserve dignity while quietly falling apart.",
+      "function_in_mystery": "Beatrice's room reveals the affair between Beatrice and Edward and creates a strong romantic red herring.",
+      "available_from_start": true,
+      "clue_ids": [
+        "beatrice_letters"
+      ],
+      "inspectable_areas": [
+        {
+          "id": "writing_box",
+          "label": "Writing box",
+          "description": "A polished writing box sits half-open beneath a folded shawl.",
+          "result_text": "In Beatrice's writing box, you find several letters addressed to Edward. The handwriting grows more frantic from page to page. She begs him not to abandon her, then accuses him of cruelty.",
+          "clue_id": "beatrice_letters",
+          "has_clue": true
+        },
+        {
+          "id": "dressing_table",
+          "label": "Dressing table",
+          "description": "Perfume, gloves, and jewelry are scattered across the dressing table.",
+          "result_text": "Perfume, gloves, and jewelry are arranged hastily. Beatrice seems to have dressed, undressed, and dressed again in agitation.",
+          "clue_id": null,
+          "has_clue": false
+        },
+        {
+          "id": "beatrice_fireplace",
+          "label": "Fireplace",
+          "description": "A small fireplace sits beneath a narrow mantel.",
+          "result_text": "Some paper ash remains, but nothing readable survived the fire.",
+          "clue_id": null,
+          "has_clue": false
+        },
+        {
+          "id": "wardrobe",
+          "label": "Wardrobe",
+          "description": "A wardrobe stands open, with several garments pushed aside.",
+          "result_text": "A dark shawl is missing from its hook. Nothing else seems unusual.",
+          "clue_id": null,
+          "has_clue": false
+        },
+        {
+          "id": "bedside_table",
+          "label": "Bedside table",
+          "description": "A small bedside table holds a glass of water and a handkerchief.",
+          "result_text": "A handkerchief is damp, as if someone had been crying.",
+          "clue_id": null,
+          "has_clue": false
+        }
+      ],
+      "rag_tags": [
+        "location",
+        "beatrice_room",
+        "affair",
+        "letters",
+        "romantic_rejection"
+      ]
+    },
+    {
+      "id": "garden_path",
+      "name": "Garden Path",
+      "image_path": "assets/locations/garden_path.png",
+      "short_description": "The rain-soaked path outside the manor, beneath the library windows.",
+      "description": "The garden path runs along the side of the manor, beneath the library windows. Rain has softened the gravel and mud. A stone bench sits near the rose bushes, half-hidden in the dark.",
+      "function_in_mystery": "The garden path supports Julian's story and complicates the timeline. It makes him look suspicious, but also gives evidence that he left the library before the murder.",
+      "available_from_start": true,
+      "clue_ids": [
+        "broken_watch"
+      ],
+      "inspectable_areas": [
+        {
+          "id": "stone_path",
+          "label": "Stone path",
+          "description": "The stone path is wet and uneven, with mud collecting between the stones.",
+          "result_text": "Near the stone path, half-hidden by rain and mud, you find a cracked pocket watch. The hands are stopped around 9:20.",
+          "clue_id": "broken_watch",
+          "has_clue": true
+        },
+        {
+          "id": "library_window_exterior",
+          "label": "Library window exterior",
+          "description": "The library window looks out over the garden path.",
+          "result_text": "The mud beneath the window is disturbed, but the window itself appears closed. It does not clearly prove that anyone entered or escaped here.",
+          "clue_id": null,
+          "has_clue": false
+        },
+        {
+          "id": "stone_bench",
+          "label": "Stone bench",
+          "description": "A stone bench sits near the rose bushes.",
+          "result_text": "Rainwater gathers on the bench. Someone may have stood here recently, but nothing points clearly to the killer.",
+          "clue_id": null,
+          "has_clue": false
+        },
+        {
+          "id": "rose_bushes",
+          "label": "Rose bushes",
+          "description": "The rose bushes bend under the rain and wind.",
+          "result_text": "The branches are wet and torn by the storm. You find no clear evidence among them.",
+          "clue_id": null,
+          "has_clue": false
+        },
+        {
+          "id": "side_door",
+          "label": "Side door",
+          "description": "A side door leads from the garden path into the corridor near the library.",
+          "result_text": "The side door leads back into the corridor near the library. It could explain Julian's movements after the argument.",
+          "clue_id": null,
+          "has_clue": false
+        }
+      ],
+      "rag_tags": [
+        "location",
+        "garden_path",
+        "julian_blackwood",
+        "broken_watch",
+        "timeline"
+      ]
+    },
+    {
+      "id": "henry_study",
+      "name": "Henry's Study",
+      "image_path": "assets/locations/henry_study.png",
+      "short_description": "Henry Ashford's tidy and cold medical study.",
+      "description": "Henry's study is tidy, cold, and almost unnervingly precise. Medical books are stacked in perfect order. A locked drawer sits beneath the writing desk, and Henry's black medical bag rests near the chair.",
+      "function_in_mystery": "Henry's study contains the deepest solution clues. It connects Henry to both the method and the true motive.",
+      "available_from_start": true,
+      "clue_ids": [
+        "medical_vial",
+        "altered_death_certificate"
+      ],
+      "inspectable_areas": [
+        {
+          "id": "medical_bag",
+          "label": "Medical bag",
+          "description": "Henry's black medical bag rests beside the chair.",
+          "result_text": "Inside Henry's medical bag, you find a small vial with a partially scratched label. The liquid inside has a sharp medicinal smell.",
+          "clue_id": "medical_vial",
+          "has_clue": true
+        },
+        {
+          "id": "henry_locked_drawer",
+          "label": "Locked drawer",
+          "description": "A locked drawer sits beneath Henry's writing desk.",
+          "result_text": "Inside Henry's locked drawer, you find an old death certificate connected to Edward's late wife. Some dates and dosages appear to have been altered by hand.",
+          "clue_id": "altered_death_certificate",
+          "has_clue": true
+        },
+        {
+          "id": "medical_books",
+          "label": "Medical books",
+          "description": "Medical volumes are stacked in precise order.",
+          "result_text": "The books are carefully arranged, with a volume on cardiac failure recently moved.",
+          "clue_id": null,
+          "has_clue": false
+        },
+        {
+          "id": "henry_writing_desk",
+          "label": "Writing desk",
+          "description": "Henry's writing desk is orderly, almost aggressively neat.",
+          "result_text": "Henry's notes are precise and difficult to read. Nothing here gives a clear answer.",
+          "clue_id": null,
+          "has_clue": false
+        },
+        {
+          "id": "henry_wastebasket",
+          "label": "Wastepaper basket",
+          "description": "The wastepaper basket contains a few torn scraps of paper.",
+          "result_text": "Torn scraps mention dosage calculations, but not enough to prove anything alone.",
+          "clue_id": null,
+          "has_clue": false
+        }
+      ],
+      "rag_tags": [
+        "location",
+        "henry_study",
+        "medical_vial",
+        "altered_death_certificate",
+        "true_motive",
+        "method"
+      ]
+    }
+  ]
+}
