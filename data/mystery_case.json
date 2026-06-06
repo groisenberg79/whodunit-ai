@@ -1,0 +1,71 @@
+{
+	"case_id": "murder_at_blackwood_manor",
+	"title": "Murder at Blackwood Manor",
+	"subtitle": "An LLM-powered detective mystery",
+	"setting": {
+		"period": "1930s",
+		"place": "Blackwood Manor, an English country house",
+		"weather": "A stormy evening with heavy rain and wind",
+		"atmosphere": "Gothic, tense, elegant, and suspicious"
+	},
+	"victim": {
+		"id": "edward_blackwood",
+		"name": "Edward Blackwood",
+		"role": "Wealthy publisher and family patriarch",
+		"description": "Edward Blackwood was a powerful and controlling publisher whose wealth, cruelty, and secrets gave several people reasons to fear or resent him."
+	},
+	"premise": "Edward Blackwood is found murdered in his private library after dinner during a storm at Blackwood Manor. Every guest had a reason to want him dead: inheritance, romantic humiliation, family resentment, or fear of exposure. The player must investigate the manor, examine clues, interview suspects, and make a final accusation.",
+	"player_role": {
+		"title": "Detective",
+		"description": "The player acts as the investigator called to solve Edward Blackwood's murder. The player can question suspects, inspect locations, collect clues, and make a final accusation."
+	},
+	"main_objective": "Discover who killed Edward Blackwood, why they killed him, how the murder was committed, and which evidence proves the accusation.",
+	"core_gameplay_loop": [
+		"Read the case introduction",
+		"Choose a location to inspect",
+		"Discover clues by examining objects",
+		"Interview suspects using free-form questions",
+		"Use discovered clues to confront suspects",
+		"Review case notes",
+		"Make a final accusation"
+	],
+	"suspect_ids": [
+		"clara_vale",
+		"julian_blackwood",
+		"beatrice_ashford",
+		"henry_ashford"
+	],
+	"location_ids": [
+		"library",
+		"edward_study",
+		"beatrice_room",
+		"garden_path",
+		"henry_study"
+	],
+	"initial_state": {
+		"discovered_clues": [],
+		"visited_locations": [],
+		"interviewed_suspects": [],
+		"dialogue_history": [],
+		"accusation_attempts": [],
+		"game_status": "in_progress"
+	},
+	"mvp_features": [
+		"One complete original mystery case",
+		"Streamlit interface",
+		"Location exploration",
+		"Inspectable areas",
+		"Clue discovery",
+		"LLM-powered suspect interviews",
+		"Game state tracking",
+		"Final accusation logic"
+	],
+	"stretch_goals": [
+		"Point-and-click image hotspots",
+		"Free-form final accusation evaluated by an LLM",
+		"FAISS-based retrieval for clue and dialogue memory",
+		"Generated evidence images",
+		"Multiple mystery cases",
+		"Dynamic mystery generation"
+	]
+}
