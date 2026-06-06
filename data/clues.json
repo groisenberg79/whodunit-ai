@@ -1,0 +1,231 @@
+{
+  "clues": [
+    {
+      "id": "torn_will_note",
+      "name": "Torn Will Note",
+      "location_id": "edward_study",
+      "discovery_area_id": "wastebasket",
+      "related_suspect_ids": ["clara_vale"],
+      "confrontation_targets": ["clara_vale"],
+      "type": "red_herring",
+      "category": "inheritance_motive",
+      "is_solution_critical": false,
+      "image_path": "assets/evidence/torn_will_note.png",
+      "description": "A torn handwritten note found in Edward's study. It appears to mention a planned change to the will and includes Clara's name.",
+      "discovery_text": "Inside the wastebasket, you find a torn note. Several words are missing, but Clara's name and the phrase 'revision of the will' are still visible.",
+      "what_it_suggests": "Clara may have killed Edward to prevent him from cutting her out of the inheritance.",
+      "what_it_actually_means": "Clara was desperate about the inheritance and may have tried to manipulate Edward, but this does not prove murder.",
+      "dialogue_effects": {
+        "default": "This clue can be used to confront Clara about her financial fear and possible dishonesty.",
+        "when_confronting_clara_vale": "Clara becomes defensive. She may admit she was afraid of losing her inheritance and that she acted dishonestly, but she denies killing Edward."
+      },
+      "rag_tags": [
+        "clue",
+        "inheritance",
+        "will",
+        "clara_vale",
+        "red_herring"
+      ]
+    },
+    {
+      "id": "beatrice_letters",
+      "name": "Beatrice's Furious Letters",
+      "location_id": "beatrice_room",
+      "discovery_area_id": "writing_box",
+      "related_suspect_ids": ["beatrice_ashford", "henry_ashford"],
+      "confrontation_targets": ["beatrice_ashford", "henry_ashford"],
+      "type": "red_herring",
+      "category": "romantic_motive",
+      "is_solution_critical": false,
+      "image_path": "assets/evidence/beatrice_letters.png",
+      "description": "A bundle of emotional, bitter letters from Beatrice to Edward. They reveal that Edward ended their affair and that Beatrice did not accept it.",
+      "discovery_text": "In Beatrice's writing box, you find several letters addressed to Edward. The handwriting grows more frantic from page to page. She begs him not to abandon her, then accuses him of cruelty.",
+      "what_it_suggests": "Beatrice may have killed Edward because he rejected and humiliated her.",
+      "what_it_actually_means": "Beatrice was emotionally devastated and lied about the affair, but she did not kill Edward. The letters also reveal that Henry's apparent jealousy may be misleading, since he knew about the affair and barely cared.",
+      "dialogue_effects": {
+        "default": "This clue can be used to confront Beatrice about the affair and her emotional state.",
+        "when_confronting_beatrice_ashford": "Beatrice may admit the affair and the breakup. She should deny murder and may reveal that Henry knew about the affair but seemed strangely indifferent.",
+        "when_confronting_henry_ashford": "Henry may admit or imply that he knew about the affair, but he should not behave like a jealous husband. This weakens jealousy as his true motive."
+      },
+      "rag_tags": [
+        "clue",
+        "affair",
+        "romantic_rejection",
+        "beatrice_ashford",
+        "henry_ashford",
+        "red_herring"
+      ]
+    },
+    {
+      "id": "broken_watch",
+      "name": "Julian's Broken Watch",
+      "location_id": "garden_path",
+      "discovery_area_id": "stone_path",
+      "related_suspect_ids": ["julian_blackwood"],
+      "confrontation_targets": ["julian_blackwood"],
+      "type": "red_herring",
+      "category": "timeline",
+      "is_solution_critical": false,
+      "image_path": "assets/evidence/broken_watch.png",
+      "description": "Julian's pocket watch, found cracked on the garden path. It stopped around 9:20.",
+      "discovery_text": "Near the stone path, half-hidden by rain and mud, you find a cracked pocket watch. The hands are stopped around 9:20.",
+      "what_it_suggests": "Julian was outside around the time of the murder and may be lying about his movements.",
+      "what_it_actually_means": "Julian did go outside after arguing with Edward. The broken watch supports part of his story rather than disproving it. It shows anger, but not murder.",
+      "dialogue_effects": {
+        "default": "This clue can be used to confront Julian about his movements after the argument.",
+        "when_confronting_julian_blackwood": "Julian may admit he stormed out after the argument, broke the watch in anger, and said he wished Edward dead. He should still deny murder."
+      },
+      "rag_tags": [
+        "clue",
+        "timeline",
+        "garden_path",
+        "julian_blackwood",
+        "red_herring"
+      ]
+    },
+    {
+      "id": "medical_vial",
+      "name": "Small Medical Vial",
+      "location_id": "henry_study",
+      "discovery_area_id": "medical_bag",
+      "related_suspect_ids": ["henry_ashford"],
+      "confrontation_targets": ["henry_ashford"],
+      "type": "solution_clue",
+      "category": "method",
+      "is_solution_critical": true,
+      "image_path": "assets/evidence/medical_vial.png",
+      "description": "A small vial found in Henry's medical bag. Its label is partially scratched off. It contains a sedative or cardiac medication that could weaken a person quickly if mixed into a drink.",
+      "discovery_text": "Inside Henry's medical bag, you find a small vial with a partially scratched label. The liquid inside has a sharp medicinal smell.",
+      "what_it_suggests": "Henry had access to a substance that could incapacitate Edward.",
+      "what_it_actually_means": "This is one of the key clues pointing toward Henry's method. It supports the theory that Edward was weakened before the staged stabbing.",
+      "dialogue_effects": {
+        "default": "This clue can be used to confront Henry about his access to medicine.",
+        "when_confronting_henry_ashford": "If confronted with the vial alone, Henry should dismiss it as ordinary medicine and imply that the accusation is naive. If the brandy residue has also been discovered, he should become more guarded but still not confess."
+      },
+      "combo_clues": ["brandy_glass_residue"],
+      "rag_tags": [
+        "clue",
+        "medical",
+        "vial",
+        "method",
+        "henry_ashford",
+        "solution"
+      ]
+    },
+    {
+      "id": "brandy_glass_residue",
+      "name": "Residue on the Brandy Glass",
+      "location_id": "library",
+      "discovery_area_id": "brandy_glass",
+      "related_suspect_ids": ["henry_ashford"],
+      "confrontation_targets": ["henry_ashford"],
+      "type": "solution_clue",
+      "category": "method",
+      "is_solution_critical": true,
+      "image_path": "assets/evidence/brandy_glass_residue.png",
+      "description": "A faint bitter-smelling residue found at the bottom of Edward's brandy glass. The glass appears to have been wiped, but not thoroughly.",
+      "discovery_text": "The brandy glass near Edward's chair has been wiped, but not perfectly. A faint bitter-smelling residue remains at the bottom.",
+      "what_it_suggests": "Edward may have been drugged before he was killed.",
+      "what_it_actually_means": "Henry weakened Edward with medicine before staging the murder. This clue becomes especially important when combined with the medical vial.",
+      "dialogue_effects": {
+        "default": "This clue can be used to confront Henry about the possibility that Edward was drugged.",
+        "when_confronting_henry_ashford": "Henry should remain controlled and suggest contamination, uncertainty, or amateur speculation. If the medical vial has also been discovered, he should become more guarded but still not confess."
+      },
+      "combo_clues": ["medical_vial"],
+      "rag_tags": [
+        "clue",
+        "brandy",
+        "residue",
+        "poisoning",
+        "method",
+        "henry_ashford",
+        "solution"
+      ]
+    },
+    {
+      "id": "letter_opener",
+      "name": "Silver Letter Opener",
+      "location_id": "library",
+      "discovery_area_id": "letter_opener_area",
+      "related_suspect_ids": ["clara_vale", "henry_ashford"],
+      "confrontation_targets": ["clara_vale", "henry_ashford"],
+      "type": "mixed_clue",
+      "category": "staged_weapon",
+      "is_solution_critical": false,
+      "image_path": "assets/evidence/letter_opener.png",
+      "description": "A silver letter opener found near Edward's desk. It appears to be the murder weapon. It is connected to Clara, or at least was recently used by her.",
+      "discovery_text": "A silver letter opener lies near Edward's desk. Its polished handle catches the firelight. It seems too conveniently placed.",
+      "what_it_suggests": "Clara may have killed Edward with an object connected to her.",
+      "what_it_actually_means": "Henry used or planted the letter opener to redirect suspicion toward Clara and the inheritance dispute. The letter opener is part of the staging, not the whole method.",
+      "dialogue_effects": {
+        "default": "This clue can be used to confront Clara about the weapon or Henry about the staging.",
+        "when_confronting_clara_vale": "Clara panics because the letter opener is connected to her, but she denies bringing it to the library or using it.",
+        "when_confronting_henry_ashford": "Henry should subtly redirect suspicion toward Clara without seeming too eager."
+      },
+      "rag_tags": [
+        "clue",
+        "weapon",
+        "staging",
+        "letter_opener",
+        "clara_vale",
+        "henry_ashford"
+      ]
+    },
+    {
+      "id": "altered_death_certificate",
+      "name": "Altered Death Certificate",
+      "location_id": "henry_study",
+      "discovery_area_id": "henry_locked_drawer",
+      "related_suspect_ids": ["henry_ashford"],
+      "confrontation_targets": ["henry_ashford"],
+      "type": "solution_clue",
+      "category": "true_motive",
+      "is_solution_critical": true,
+      "image_path": "assets/evidence/altered_death_certificate.png",
+      "description": "An old death certificate related to Edward's late wife. It shows signs of alteration. The handwriting resembles Henry's medical hand, and dates or dosages appear inconsistent.",
+      "discovery_text": "Inside Henry's locked drawer, you find an old death certificate connected to Edward's late wife. Some dates and dosages appear to have been altered by hand.",
+      "what_it_suggests": "Henry was involved in falsifying records related to a death years earlier.",
+      "what_it_actually_means": "This is the deepest clue. Edward had discovered Henry's old medical cover-up and intended to expose him. This is Henry's true motive.",
+      "dialogue_effects": {
+        "default": "This clue can be used to confront Henry about the old medical cover-up.",
+        "when_confronting_henry_ashford": "Henry should become colder and more evasive. He may imply that Edward was investigating dangerous old matters, but he must not fully explain the cover-up or confess."
+      },
+      "rag_tags": [
+        "clue",
+        "death_certificate",
+        "medical_cover_up",
+        "true_motive",
+        "henry_ashford",
+        "solution"
+      ]
+    },
+    {
+      "id": "final_appointment_note",
+      "name": "Edward's Final Appointment Note",
+      "location_id": "edward_study",
+      "discovery_area_id": "writing_desk",
+      "related_suspect_ids": ["henry_ashford"],
+      "confrontation_targets": ["henry_ashford"],
+      "type": "solution_clue",
+      "category": "opportunity",
+      "is_solution_critical": false,
+      "image_path": "assets/evidence/final_appointment_note.png",
+      "description": "A short note in Edward's handwriting: 'H. after dinner. No more delays.'",
+      "discovery_text": "On Edward's writing desk, you find a short note in his handwriting: 'H. after dinner. No more delays.'",
+      "what_it_suggests": "Edward planned to confront someone after dinner. The initial 'H.' may refer to Henry, but this is not immediately certain.",
+      "what_it_actually_means": "Edward had arranged to confront Henry about the old medical records. This supports Henry's opportunity and motive when combined with the altered death certificate.",
+      "dialogue_effects": {
+        "default": "This clue can be used to confront Henry about his private meeting with Edward.",
+        "when_confronting_henry_ashford": "Henry should minimize the note and suggest that Edward often arranged private conversations with many people. He should avoid confirming that the meeting was about the medical records."
+      },
+      "combo_clues": ["altered_death_certificate"],
+      "rag_tags": [
+        "clue",
+        "appointment",
+        "henry_ashford",
+        "opportunity",
+        "solution"
+      ]
+    }
+  ]
+}
