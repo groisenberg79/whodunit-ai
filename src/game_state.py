@@ -118,7 +118,7 @@ class GameState:
             game_status=initial_state["game_status"],
         )
 
-    def discover_clue(self, clue_id: str) -> bool:
+    def mark_clue_discovered(self, clue_id: str) -> bool:
         """
         Mark a clue as discovered by the player.
 
@@ -134,7 +134,7 @@ class GameState:
         self.discovered_clues.append(clue_id)
         return True
 
-    def visit_location(self, location_id: str) -> bool:
+    def mark_location_visited(self, location_id: str) -> bool:
         """
         Mark a location as visited.
 
@@ -150,7 +150,7 @@ class GameState:
         self.visited_locations.append(location_id)
         return True
 
-    def reveal_clue_to_suspect(self, suspect_id: str, clue_id: str) -> bool:
+    def mark_clue_revealed_to_suspect(self, suspect_id: str, clue_id: str) -> bool:
         """
         Mark a discovered clue as revealed to a suspect.
 
@@ -217,7 +217,7 @@ class GameState:
         self.mark_suspect_interviewed(suspect_id)
 
         if confronted_clue_id is not None:
-            self.reveal_clue_to_suspect(suspect_id, confronted_clue_id)
+            self.mark_clue_revealed_to_suspect(suspect_id, confronted_clue_id)
 
         entry = DialogueEntry(
             suspect_id=suspect_id,
