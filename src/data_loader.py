@@ -80,12 +80,12 @@ def get_character_by_id(game_data: dict[str, dict[str, Any]], character_id: str)
         Character dictionary matching the given ID.
 
     Raises:
-        KeyError: If no character with the given ID is found.
+        KeyError: If the characters data or character ID is not found.
     """
-    characters = game_data["characters"].get("characters", [])
+    characters = game_data["characters"]["characters"]
 
     for character in characters:
-        if character.get("id") == character_id:
+        if character["id"] == character_id:
             return character
 
     raise KeyError(f"Character not found: {character_id}")
@@ -103,12 +103,12 @@ def get_clue_by_id(game_data: dict[str, dict[str, Any]], clue_id: str) -> dict[s
         Clue dictionary matching the given ID.
 
     Raises:
-        KeyError: If no clue with the given ID is found.
+        KeyError: If the clues data or clue ID is not found.
     """
-    clues = game_data["clues"].get("clues", [])
+    clues = game_data["clues"]["clues"]
 
     for clue in clues:
-        if clue.get("id") == clue_id:
+        if clue["id"] == clue_id:
             return clue
 
     raise KeyError(f"Clue not found: {clue_id}")
@@ -126,12 +126,12 @@ def get_location_by_id(game_data: dict[str, dict[str, Any]], location_id: str) -
         Location dictionary matching the given ID.
 
     Raises:
-        KeyError: If no location with the given ID is found.
+        KeyError: If the locations data or location ID is not found.
     """
-    locations = game_data["locations"].get("locations", [])
+    locations = game_data["locations"]["locations"]
 
     for location in locations:
-        if location.get("id") == location_id:
+        if location["id"] == location_id:
             return location
 
     raise KeyError(f"Location not found: {location_id}")
