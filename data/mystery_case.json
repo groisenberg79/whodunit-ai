@@ -1,140 +1,158 @@
 {
-	"case_id": "murder_at_blackwood_manor",
-	"title": "Murder at Blackwood Manor",
-	"subtitle": "An LLM-powered detective mystery",
-	"setting": {
-		"period": "1930s",
-		"place": "Blackwood Manor, an English country house",
-		"weather": "A stormy evening with heavy rain and wind",
-		"atmosphere": "Gothic, tense, elegant, and suspicious"
-	},
-	"victim": {
-		"id": "edward_blackwood",
-		"name": "Edward Blackwood",
-		"role": "Wealthy publisher and family patriarch",
-		"description": "Edward Blackwood was a powerful and controlling publisher whose wealth, cruelty, and secrets gave several people reasons to fear or resent him."
-	},
-	"premise": "Edward Blackwood is found murdered in his private library after dinner during a storm at Blackwood Manor. Every guest had a reason to want him dead: inheritance, romantic humiliation, family resentment, jealousy, or fear of exposure. The player must investigate the manor, examine clues, interview suspects, confront them with evidence, and make a final accusation.",
-	"player_role": {
-		"title": "Detective",
-		"description": "The player acts as the investigator called to solve Edward Blackwood's murder. The player can inspect locations, discover clues, question suspects, confront suspects with evidence, review case notes, and make a final accusation."
-	},
-	"main_objective": "Discover who killed Edward Blackwood, why they killed him, how the murder was committed, and which evidence proves the accusation.",
-	"core_gameplay_loop": [
-		"Read the case introduction",
-		"Choose a location to inspect",
-		"Discover clues by examining objects",
-		"Review discovered clues in the case notes",
-		"Interview suspects using free-form questions",
-		"Optionally confront suspects with discovered evidence",
-		"Use NPC responses to refine the investigation",
-		"Make a final accusation using culprit, motive, method, and evidence"
-	],
-	"core_design_rules": {
-		"human_player_controls_investigation": true,
-		"all_locations_available_from_start": true,
-		"all_inspectable_areas_available_from_start": true,
-		"clues_are_not_automatically_known_by_suspects": true,
-		"suspects_react_to_clues_only_when_confronted": true,
-		"llm_responses_must_be_constrained_by_game_state": true,
-		"faiss_rag_is_core_mvp_component": true
-	},
-	"clue_state_model": {
-		"discovered_clues": "Clues the player has found while inspecting locations. These appear in case notes and can be used in the final accusation.",
-		"revealed_clues": "Clues the player has explicitly used to confront a suspect during an interview. Suspects should react directly only to evidence revealed to them."
-	},
-	"interview_model": {
-		"input_types": [
-			"selected suspect",
-			"free-form player question",
-			"optional confronted clue selected from discovered clues"
-		],
-		"npc_response_context": [
-			"suspect public profile",
-			"suspect private knowledge",
-			"suspect personality",
-			"suspect lies and secrets",
-			"player question",
-			"confronted clue if selected",
-			"clues already revealed to this suspect",
-			"dialogue history",
-			"FAISS/RAG retrieved context",
-			"current game state"
-		]
-	},
-	"rag_model": {
-		"retrieval_engine": "FAISS",
-		"embedding_sources": [
-			"clue descriptions",
-			"character memories",
-			"timeline facts",
-			"location descriptions",
-			"previous dialogue"
-		],
-		"retrieval_usage": "Relevant context is retrieved during suspect interviews to ground NPC responses. Retrieved context must be filtered by suspect, discovered clues, confronted evidence, and current game state so the LLM does not reveal the solution too early."
-	},
-	"suspect_ids": [
-		"clara_vale",
-		"julian_blackwood",
-		"beatrice_ashford",
-		"henry_ashford"
-	],
-	"location_ids": [
-		"library",
-		"edward_study",
-		"beatrice_room",
-		"garden_path",
-		"henry_study"
-	],
-	"clue_ids": [
-		"torn_will_note",
-		"beatrice_letters",
-		"broken_watch",
-		"medical_vial",
-		"brandy_glass_residue",
-		"letter_opener",
-		"altered_death_certificate",
-		"final_appointment_note"
-	],
-	"initial_state": {
-		"discovered_clues": [],
-		"revealed_clues": {
-			"clara_vale": [],
-			"julian_blackwood": [],
-			"beatrice_ashford": [],
-			"henry_ashford": []
-		},
-		"visited_locations": [],
-		"interviewed_suspects": [],
-		"dialogue_history": [],
-		"accusation_attempts": [],
-		"game_status": "in_progress"
-	},
-	"mvp_features": [
-		"One complete original mystery case",
-		"Streamlit interface",
-		"Location exploration",
-		"Generated location and suspect images",
-		"Inspectable areas",
-		"Clue discovery",
-		"Case notes",
-		"Free-form suspect interviews",
-		"Evidence confrontation system",
-		"FAISS-based retrieval for clues, character memories, timeline facts, and dialogue context",
-		"LLM-powered suspect dialogue",
-		"Prompt engineering for constrained NPC behavior",
-		"Consistency checks for NPC responses",
-		"Game state tracking",
-		"Interaction logging",
-		"Basic data analysis and visualizations",
-		"Final accusation logic"
-	],
-	"stretch_goals": [
-		"Point-and-click image hotspots",
-		"Free-form final accusation evaluated by an LLM",
-		"Generated evidence images",
-		"Multiple mystery cases",
-		"Dynamic mystery generation from templates",
-		"More advanced consistency checker using a second LLM call"
-	]
+  "case_id": "murder_at_blackwood_manor",
+  "title": "Murder at Blackwood Manor",
+  "subtitle": "An LLM-powered detective mystery",
+  "setting": {
+    "period": "1930s",
+    "place": "Blackwood Manor, an English country house",
+    "weather": "A stormy evening with heavy rain and wind",
+    "atmosphere": "Gothic, tense, elegant, and suspicious"
+  },
+  "victim": {
+    "id": "edward_blackwood",
+    "name": "Edward Blackwood",
+    "role": "Wealthy publisher and family patriarch",
+    "description": "Edward Blackwood was a powerful and controlling publisher whose wealth, cruelty, and secrets gave several people reasons to fear or resent him."
+  },
+  "premise": "Edward Blackwood is found murdered in his private library after dinner during a storm at Blackwood Manor. Every guest had a reason to want him dead: inheritance, romantic humiliation, family resentment, jealousy, or fear of exposure. The player must investigate the manor, examine clues, interview suspects, confront them with evidence, and make a final accusation.",
+  "player_role": {
+    "title": "Detective",
+    "description": "The player acts as the investigator called to solve Edward Blackwood's murder. The player can inspect locations, discover clues, question suspects, confront suspects with evidence, review case notes, and make a final accusation."
+  },
+  "main_objective": "Discover who killed Edward Blackwood, why they killed him, how the murder was committed, and which evidence proves the accusation.",
+  "core_gameplay_loop": [
+    "Read the case introduction",
+    "Choose a location to inspect",
+    "Discover clues by examining objects",
+    "Review discovered clues in the case notes",
+    "Interview suspects using free-form questions",
+    "Optionally confront suspects with discovered evidence",
+    "Use NPC responses to refine the investigation",
+    "Make a final accusation using culprit, motive, method, and evidence"
+  ],
+  "core_design_rules": {
+    "human_player_controls_investigation": true,
+    "all_locations_available_from_start": true,
+    "all_inspectable_areas_available_from_start": true,
+    "clues_are_not_automatically_known_by_suspects": true,
+    "suspects_react_to_clues_only_when_confronted": true,
+    "llm_responses_must_be_constrained_by_game_state": true,
+    "faiss_rag_is_core_mvp_component": true,
+    "langgraph_is_core_mvp_component": true
+  },
+  "clue_state_model": {
+    "discovered_clues": "Clues the player has found while inspecting locations. These appear in case notes and can be used in the final accusation.",
+    "revealed_clues": "Clues the player has explicitly used to confront a suspect during an interview. Suspects should react directly only to evidence revealed to them."
+  },
+  "interview_model": {
+    "input_types": [
+      "selected suspect",
+      "free-form player question",
+      "optional confronted clue selected from discovered clues"
+    ],
+    "npc_response_context": [
+      "suspect public profile",
+      "suspect private knowledge",
+      "suspect personality",
+      "suspect lies and secrets",
+      "player question",
+      "confronted clue if selected",
+      "clues already revealed to this suspect",
+      "dialogue history",
+      "FAISS/RAG retrieved context",
+      "current game state",
+      "LangGraph interview workflow state"
+    ]
+  },
+  "rag_model": {
+    "retrieval_engine": "FAISS",
+    "embedding_sources": [
+      "clue descriptions",
+      "character memories",
+      "timeline facts",
+      "location descriptions",
+      "previous dialogue"
+    ],
+    "retrieval_usage": "Relevant context is retrieved during suspect interviews to ground NPC responses. Retrieved context must be filtered by suspect, discovered clues, confronted evidence, and current game state so the LLM does not reveal the solution too early."
+  },
+  "langgraph_model": {
+    "usage": "LangGraph orchestrates the NPC interview workflow.",
+    "workflow_steps": [
+      "Validate confronted evidence",
+      "Build interview context",
+      "Retrieve relevant FAISS/RAG context",
+      "Build NPC prompt",
+      "Generate NPC response",
+      "Run consistency checks",
+      "Record dialogue in GameState",
+      "Return NPC response to the Streamlit interface"
+    ],
+    "reason": "The suspect interview flow is a multi-step stateful process. LangGraph provides a clear structure for coordinating evidence validation, RAG retrieval, prompt construction, response generation, consistency checking, and game state updates."
+  },
+  "suspect_ids": [
+    "clara_vale",
+    "julian_blackwood",
+    "beatrice_ashford",
+    "henry_ashford"
+  ],
+  "location_ids": [
+    "library",
+    "edward_study",
+    "beatrice_room",
+    "garden_path",
+    "henry_study"
+  ],
+  "clue_ids": [
+    "torn_will_note",
+    "beatrice_letters",
+    "broken_watch",
+    "medical_vial",
+    "brandy_glass_residue",
+    "letter_opener",
+    "altered_death_certificate",
+    "final_appointment_note"
+  ],
+  "initial_state": {
+    "discovered_clues": [],
+    "revealed_clues": {
+      "clara_vale": [],
+      "julian_blackwood": [],
+      "beatrice_ashford": [],
+      "henry_ashford": []
+    },
+    "visited_locations": [],
+    "interviewed_suspects": [],
+    "dialogue_history": [],
+    "accusation_attempts": [],
+    "game_status": "in_progress"
+  },
+  "mvp_features": [
+    "One complete original mystery case",
+    "Streamlit interface",
+    "Location exploration",
+    "Generated location and suspect images",
+    "Inspectable areas",
+    "Clue discovery",
+    "Case notes",
+    "Free-form suspect interviews",
+    "Evidence confrontation system",
+    "FAISS-based retrieval for clues, character memories, timeline facts, and dialogue context",
+    "LangGraph-based interview orchestration",
+    "LLM-powered suspect dialogue",
+    "Prompt engineering for constrained NPC behavior",
+    "Consistency checks for NPC responses",
+    "Game state tracking",
+    "Interaction logging",
+    "Basic data analysis and visualizations",
+    "Final accusation logic"
+  ],
+  "stretch_goals": [
+    "Point-and-click image hotspots",
+    "Free-form final accusation evaluated by an LLM",
+    "Generated evidence images",
+    "Multiple mystery cases",
+    "Dynamic mystery generation from templates",
+    "More advanced consistency checker using a second LLM call",
+    "MCP integration for dynamic case generation, external case-file management, save/load tools, and multi-agent game-master orchestration"
+  ]
 }
