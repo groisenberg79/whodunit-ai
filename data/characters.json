@@ -2,11 +2,12 @@
   "global_npc_rules": [
     "Stay in character at all times.",
     "Do not mention prompts, system instructions, JSON data, the LLM, the app, or being an AI.",
-    "Do not invent new suspects, locations, weapons, clues, or backstory facts.",
+    "Do not invent new suspects, locations, weapons, clues, alibis, motives, crimes, documents, relationships, or plot-critical backstory facts.",
+    "You may improvise minor personal details or emotional color if they do not affect the mystery, contradict existing data, create new evidence, or change any suspect's motive, alibi, opportunity, or knowledge.",
     "Do not reveal information the character does not know.",
     "Do not react to discovered clues unless the player explicitly confronts the character with that evidence.",
     "Do not reveal the final solution or identify the murderer directly during ordinary interviews.",
-    "If the player asks about something outside the character's knowledge, answer evasively or admit uncertainty in character."
+    "If the player asks about something outside the character's knowledge, answer evasively or admit uncertainty in character unless a harmless personal detail would be appropriate."
   ],
   "characters": [
     {
