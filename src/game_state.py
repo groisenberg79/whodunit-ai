@@ -64,6 +64,7 @@ class GameState:
         suspect_ids: List of suspect IDs in the case.
         discovered_clues: Clue IDs discovered by the player.
         revealed_clues: Mapping from suspect ID to clue IDs revealed to that suspect.
+        improvised_facts: Mapping from suspect ID to harmless improvised facts established during dialogue.
         visited_locations: Location IDs visited by the player.
         interviewed_suspects: Suspect IDs interviewed by the player.
         dialogue_history: Dialogue entries from suspect interviews.
@@ -74,6 +75,7 @@ class GameState:
     suspect_ids: list[str]
     discovered_clues: list[str] = field(default_factory=list)
     revealed_clues: dict[str, list[str]] = field(default_factory=dict)
+    improvised_facts: dict[str, list[str]] = field(default_factory=dict)
     visited_locations: list[str] = field(default_factory=list)
     interviewed_suspects: list[str] = field(default_factory=list)
     dialogue_history: list[DialogueEntry] = field(default_factory=list)
@@ -82,13 +84,15 @@ class GameState:
 
     def __post_init__(self) -> None:
         """
-        Initialize revealed clue tracking for every suspect.
+        Initialize per-suspect tracking dictionaries.
 
-        This ensures each suspect has a list of clues that have been explicitly
-        revealed to them during interviews.
+        This ensures each suspect has:
+        - a list of clues explicitly revealed during interviews,
+        - a list of harmless improvised facts established during dialogue.
         """
         for suspect_id in self.suspect_ids:
             self.revealed_clues.setdefault(suspect_id, [])
+            self.improvised_facts.setdefault(suspect_id, [])
 
     @classmethod
     def from_case_data(cls, case_data: dict[str, Any]) -> GameState:
@@ -113,8 +117,6 @@ class GameState:
             },
             visited_locations=initial_state["visited_locations"].copy(),
             interviewed_suspects=initial_state["interviewed_suspects"].copy(),
-            dialogue_history=[],
-            accusation_attempts=[],
             game_status=initial_state["game_status"],
         )
 
@@ -178,7 +180,7 @@ class GameState:
 
         self.revealed_clues[suspect_id].append(clue_id)
         return True
-
+    
     def mark_suspect_interviewed(self, suspect_id: str) -> bool:
         """
         Mark a suspect as interviewed.
@@ -193,6 +195,35 @@ class GameState:
             return False
 
         self.interviewed_suspects.append(suspect_id)
+        return True
+    
+    def add_improvised_fact(self, suspect_id: str, fact: str) -> bool:
+        """
+        Store a harmless improvised fact for a suspect.
+
+        Args:
+            suspect_id: ID of the suspect.
+            fact: Harmless improvised fact to store.
+
+        Returns:
+            True if the fact was newly added, False if it was already stored.
+
+        Raises:
+            KeyError: If the suspect ID is not tracked by the game state.
+            ValueError: If the fact is empty.
+        """
+        cleaned_fact = fact.strip()
+
+        if not cleaned_fact:
+            raise ValueError("Improvised fact cannot be empty.")
+
+        if suspect_id not in self.improvised_facts:
+            raise KeyError(f"Unknown suspect ID: {suspect_id}")
+
+        if cleaned_fact in self.improvised_facts[suspect_id]:
+            return False
+
+        self.improvised_facts[suspect_id].append(cleaned_fact)
         return True
 
     def add_dialogue_entry(
@@ -281,6 +312,7 @@ class GameState:
         return {
             "discovered_clues": self.discovered_clues,
             "revealed_clues": self.revealed_clues,
+            "improvised_facts": self.improvised_facts,
             "visited_locations": self.visited_locations,
             "interviewed_suspects": self.interviewed_suspects,
             "dialogue_history": [
