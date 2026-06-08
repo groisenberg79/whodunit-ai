@@ -320,3 +320,176 @@ def record_interview_exchange(
     )
 
     return entry.__dict__
+
+def check_accusation(
+    solution_data: dict[str, Any],
+    culprit_id: str,
+    motive_id: str,
+    method_id: str,
+    evidence_ids: list[str],
+) -> dict[str, Any]:
+    """
+    Check a player's final accusation against the hidden solution.
+
+    Args:
+        solution_data: Loaded solution data from solution.json.
+        culprit_id: Suspect ID selected by the player.
+        motive_id: Motive ID selected by the player.
+        method_id: Method ID selected by the player.
+        evidence_ids: Evidence IDs selected by the player.
+
+    Returns:
+        Dictionary containing result label, score, feedback, and solved status.
+    """
+    correct_accusation = solution_data["correct_accusation"]
+    scoring = solution_data["scoring"]
+    feedback = solution_data["feedback"]
+
+    selected_evidence = set(evidence_ids)
+    required_evidence = set(correct_accusation["minimum_required_evidence_ids"])
+
+    correct_culprit = culprit_id == correct_accusation["culprit_id"]
+    correct_motive = motive_id == correct_accusation["motive_id"]
+    correct_method = method_id == correct_accusation["method_id"]
+
+    found_required_evidence = selected_evidence.intersection(required_evidence)
+    has_all_required_evidence = required_evidence.issubset(selected_evidence)
+
+    score = 0.0
+
+    if correct_culprit:
+        score += scoring["score_components"]["correct_culprit"]
+
+    if correct_motive:
+        score += scoring["score_components"]["correct_motive"]
+
+    if correct_method:
+        score += scoring["score_components"]["correct_method"]
+
+    for clue_id in found_required_evidence:
+        score += scoring["required_evidence_scoring"][clue_id]
+
+    score = round(score, 2)
+
+    if (
+        correct_culprit
+        and correct_motive
+        and correct_method
+        and has_all_required_evidence
+    ):
+        result = "correct"
+        feedback_key = "correct"
+        solved = True
+
+    elif correct_culprit and not correct_motive:
+        result = "partial_correct_culprit_wrong_motive"
+        feedback_key = "partial_correct_culprit_wrong_motive"
+        solved = False
+
+    elif correct_culprit and not correct_method:
+        result = "partial_correct_culprit_wrong_method"
+        feedback_key = "partial_correct_culprit_wrong_method"
+        solved = False
+
+    elif correct_culprit and not has_all_required_evidence:
+        result = "partial_correct_culprit_weak_evidence"
+        feedback_key = "partial_correct_culprit_weak_evidence"
+        solved = False
+
+    elif culprit_id == "clara_vale":
+        result = "wrong_clara"
+        feedback_key = "wrong_clara"
+        solved = False
+
+    elif culprit_id == "beatrice_ashford":
+        result = "wrong_beatrice"
+        feedback_key = "wrong_beatrice"
+        solved = False
+
+    elif culprit_id == "julian_blackwood":
+        result = "wrong_julian"
+        feedback_key = "wrong_julian"
+        solved = False
+
+    else:
+        result = "wrong_generic"
+        feedback_key = "wrong_generic"
+        solved = False
+
+    selected_feedback = feedback[feedback_key]
+
+    return {
+        "result": result,
+        "score": score,
+        "max_score": scoring["max_score"],
+        "solved": solved,
+        "feedback_title": selected_feedback["title"],
+        "feedback_message": selected_feedback["message"],
+        "correct_parts": {
+            "culprit": correct_culprit,
+            "motive": correct_motive,
+            "method": correct_method,
+            "required_evidence": has_all_required_evidence,
+        },
+        "missing_required_evidence": sorted(required_evidence - selected_evidence),
+        "selected_evidence": evidence_ids,
+    }
+
+
+def submit_accusation(
+    state: GameState,
+    game_data: dict[str, dict[str, Any]],
+    culprit_id: str,
+    motive_id: str,
+    method_id: str,
+    evidence_ids: list[str],
+) -> dict[str, Any]:
+    """
+    Submit a final accusation, check it, and record the attempt in game state.
+
+    Args:
+        state: Current GameState object.
+        game_data: Dictionary containing all loaded game data.
+        culprit_id: Suspect ID selected by the player.
+        motive_id: Motive ID selected by the player.
+        method_id: Method ID selected by the player.
+        evidence_ids: Evidence IDs selected by the player.
+
+    Returns:
+        Dictionary containing the accusation result and recorded attempt.
+
+    Raises:
+        ValueError: If the player tries to use evidence that has not been discovered.
+    """
+    undiscovered_evidence = [
+        clue_id for clue_id in evidence_ids if clue_id not in state.discovered_clues
+    ]
+
+    if undiscovered_evidence:
+        raise ValueError(
+            f"Cannot use undiscovered evidence in accusation: {undiscovered_evidence}"
+        )
+
+    result = check_accusation(
+        solution_data=game_data["solution"],
+        culprit_id=culprit_id,
+        motive_id=motive_id,
+        method_id=method_id,
+        evidence_ids=evidence_ids,
+    )
+
+    attempt = state.add_accusation_attempt(
+        culprit_id=culprit_id,
+        motive_id=motive_id,
+        method_id=method_id,
+        evidence_ids=evidence_ids,
+        result=result["result"],
+        score=result["score"],
+        feedback=result["feedback_message"],
+    )
+
+    return {
+        "result": result,
+        "attempt": attempt.__dict__,
+        "game_status": state.game_status,
+    }
