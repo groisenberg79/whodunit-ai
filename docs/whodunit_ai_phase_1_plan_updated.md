@@ -13,7 +13,9 @@
 ✅ Phase 1, Step 1.7 — Define final accusation logic
 ✅ Phase 1, Step 1.8 — Define clue discovery mechanics and inspectable areas
 ✅ Phase 1, Step 1.9 — Define discovered clues vs. confronted evidence
-➡️ Next Phase — Phase 2: Write structured JSON files
+✅ Phase 1, Step 1.10 — Define FAISS/RAG as core MVP component
+✅ Phase 1, Step 1.11 — Define LangGraph interview orchestration as core MVP component
+➡️ Current Development Phase — Phase 4: Prompt Builder and NPC Dialogue Layer
 ```
 
 ---
@@ -39,9 +41,12 @@ The main GenAI idea is to explore how large language models can power dynamic NP
 - dialogue history,
 - current game state,
 - FAISS/RAG retrieved context,
+- LangGraph-managed interview workflow,
 - consistency rules.
 
 The larger product idea is a prototype for future RPGs where NPCs can hold more natural conversations with players while the story remains coherent and controlled.
+
+The technical architecture also demonstrates bootcamp GenAI tools. FAISS/RAG will be used to retrieve relevant case context, while LangGraph will orchestrate the multi-step NPC interview pipeline: evidence validation, context construction, retrieval, prompt building, response generation, consistency checking, and dialogue recording.
 
 ---
 
@@ -407,6 +412,30 @@ If the player confronts Henry with the altered death certificate, he becomes col
 > “Edward always had a talent for opening graves that should have remained closed.”
 
 Only near the end, if the accusation is correct, Henry can admit the truth indirectly or after the ending is triggered.
+
+---
+
+## 5.5 Single-Clue and Combo Evidence Reactions
+
+NPCs can react in two ways during interviews:
+
+1. **Single-clue reactions**  
+   The suspect reacts to one specific clue presented by the player.
+
+2. **Combo evidence reactions**  
+   The suspect reacts differently when the player has discovered a meaningful combination of clues and confronts them with one of those clues.
+
+Combo reactions do not necessarily reveal guilt. They can trigger panic, defensiveness, fear, realization, shame, or stronger evasiveness.
+
+Examples:
+
+- Clara reacts more strongly if the player has both the torn will note and the letter opener.
+- Julian reacts differently if the player has both the broken watch and Edward’s final appointment note.
+- Beatrice becomes more afraid if the player connects her letters with Henry’s medical access.
+- Henry becomes more guarded if the player connects the medical vial with the brandy glass residue.
+- Henry also becomes colder if the player connects the altered death certificate with Edward’s final appointment note.
+
+This makes evidence feel cumulative rather than isolated.
 
 ---
 
@@ -906,6 +935,7 @@ The NPC response should depend on:
 - the suspect’s lies and secrets,
 - the player’s question,
 - the clue explicitly used in confrontation,
+- whether a single-clue or combo evidence reaction applies,
 - previous dialogue,
 - relevant retrieved FAISS/RAG context,
 - consistency rules.
@@ -925,15 +955,20 @@ Player asks free-form question
         ↓
 Player optionally selects discovered clue as confronted evidence
         ↓
-Game state records clue as revealed to that suspect
+Game engine validates whether this clue can confront this suspect
         ↓
-Prompt builder creates constrained NPC prompt
+Game checks whether a single-clue or combo evidence reaction applies
         ↓
-FAISS/RAG retrieves relevant context
+LangGraph interview workflow begins
         ↓
-LLM generates NPC response
-        ↓
-Consistency checker validates response
+LangGraph nodes handle:
+- evidence validation
+- interview context construction
+- FAISS/RAG retrieval
+- prompt building
+- NPC response generation
+- consistency checking
+- dialogue recording
         ↓
 Dialogue history and game state are updated
 ```
@@ -1039,14 +1074,27 @@ Player asks question
         ↓
 Optional confronted evidence selected
         ↓
-Game State Manager collects:
+LangGraph workflow receives interview input
+        ↓
+Evidence validation node checks:
 - selected suspect
 - player question
-- discovered clues
-- clues revealed to that suspect
-- previous dialogue
+- confronted clue
+- whether clue was discovered
+- whether clue can confront this suspect
         ↓
-Retriever searches FAISS for relevant context
+Game State Manager provides:
+- discovered clues
+- clues revealed to this suspect
+- previous dialogue
+- current game status
+        ↓
+FAISS retriever searches relevant context:
+- clue descriptions
+- suspect knowledge
+- timeline facts
+- location details
+- previous dialogue
         ↓
 Retrieved context is filtered by:
 - current suspect
@@ -1060,13 +1108,101 @@ Prompt Builder combines:
 - allowed retrieved context
 - player question
 - confronted evidence
+- evidence reaction guidance
         ↓
 LLM generates NPC response
+        ↓
+Consistency checker validates response
+        ↓
+Dialogue is recorded in GameState
 ```
 
 ---
 
-# 12. Visual Assets
+# 12. LangGraph Interview Orchestration
+
+LangGraph is part of the MVP.
+
+The project will use LangGraph to orchestrate the suspect interview workflow. This is appropriate because each interview is not a single isolated LLM call. It is a multi-step stateful process involving validation, game state, retrieval, prompting, response generation, consistency checking, and dialogue recording.
+
+## Why LangGraph Fits This Project
+
+The interview system requires several steps:
+
+```text
+Player interview input
+        ↓
+Validate evidence
+        ↓
+Build interview context
+        ↓
+Retrieve FAISS/RAG context
+        ↓
+Build NPC prompt
+        ↓
+Generate NPC response
+        ↓
+Check consistency
+        ↓
+Record dialogue in GameState
+        ↓
+Return response to Streamlit
+```
+
+LangGraph gives this process a clear structure. Each step can be represented as a node, and the interview state can be passed through the graph.
+
+## Planned LangGraph Nodes
+
+```text
+validate_evidence_node
+build_context_node
+retrieve_context_node
+build_prompt_node
+generate_response_node
+consistency_check_node
+record_dialogue_node
+```
+
+## LangGraph State
+
+The LangGraph interview state should contain:
+
+```text
+game_state
+game_data
+suspect_id
+player_question
+confronted_clue_id
+interview_context
+retrieved_context
+messages
+npc_response
+consistency_result
+error
+```
+
+## Relationship to the Core Game Engine
+
+LangGraph will not replace the core game engine.
+
+Instead, LangGraph will orchestrate calls to existing Python functions such as:
+
+```text
+can_confront_suspect_with_clue()
+build_interview_context()
+build_npc_messages()
+record_interview_exchange()
+```
+
+The deterministic game rules remain in Python. LangGraph coordinates the flow of the interview pipeline.
+
+## MVP Role
+
+LangGraph is required for the MVP interview system because it demonstrates agentic workflow orchestration, one of the central tools learned during the bootcamp.
+
+---
+
+# 13. Visual Assets
 
 The project should eventually include generated images for:
 
@@ -1104,7 +1240,7 @@ For the MVP, location and suspect images are enough. Evidence images are optiona
 
 ---
 
-# 13. Phase 1 Summary
+# 14. Phase 1 Summary
 
 Phase 1 produced the complete mystery design.
 
@@ -1119,7 +1255,9 @@ We now have:
 - inspectable areas,
 - clue discovery mechanic,
 - distinction between discovered clues and confronted evidence,
+- single-clue and combo evidence reaction design,
 - FAISS/RAG as a core MVP component,
+- LangGraph interview orchestration as a core MVP component,
 - timeline,
 - final accusation logic,
 - MVP and stretch goals.
@@ -1128,7 +1266,7 @@ The next phase is to translate this design into structured JSON files.
 
 ---
 
-# 14. Next Phase
+# 15. Updated Development Roadmap
 
 ## Phase 2 — Write Structured JSON Files
 
@@ -1142,85 +1280,165 @@ data/locations.json
 data/solution.json
 ```
 
-Recommended order:
+Status:
 
 ```text
-Step 2.1 — Fill mystery_case.json
-Step 2.2 — Fill characters.json
-Step 2.3 — Fill clues.json
-Step 2.4 — Fill locations.json
-Step 2.5 — Fill solution.json
+✅ Completed
 ```
 
-## Phase 2 Data Structure Implications
+## Phase 3 — Core Game Engine
 
-Because of the discovered-vs-confronted evidence design, the JSON files should support the following:
+Purpose:
 
-### `characters.json`
+Build the deterministic game logic before adding LLM behavior.
 
-Should include:
+Includes:
 
-- public description,
-- personality,
-- private knowledge,
-- lies,
-- alibi,
-- evidence reactions,
-- reveal conditions,
-- image path.
-
-### `clues.json`
-
-Should include:
-
-- clue description,
-- what it suggests,
-- what it actually means,
-- related suspect,
-- confrontation targets,
-- dialogue effects,
-- whether it is solution-critical,
-- image path if available.
-
-### `locations.json`
-
-Should include:
-
-- location description,
-- image path,
-- inspectable areas,
-- clue linked to each area,
-- result text for areas with no clue.
-
-### `solution.json`
-
-Should include:
-
-- culprit,
-- motive,
-- method,
-- required evidence,
-- supporting evidence,
-- red herring feedback,
-- correct ending text,
-- partial feedback.
-
-### Later `GameState`
-
-Should track:
-
-```json
-{
-  "discovered_clues": [],
-  "revealed_clues": {
-    "clara_vale": [],
-    "julian_blackwood": [],
-    "beatrice_ashford": [],
-    "henry_ashford": []
-  },
-  "dialogue_history": [],
-  "visited_locations": [],
-  "interviewed_suspects": [],
-  "accusation_attempts": []
-}
+```text
+data loading utilities
+GameState structure
+location inspection logic
+clue discovery logic
+evidence confrontation logic
+combo evidence reaction logic
+final accusation checking
+terminal smoke test
 ```
+
+Status:
+
+```text
+✅ Completed
+```
+
+## Phase 4 — Prompt Builder and NPC Dialogue Layer
+
+Purpose:
+
+Prepare structured prompts for NPC interviews.
+
+Includes:
+
+```text
+format suspect profile
+format evidence reaction guidance
+format confronted clue
+format dialogue history
+build system and user messages
+test prompt construction from terminal
+```
+
+Status:
+
+```text
+➡️ Current / Next
+```
+
+## Phase 5 — FAISS / RAG Retrieval
+
+Purpose:
+
+Build a vector retrieval layer for case context.
+
+Includes:
+
+```text
+create retrievable documents from JSON data
+embed clue, character, location, and timeline facts
+build FAISS index
+retrieve relevant context during interviews
+filter retrieved context by game state
+```
+
+## Phase 6 — LangGraph Interview Workflow
+
+Purpose:
+
+Use LangGraph to orchestrate the NPC interview pipeline.
+
+Includes:
+
+```text
+define LangGraph interview state
+create validation node
+create context-building node
+create RAG retrieval node
+create prompt-building node
+create NPC response node
+create consistency-check node
+create dialogue-recording node
+test graph from terminal
+```
+
+## Phase 7 — LLM Integration
+
+Purpose:
+
+Connect the prompt and graph workflow to an actual LLM.
+
+Includes:
+
+```text
+model selection
+LLM call wrapper
+mock/fallback response mode
+NPC response generation
+error handling
+```
+
+## Phase 8 — Streamlit Interface
+
+Purpose:
+
+Create the playable app interface.
+
+Includes:
+
+```text
+case introduction
+location exploration
+clue discovery
+case notes
+suspect interviews
+evidence confrontation selector
+final accusation screen
+ending / feedback screen
+```
+
+## Phase 9 — Logging, Pandas Analysis, and Visualizations
+
+Purpose:
+
+Demonstrate data analysis and reflection on player interactions.
+
+Includes:
+
+```text
+log inspections, interviews, clue discoveries, and accusations
+load logs into Pandas
+analyze clue discovery patterns
+analyze suspect interview frequency
+visualize evidence usage
+visualize accusation attempts
+```
+
+## Phase 10 — README, Ethics, and Demo Polish
+
+Purpose:
+
+Prepare the project for submission.
+
+Includes:
+
+```text
+README
+setup instructions
+architecture explanation
+tooling explanation
+ethical reflection
+limitations
+future directions
+demo screenshots
+```
+
+Future directions should mention MCP as a possible extension, not as part of the MVP.
