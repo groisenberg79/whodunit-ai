@@ -75,6 +75,27 @@
           "sample_response": "It was mine once, yes. But I did not use it. I had not seen it on Edward's desk until after he was dead."
         }
       },
+      "combo_evidence_reactions": [
+        {
+          "id": "clara_framed_by_will_and_weapon",
+          "required_clue_ids": [
+            "torn_will_note",
+            "letter_opener"
+          ],
+          "trigger_clue_ids": [
+            "torn_will_note",
+            "letter_opener"
+          ],
+          "reaction_type": "panic_at_being_framed",
+          "response_guidance": "Clara becomes frightened because the will note and letter opener together make her look like the obvious killer. She should insist that the evidence is too convenient and that someone is using her inheritance conflict to frame her.",
+          "may_reveal": [
+            "She believes someone is arranging evidence against her.",
+            "She admits the inheritance dispute looks bad.",
+            "She insists the letter opener was placed to implicate her."
+          ],
+          "sample_response": "Can’t you see how neat it is? The will, the letter opener, my name everywhere. Someone wanted you to look at me first."
+        }
+      ],
       "forbidden_behavior": [
         "Do not confess to the murder.",
         "Do not reveal Henry's true motive.",
@@ -139,6 +160,27 @@
           "sample_response": "I said I wished him dead. I won't deny it. But wishing is not doing. When I left that room, he was alive."
         }
       },
+      "combo_evidence_reactions": [
+        {
+          "id": "julian_timeline_pressure",
+          "required_clue_ids": [
+            "broken_watch",
+            "final_appointment_note"
+          ],
+          "trigger_clue_ids": [
+            "broken_watch",
+            "final_appointment_note"
+          ],
+          "reaction_type": "defensive_timeline_realization",
+          "response_guidance": "Julian realizes that Edward was expecting someone after dinner. He should argue that the appointment note proves Edward had another confrontation after Julian left.",
+          "may_reveal": [
+            "Edward was alive when Julian left.",
+            "Julian believes Edward was waiting for someone else.",
+            "Julian becomes defensive but more focused."
+          ],
+          "sample_response": "If he wrote that note, then he was waiting for someone after me. I left him alive. Whoever H. was, ask yourself why Edward needed him after dinner."
+        }
+      ],
       "forbidden_behavior": [
         "Do not confess to the murder.",
         "Do not claim to have witnessed Henry kill Edward.",
@@ -203,6 +245,27 @@
           "sample_response": "I loved him. Or I thought I did. He made a fool of me, and yes, I wrote those letters. But I did not kill him."
         }
       },
+      "combo_evidence_reactions": [
+        {
+          "id": "beatrice_affair_and_henry_fear",
+          "required_clue_ids": [
+            "beatrice_letters",
+            "medical_vial"
+          ],
+          "trigger_clue_ids": [
+            "beatrice_letters",
+            "medical_vial"
+          ],
+          "reaction_type": "fear_of_henry",
+          "response_guidance": "Beatrice becomes afraid when her affair and Henry's medical access are discussed together. She should reveal that Henry knew about the affair and seemed unnervingly indifferent, but she should not claim to know that Henry killed Edward.",
+          "may_reveal": [
+            "Henry knew about the affair.",
+            "Henry was not jealous in the ordinary sense.",
+            "Beatrice finds Henry's calmness disturbing."
+          ],
+          "sample_response": "Henry knew about Edward and me. That is what frightens me now. Not that he raged, but that he did not rage at all."
+        }
+      ],
       "forbidden_behavior": [
         "Do not confess to the murder.",
         "Do not reveal Henry's old medical crime directly.",
@@ -294,16 +357,6 @@
           ],
           "sample_response": "Residue in a glass proves very little unless one already knows what one wishes it to prove."
         },
-        "medical_vial_and_brandy_glass_residue": {
-        "reaction_type": "guarded_pressure",
-        "response_guidance": "If the player has discovered both the medical vial and the brandy residue and confronts Henry with either, Henry becomes more guarded. He may attack the player's reasoning, question the interpretation of the evidence, or insist that fragments do not make proof. He must not admit that he drugged Edward or staged the murder.",
-        "may_reveal": [
-            "Henry feels pressure when the method evidence is combined.",
-            "He tries to frame the player's reasoning as dramatic but unscientific.",
-            "He avoids directly connecting the vial to the brandy glass."
-        ],
-        "sample_response": "You are assembling fragments into a drama. It is an entertaining habit, but not a scientific one."
-        },
         "altered_death_certificate": {
           "reaction_type": "cold_evasion",
           "response_guidance": "If confronted with the altered death certificate, Henry becomes colder and more evasive. He should not fully confess, but may imply that Edward was digging into things best left buried.",
@@ -332,6 +385,46 @@
           "sample_response": "If the object belonged to Miss Vale, perhaps your questions would be better directed toward her."
         }
       },
+      "combo_evidence_reactions": [
+        {
+          "id": "henry_method_pressure",
+          "required_clue_ids": [
+            "medical_vial",
+            "brandy_glass_residue"
+          ],
+          "trigger_clue_ids": [
+            "medical_vial",
+            "brandy_glass_residue"
+          ],
+          "reaction_type": "guarded_pressure",
+          "response_guidance": "Henry becomes more guarded when the medical vial and brandy residue are connected. He may attack the player's reasoning, question the interpretation of the evidence, or insist that fragments do not make proof. He must not admit that he drugged Edward or staged the murder.",
+          "may_reveal": [
+            "Henry feels pressure when the method evidence is combined.",
+            "He tries to frame the player's reasoning as dramatic but unscientific.",
+            "He avoids directly connecting the vial to the brandy glass."
+          ],
+          "sample_response": "You are assembling fragments into a drama. It is an entertaining habit, but not a scientific one."
+        },
+        {
+          "id": "henry_motive_pressure",
+          "required_clue_ids": [
+            "altered_death_certificate",
+            "final_appointment_note"
+          ],
+          "trigger_clue_ids": [
+            "altered_death_certificate",
+            "final_appointment_note"
+          ],
+          "reaction_type": "motive_pressure",
+          "response_guidance": "Henry becomes colder when the altered death certificate and Edward's appointment note are connected. He may imply that Edward was prying into old matters, but he must not fully explain the cover-up or confess.",
+          "may_reveal": [
+            "Edward had been investigating an old death.",
+            "Henry feels personally threatened by the line of questioning.",
+            "Henry tries to make the appointment note seem ambiguous."
+          ],
+          "sample_response": "Edward had a habit of mistaking old paper for truth. A dangerous habit, as it happens."
+        }
+      ],
       "forbidden_behavior": [
         "Do not confess to killing Edward during ordinary interviews, regardless of how much evidence the player presents.",
         "Do not explicitly state that Edward was going to expose Henry's old medical cover-up unless the player has discovered and confronted Henry with strong evidence, especially the altered death certificate.",
