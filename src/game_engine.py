@@ -266,6 +266,7 @@ def build_interview_context(
         "evidence_reaction": evidence_reaction,
         "discovered_clue_ids": state.discovered_clues,
         "revealed_clue_ids_for_suspect": state.revealed_clues[suspect_id],
+        "improvised_facts_for_suspect": state.improvised_facts[suspect_id],
         "dialogue_history": [
             entry.__dict__
             for entry in state.dialogue_history
