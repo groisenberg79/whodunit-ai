@@ -8,6 +8,9 @@ venv/
 # Jupyter
 .ipynb_checkpoints/
 
+# Generated RAG / vector index files
+rag_store/
+
 # Outputs / logs
 outputs/
 *.log
