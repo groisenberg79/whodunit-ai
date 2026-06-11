@@ -34,14 +34,14 @@ def main() -> None:
 
     print("\nSample clue document:")
     for document in documents:
-        if document["id"] == "clue::medical_vial":
+        if document["id"] == "clue_public::medical_vial":
             pprint(document)
             break
 
-    print("\nInternal-only documents:")
+    print("\nInternal clue documents:")
     for document in documents:
-        if document["metadata"]["visibility"] == "internal_only":
-            print(document["id"])
+        if document["metadata"]["document_type"] == "clue_internal":
+            print(document["id"], "| visibility:", document["metadata"]["visibility"])
 
 
 if __name__ == "__main__":

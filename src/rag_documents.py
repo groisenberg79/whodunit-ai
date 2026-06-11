@@ -181,6 +181,12 @@ def create_clue_documents(clues_data: dict[str, Any]) -> list[dict[str, Any]]:
     """
     Create retrievable documents from clue data.
 
+    Each clue is split into two documents:
+    - a player-facing clue document that can be retrieved during interviews
+      once the clue has been discovered,
+    - an internal interpretation document that should not be used in ordinary
+      NPC interviews.
+
     Args:
         clues_data: Loaded data from clues.json.
 
@@ -190,7 +196,7 @@ def create_clue_documents(clues_data: dict[str, Any]) -> list[dict[str, Any]]:
     documents = []
 
     for clue in clues_data["clues"]:
-        clue_text = f"""
+        public_clue_text = f"""
 Clue: {clue["name"]}
 Clue ID: {clue["id"]}
 Location ID: {clue["location_id"]}
@@ -207,9 +213,6 @@ Discovery text:
 What it suggests:
 {clue["what_it_suggests"]}
 
-What it actually means:
-{clue["what_it_actually_means"]}
-
 Related suspects:
 {", ".join(clue["related_suspect_ids"])}
 
@@ -219,16 +222,49 @@ Confrontation targets:
 
         documents.append(
             create_document(
-                doc_id=f"clue::{clue['id']}",
-                text=clue_text,
+                doc_id=f"clue_public::{clue['id']}",
+                text=public_clue_text,
                 metadata={
                     "source": "clues",
-                    "document_type": "clue",
+                    "document_type": "clue_public",
                     "clue_id": clue["id"],
                     "location_id": clue["location_id"],
                     "related_suspect_ids": clue["related_suspect_ids"],
                     "confrontation_targets": clue["confrontation_targets"],
                     "visibility": "only_if_discovered",
+                    "is_solution_critical": clue["is_solution_critical"],
+                },
+            )
+        )
+
+        internal_clue_text = f"""
+Internal interpretation for clue: {clue["name"]}
+Clue ID: {clue["id"]}
+
+What it actually means:
+{clue["what_it_actually_means"]}
+
+Solution critical:
+{clue["is_solution_critical"]}
+
+Category:
+{clue["category"]}
+
+Related suspects:
+{", ".join(clue["related_suspect_ids"])}
+"""
+
+        documents.append(
+            create_document(
+                doc_id=f"clue_internal::{clue['id']}",
+                text=internal_clue_text,
+                metadata={
+                    "source": "clues",
+                    "document_type": "clue_internal",
+                    "clue_id": clue["id"],
+                    "location_id": clue["location_id"],
+                    "related_suspect_ids": clue["related_suspect_ids"],
+                    "visibility": "internal_or_feedback",
                     "is_solution_critical": clue["is_solution_critical"],
                 },
             )

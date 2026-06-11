@@ -53,7 +53,7 @@ def is_document_allowed_for_interview(
         return metadata.get("suspect_id") == suspect_id
 
     if visibility == "suspect_private":
-        return metadata.get("suspect_id") == suspect_id
+        return False
 
     if visibility == "location_context":
         return True
