@@ -89,7 +89,6 @@ def format_confronted_clue(confronted_clue: dict[str, Any] | None) -> str:
         f"Clue name: {confronted_clue['name']}\n"
         f"Description: {confronted_clue['description']}\n"
         f"What it suggests: {confronted_clue['what_it_suggests']}\n"
-        f"What it actually means: {confronted_clue['what_it_actually_means']}\n"
         f"Dialogue effect: {confronted_clue['dialogue_effects']['default']}"
     )
 
@@ -206,6 +205,11 @@ def build_npc_user_prompt(interview_context: dict[str, Any]) -> str:
         interview_context["improvised_facts_for_suspect"]
     )
 
+    retrieved_context_text = interview_context.get(
+        "retrieved_context",
+        "No additional retrieved context is available.",
+    )
+
     discovered_clues = format_list(interview_context["discovered_clue_ids"])
     revealed_clues = format_list(interview_context["revealed_clue_ids_for_suspect"])
 
@@ -230,6 +234,9 @@ Clues already revealed to this suspect:
 Established improvised personal facts for this suspect:
 {improvised_facts_text}
 
+Relevant retrieved context:
+{retrieved_context_text}
+
 Previous dialogue with this suspect:
 {dialogue_history_text}
 
@@ -239,6 +246,8 @@ Constraints:
 - Keep the response concise: 2 to 5 sentences.
 - React directly to confronted evidence if evidence was presented.
 - Follow the evidence reaction guidance when it exists.
+- Use retrieved context only if it is relevant and consistent with the suspect's knowledge and game state.
+- Do not treat retrieved context as permission to reveal hidden solution details.
 - Do not confess to the murder unless explicitly allowed by the ending logic.
 - Do not reveal the final solution.
 - You may add minor character flavor, but do not invent plot-relevant facts.

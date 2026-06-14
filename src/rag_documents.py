@@ -200,9 +200,6 @@ def create_clue_documents(clues_data: dict[str, Any]) -> list[dict[str, Any]]:
 Clue: {clue["name"]}
 Clue ID: {clue["id"]}
 Location ID: {clue["location_id"]}
-Type: {clue["type"]}
-Category: {clue["category"]}
-Solution critical: {clue["is_solution_critical"]}
 
 Description:
 {clue["description"]}
@@ -277,23 +274,12 @@ def create_location_documents(locations_data: dict[str, Any]) -> list[dict[str, 
     """
     Create retrievable documents from location data.
 
-    Args:
-        locations_data: Loaded data from locations.json.
-
-    Returns:
-        List of location-related retrieval documents.
+    Location documents are intentionally limited to player-facing atmospheric
+    information. They should not reveal undiscovered clues or inspectable areas.
     """
     documents = []
 
     for location in locations_data["locations"]:
-        areas_text = "\n".join(
-            (
-                f"- {area['label']} ({area['id']}): "
-                f"{area['description']} Result: {area['result_text']}"
-            )
-            for area in location["inspectable_areas"]
-        )
-
         location_text = f"""
 Location: {location["name"]}
 Location ID: {location["id"]}
@@ -303,15 +289,6 @@ Short description:
 
 Description:
 {location["description"]}
-
-Function in mystery:
-{location["function_in_mystery"]}
-
-Clues found here:
-{", ".join(location["clue_ids"])}
-
-Inspectable areas:
-{areas_text}
 """
 
         documents.append(
@@ -322,7 +299,6 @@ Inspectable areas:
                     "source": "locations",
                     "document_type": "location",
                     "location_id": location["id"],
-                    "clue_ids": location["clue_ids"],
                     "visibility": "location_context",
                 },
             )
