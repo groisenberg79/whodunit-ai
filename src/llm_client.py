@@ -1,6 +1,8 @@
 from __future__ import annotations
 
-from typing import Literal
+from typing import Any, Literal
+
+import requests
 
 
 LLMMode = Literal["mock", "ollama"]
@@ -29,6 +31,8 @@ def generate_mock_response(messages: list[dict[str, str]]) -> str:
 def generate_ollama_response(
     messages: list[dict[str, str]],
     model_name: str = "llama3.1:8b",
+    base_url: str = "http://localhost:11434",
+    timeout_seconds: int = 120,
 ) -> str:
     """
     Generate a response using a local Ollama model.
@@ -36,6 +40,8 @@ def generate_ollama_response(
     Args:
         messages: Chat-style messages.
         model_name: Name of the Ollama model to use.
+        base_url: Base URL for the local Ollama server.
+        timeout_seconds: Request timeout in seconds.
 
     Returns:
         Model response text.
@@ -43,9 +49,46 @@ def generate_ollama_response(
     Raises:
         LLMClientError: If Ollama is unavailable or returns an invalid response.
     """
-    raise NotImplementedError(
-        "Ollama integration will be added after the adapter is connected."
-    )
+    url = f"{base_url}/api/chat"
+
+    payload: dict[str, Any] = {
+        "model": model_name,
+        "messages": messages,
+        "stream": False,
+        "options": {
+            "temperature": 0.7,
+            "num_predict": 220,
+        },
+    }
+
+    try:
+        response = requests.post(
+            url,
+            json=payload,
+            timeout=timeout_seconds,
+        )
+        response.raise_for_status()
+    except requests.RequestException as exc:
+        raise LLMClientError(
+            "Could not generate response from Ollama. "
+            "Make sure Ollama is running and the requested model is available."
+        ) from exc
+
+    data = response.json()
+
+    try:
+        content = data["message"]["content"]
+    except KeyError as exc:
+        raise LLMClientError(
+            f"Ollama returned an unexpected response format: {data}"
+        ) from exc
+
+    cleaned_content = content.strip()
+
+    if not cleaned_content:
+        raise LLMClientError("Ollama returned an empty response.")
+
+    return cleaned_content
 
 
 def generate_llm_response(

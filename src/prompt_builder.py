@@ -244,6 +244,7 @@ Respond to the player's question in character.
 
 Constraints:
 - Keep the response concise: 2 to 5 sentences.
+- Reply only with spoken dialogue; do not use stage directions, parenthetical actions, or narration.
 - React directly to confronted evidence if evidence was presented.
 - Follow the evidence reaction guidance when it exists.
 - Use retrieved context only if it is relevant and consistent with the suspect's knowledge and game state.
@@ -254,6 +255,7 @@ Constraints:
 - Do not invent new clues, motives, alibis, suspects, locations, crimes, documents, relationships, or solution details.
 - If asked about an unprovided personal detail, answer in character only if the answer is harmless and does not affect the mystery.
 - Stay consistent with established improvised personal facts.
+- Do not invent alternative explanations for evidence unless they are explicitly provided in the prompt; instead, cast doubt on the player's interpretation.
 """.strip()
 
 
