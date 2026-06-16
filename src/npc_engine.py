@@ -2,19 +2,15 @@ from __future__ import annotations
 
 from typing import Any
 
+from src.llm_client import LLMMode, generate_llm_response
 
-def generate_mock_npc_response(
-    interview_context: dict[str, Any],
-) -> str:
+
+def generate_mock_npc_response(interview_context: dict[str, Any]) -> str:
     """
-    Generate a mock NPC response for testing the interview flow.
-
-    This function does not call an LLM. It uses the evidence reaction guidance
-    from the interview context when available, then falls back to a generic
-    in-character response.
+    Generate a deterministic mock NPC response from interview context.
 
     Args:
-        interview_context: Structured interview context from game_engine.py.
+        interview_context: Structured interview context.
 
     Returns:
         Mock NPC response string.
@@ -41,22 +37,30 @@ def generate_mock_npc_response(
 
 def generate_npc_response(
     interview_context: dict[str, Any],
-    mode: str = "mock",
+    messages: list[dict[str, str]] | None = None,
+    mode: LLMMode = "mock",
+    model_name: str = "llama3.1:8b",
 ) -> str:
     """
     Generate an NPC response.
 
     Args:
-        interview_context: Structured interview context from game_engine.py.
-        mode: Response generation mode. Currently only 'mock' is supported.
+        interview_context: Structured interview context.
+        messages: Optional chat-style messages for a real LLM.
+        mode: Response generation mode.
+        model_name: Model name for LLM backends.
 
     Returns:
         NPC response string.
-
-    Raises:
-        ValueError: If an unsupported mode is provided.
     """
     if mode == "mock":
         return generate_mock_npc_response(interview_context)
 
-    raise ValueError(f"Unsupported NPC response mode: {mode}")
+    if messages is None:
+        raise ValueError("messages must be provided when using a real LLM mode.")
+
+    return generate_llm_response(
+        messages=messages,
+        mode=mode,
+        model_name=model_name,
+    )

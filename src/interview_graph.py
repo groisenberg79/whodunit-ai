@@ -4,6 +4,8 @@ from typing import Any, TypedDict
 
 from langgraph.graph import END, START, StateGraph
 
+from src.llm_client import LLMMode
+
 from src.game_engine import build_interview_context, record_interview_exchange
 from src.npc_engine import generate_npc_response
 from src.prompt_builder import build_npc_messages
@@ -91,11 +93,13 @@ def generate_response_node(state: InterviewGraphState) -> InterviewGraphState:
     """
     Generate the NPC response.
 
-    For now this uses the mock NPC engine. Later, this node can call a real LLM.
+    For now this can use mock mode. Later it can call a real LLM backend.
     """
     npc_response = generate_npc_response(
         interview_context=state["interview_context"],
-        mode="mock",
+        messages=state["messages"],
+        mode=state["llm_mode"],
+        model_name=state["model_name"],
     )
 
     return {
@@ -176,4 +180,6 @@ class InterviewGraphState(TypedDict):
 
     interview_context: dict[str, Any]
     messages: list[dict[str, str]]
+    llm_mode: LLMMode
+    model_name: str
     npc_response: str

@@ -61,6 +61,8 @@ def main() -> None:
         "interview_context": {},
         "messages": [],
         "npc_response": "",
+        "llm_mode": "mock",
+        "model_name": "llama3.1:8b",
     }
 
     final_graph_state = interview_graph.invoke(initial_graph_state)
