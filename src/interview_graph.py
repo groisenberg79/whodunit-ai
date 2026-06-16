@@ -6,7 +6,11 @@ from langgraph.graph import END, START, StateGraph
 
 from src.llm_client import LLMMode
 
-from src.response_validator import ValidationResult, validate_npc_response
+from src.response_validator import (
+    ValidationResult,
+    build_fallback_response,
+    validate_npc_response,
+)
 from src.game_engine import build_interview_context, record_interview_exchange
 from src.npc_engine import generate_npc_response
 from src.prompt_builder import build_npc_messages
@@ -111,8 +115,19 @@ def generate_response_node(state: InterviewGraphState) -> InterviewGraphState:
 def validate_response_node(state: InterviewGraphState) -> InterviewGraphState:
     """
     Validate the generated NPC response before recording it.
+
+    If the response fails validation, replace it with a safe fallback response.
     """
     validation_result = validate_npc_response(state["npc_response"])
+
+    if not validation_result.is_valid:
+        fallback_response = build_fallback_response()
+
+        return {
+            **state,
+            "npc_response": fallback_response,
+            "validation_result": validation_result,
+        }
 
     return {
         **state,

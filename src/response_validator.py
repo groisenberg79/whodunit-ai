@@ -109,3 +109,15 @@ def validate_npc_response(
         is_valid=len(violations) == 0,
         violations=violations,
     )
+
+def build_fallback_response() -> str:
+    """
+    Build a safe fallback response when an NPC response fails validation.
+
+    Returns:
+        Safe in-character fallback response.
+    """
+    return (
+        "I will not dignify that accusation with a theatrical answer. "
+        "You may present evidence, Inspector, but speculation is not proof."
+    )
