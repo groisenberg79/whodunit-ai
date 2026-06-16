@@ -61,6 +61,7 @@ def main() -> None:
         "interview_context": {},
         "messages": [],
         "npc_response": "",
+        "validation_result": None,
         "llm_mode": "mock",
         "model_name": "llama3.1:8b",
     }
@@ -71,6 +72,11 @@ def main() -> None:
     print("NPC RESPONSE")
     print("=" * 80)
     print(final_graph_state["npc_response"])
+
+    print("\n" + "=" * 80)
+    print("VALIDATION RESULT")
+    print("=" * 80)
+    pprint(final_graph_state["validation_result"])
 
     print("\n" + "=" * 80)
     print("FILTERED RAG DOCUMENT IDS")

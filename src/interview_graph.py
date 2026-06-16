@@ -6,6 +6,7 @@ from langgraph.graph import END, START, StateGraph
 
 from src.llm_client import LLMMode
 
+from src.response_validator import ValidationResult, validate_npc_response
 from src.game_engine import build_interview_context, record_interview_exchange
 from src.npc_engine import generate_npc_response
 from src.prompt_builder import build_npc_messages
@@ -107,6 +108,17 @@ def generate_response_node(state: InterviewGraphState) -> InterviewGraphState:
         "npc_response": npc_response,
     }
 
+def validate_response_node(state: InterviewGraphState) -> InterviewGraphState:
+    """
+    Validate the generated NPC response before recording it.
+    """
+    validation_result = validate_npc_response(state["npc_response"])
+
+    return {
+        **state,
+        "validation_result": validation_result,
+    }
+
 
 def record_dialogue_node(state: InterviewGraphState) -> InterviewGraphState:
     """
@@ -137,6 +149,7 @@ def build_interview_graph():
     graph.add_node("filter_rag", filter_rag_node)
     graph.add_node("build_prompt", build_prompt_node)
     graph.add_node("generate_response", generate_response_node)
+    graph.add_node("validate_response", validate_response_node)
     graph.add_node("record_dialogue", record_dialogue_node)
 
     graph.add_edge(START, "build_context")
@@ -145,7 +158,8 @@ def build_interview_graph():
     graph.add_edge("retrieve_rag", "filter_rag")
     graph.add_edge("filter_rag", "build_prompt")
     graph.add_edge("build_prompt", "generate_response")
-    graph.add_edge("generate_response", "record_dialogue")
+    graph.add_edge("generate_response", "validate_response")
+    graph.add_edge("validate_response", "record_dialogue")
     graph.add_edge("record_dialogue", END)
 
     return graph.compile()
@@ -183,3 +197,4 @@ class InterviewGraphState(TypedDict):
     llm_mode: LLMMode
     model_name: str
     npc_response: str
+    validation_result: ValidationResult | None
