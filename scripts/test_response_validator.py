@@ -1,13 +1,19 @@
 from __future__ import annotations
 
 import sys
+from typing import cast
 from pathlib import Path
 from pprint import pprint
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(PROJECT_ROOT))
 
-from src.interview_graph import validate_response_node
+from src.interview_graph import (
+    InterviewGraphState,
+    fallback_response_node,
+    route_after_validation,
+    validate_response_node,
+)
 from src.response_validator import build_fallback_response, validate_npc_response
 
 
@@ -48,23 +54,32 @@ def main() -> None:
             print(build_fallback_response())
 
     print("\n" + "=" * 80)
-    print("validate_response_node fallback behavior")
+    print("conditional validation route behavior")
     print("=" * 80)
 
-    graph_state = {
-        "npc_response": "(Henry adjusts his cufflinks.) I killed Edward.",
-    }
+    graph_state = cast(
+        InterviewGraphState,
+        {
+            "npc_response": "(Henry adjusts his cufflinks.) I killed Edward.",
+            "validation_result": None,
+        },
+    )
 
-    updated_state = validate_response_node(graph_state)
+    validated_state = validate_response_node(graph_state)
+    next_node = route_after_validation(validated_state)
+    final_state = fallback_response_node(validated_state)
 
     print("Original invalid response:")
     print(graph_state["npc_response"])
 
     print("\nValidation result:")
-    pprint(updated_state["validation_result"])
+    pprint(validated_state["validation_result"])
 
-    print("\nResponse after validation node:")
-    print(updated_state["npc_response"])
+    print("\nRoute selected:")
+    print(next_node)
+
+    print("\nResponse after fallback node:")
+    print(final_state["npc_response"])
 
 
 if __name__ == "__main__":

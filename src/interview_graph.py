@@ -115,19 +115,8 @@ def generate_response_node(state: InterviewGraphState) -> InterviewGraphState:
 def validate_response_node(state: InterviewGraphState) -> InterviewGraphState:
     """
     Validate the generated NPC response before recording it.
-
-    If the response fails validation, replace it with a safe fallback response.
     """
     validation_result = validate_npc_response(state["npc_response"])
-
-    if not validation_result.is_valid:
-        fallback_response = build_fallback_response()
-
-        return {
-            **state,
-            "npc_response": fallback_response,
-            "validation_result": validation_result,
-        }
 
     return {
         **state,
@@ -150,6 +139,31 @@ def record_dialogue_node(state: InterviewGraphState) -> InterviewGraphState:
 
     return state
 
+def fallback_response_node(state: InterviewGraphState) -> InterviewGraphState:
+    """
+    Replace an invalid NPC response with a safe fallback response.
+    """
+    fallback_response = build_fallback_response()
+
+    return {
+        **state,
+        "npc_response": fallback_response,
+    }
+
+def route_after_validation(state: InterviewGraphState) -> str:
+    """
+    Decide whether to record the response or replace it with a fallback first.
+    """
+    validation_result = state["validation_result"]
+
+    if validation_result is None:
+        raise ValueError("Missing validation_result after validation node.")
+
+    if validation_result.is_valid:
+        return "record_dialogue"
+
+    return "fallback_response"
+
 def build_interview_graph():
     """
     Build and compile the LangGraph interview workflow.
@@ -165,6 +179,7 @@ def build_interview_graph():
     graph.add_node("build_prompt", build_prompt_node)
     graph.add_node("generate_response", generate_response_node)
     graph.add_node("validate_response", validate_response_node)
+    graph.add_node("fallback_response", fallback_response_node)
     graph.add_node("record_dialogue", record_dialogue_node)
 
     graph.add_edge(START, "build_context")
@@ -174,9 +189,16 @@ def build_interview_graph():
     graph.add_edge("filter_rag", "build_prompt")
     graph.add_edge("build_prompt", "generate_response")
     graph.add_edge("generate_response", "validate_response")
-    graph.add_edge("validate_response", "record_dialogue")
+    graph.add_conditional_edges(
+        "validate_response",
+        route_after_validation,
+        {
+            "record_dialogue": "record_dialogue",
+            "fallback_response": "fallback_response",
+        },
+    )
+    graph.add_edge("fallback_response", "record_dialogue")
     graph.add_edge("record_dialogue", END)
-
     return graph.compile()
 
 class InterviewGraphState(TypedDict):
