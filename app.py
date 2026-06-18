@@ -102,6 +102,18 @@ def main() -> None:
 
     st.divider()
 
+    st.header("Suspects")
+
+    suspects = game_data["characters"]["characters"]
+
+    for suspect in suspects:
+        with st.expander(suspect["name"]):
+            st.write(suspect["player_description"])
+
+            st.markdown(f"**Role:** {suspect['role']}")
+
+    st.divider()
+
     st.header("Investigate locations")
 
     locations = game_data["locations"]["locations"]

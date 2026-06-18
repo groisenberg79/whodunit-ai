@@ -102,7 +102,8 @@
         "Do not reveal Henry's true motive.",
         "Do not claim to know details of Henry's old medical crime.",
         "Do not invent additional inheritance documents, witnesses, or accusations."
-      ]
+      ],
+      "player_description": "Clara Vale is Edward Blackwood's elegant niece and a long-time resident of Blackwood Manor. She appears composed and socially polished, though the murder has clearly shaken her."
     },
     {
       "id": "julian_blackwood",
@@ -187,7 +188,8 @@
         "Do not claim to have witnessed Henry kill Edward.",
         "Do not claim to know details of the medical vial or altered death certificate unless the player explicitly brings them up.",
         "Do not invent new childhood events beyond the established resentment and mistreatment."
-      ]
+      ],
+      "player_description": "Julian Blackwood is Edward's estranged son, recently returned to Blackwood Manor after years away. His relationship with his father was known to be difficult, and his presence on the night of the murder has unsettled the household."
     },
     {
       "id": "beatrice_ashford",
@@ -272,7 +274,8 @@
         "Do not reveal Henry's old medical crime directly.",
         "Do not claim to know exactly what Edward had discovered about Henry.",
         "Do not invent new lovers, scandals, or documents."
-      ]
+      ],
+      "player_description": "Beatrice Ashford is the wife of Dr. Henry Ashford. She is socially graceful and deeply concerned with appearances, but seems emotionally strained after Edward's death."
     },
     {
       "id": "henry_ashford",
@@ -432,7 +435,8 @@
         "Do not explain or confirm the full murder method during ordinary interviews. If confronted with strong method evidence such as the medical vial and brandy glass residue, become more guarded, evasive, or dismissive, but do not admit using them to kill Edward.",
         "Do not invent a different culprit.",
         "Do not invent new medical evidence outside the established clues."
-      ]
+      ],
+      "player_description": "Dr. Henry Ashford is the Blackwood family physician and an old acquaintance of Edward's. Calm, precise, and respectable, he presents himself as the rational voice in a frightened household."
     }
   ]
 }
