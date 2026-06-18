@@ -25,6 +25,24 @@ def reset_game() -> None:
         st.session_state.game_data["case"]
     )
 
+def get_discovered_clue_details() -> list[dict]:
+    """
+    Return full clue dictionaries for clues discovered by the player.
+    """
+    game_data = st.session_state.game_data
+    game_state = st.session_state.game_state
+
+    discovered_clues = []
+
+    for clue_id in game_state.discovered_clues:
+        clue = get_clue_by_id(
+            game_data=game_data,
+            clue_id=clue_id,
+        )
+        discovered_clues.append(clue)
+
+    return discovered_clues
+
 def main() -> None:
     """
     Run the Whodunit AI Streamlit app.
@@ -68,6 +86,19 @@ def main() -> None:
     st.write(f"Game status: `{game_state.game_status}`")
     st.write(f"Discovered clues: `{len(game_state.discovered_clues)}`")
     st.write(f"Visited locations: `{len(game_state.visited_locations)}`")
+
+    st.divider()
+
+    st.header("Case notes")
+
+    discovered_clue_details = get_discovered_clue_details()
+
+    if not discovered_clue_details:
+        st.info("No clues discovered yet.")
+    else:
+        for clue in discovered_clue_details:
+            with st.expander(clue["name"]):
+                st.write(clue["description"])
 
     st.divider()
 
