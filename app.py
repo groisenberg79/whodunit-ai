@@ -3,6 +3,8 @@ from __future__ import annotations
 from src.game_engine import inspect_location_area
 from src.data_loader import get_clue_by_id, load_game_data
 from src.game_state import GameState
+from src.interview_graph import build_interview_graph
+from src.rag_index import load_embedding_model, load_rag_index
 import streamlit as st
 
 def initialize_session_state() -> None:
@@ -16,6 +18,17 @@ def initialize_session_state() -> None:
         st.session_state.game_state = GameState.from_case_data(
             st.session_state.game_data["case"]
         )
+
+    if "embedding_model" not in st.session_state:
+        st.session_state.embedding_model = load_embedding_model()
+
+    if "rag_index" not in st.session_state:
+        rag_index, rag_documents = load_rag_index()
+        st.session_state.rag_index = rag_index
+        st.session_state.rag_documents = rag_documents
+
+    if "interview_graph" not in st.session_state:
+        st.session_state.interview_graph = build_interview_graph()
 
 def reset_game() -> None:
     """
@@ -111,7 +124,91 @@ def main() -> None:
             st.write(suspect["player_description"])
 
             st.markdown(f"**Role:** {suspect['role']}")
+    
+    st.subheader("Interview a suspect")
 
+    suspect_options = {
+        suspect["name"]: suspect["id"]
+        for suspect in suspects
+    }
+
+    selected_suspect_name = st.selectbox(
+        "Choose a suspect to interview",
+        options=list(suspect_options.keys()),
+    )
+
+    selected_suspect_id = suspect_options[selected_suspect_name]
+
+    player_question = st.text_area(
+        "Ask a question",
+        placeholder="Example: Where were you when Edward was killed?",
+    )
+
+    discovered_clues_for_options = get_discovered_clue_details()
+
+    clue_options = {"No evidence": None}
+
+    for clue in discovered_clues_for_options:
+        clue_options[clue["name"]] = clue["id"]
+
+    selected_clue_name = st.selectbox(
+        "Optional: confront with evidence",
+        options=list(clue_options.keys()),
+    )
+
+    confronted_clue_id = clue_options[selected_clue_name]
+
+    if st.button("Ask suspect"):
+        if not player_question.strip():
+            st.warning("Please enter a question before interviewing the suspect.")
+        else:
+            initial_graph_state = {
+                "game_data": game_data,
+                "game_state": game_state,
+                "suspect_id": selected_suspect_id,
+                "player_question": player_question,
+                "confronted_clue_id": confronted_clue_id,
+                "rag_index": st.session_state.rag_index,
+                "rag_documents": st.session_state.rag_documents,
+                "embedding_model": st.session_state.embedding_model,
+                "raw_rag_results": [],
+                "filtered_rag_results": [],
+                "retrieved_context": "",
+                "interview_context": {},
+                "messages": [],
+                "llm_mode": "mock",
+                "model_name": "llama3.1:8b",
+                "npc_response": "",
+                "validation_result": None,
+            }
+
+            with st.spinner("Interviewing suspect..."):
+                updated_graph_state = st.session_state.interview_graph.invoke(
+                    initial_graph_state
+                )
+
+            st.session_state.last_interview_result = updated_graph_state
+            st.rerun()
+
+    if "last_interview_result" in st.session_state:
+        interview_result = st.session_state.last_interview_result
+
+        st.subheader("Latest response")
+        st.write(interview_result["npc_response"])
+    
+    st.subheader("Dialogue history with this suspect")
+
+    selected_history = [
+        entry
+        for entry in game_state.dialogue_history
+        if entry.suspect_id == interview_result["suspect_id"]
+    ]
+
+    for entry in selected_history:
+        with st.container(border=True):
+            st.markdown(f"**You:** {entry.player_question}")
+            st.markdown(f"**{selected_suspect_name}:** {entry.npc_response}")
+    
     st.divider()
 
     st.header("Investigate locations")
