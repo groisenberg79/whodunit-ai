@@ -1,11 +1,12 @@
 from __future__ import annotations
 
+import os
 from typing import Any, Literal
 
 import requests
 
 
-LLMMode = Literal["mock", "ollama"]
+LLMMode = Literal["mock", "ollama", "openrouter"]
 
 
 class LLMClientError(Exception):
@@ -91,6 +92,79 @@ def generate_ollama_response(
     return cleaned_content
 
 
+def generate_openrouter_response(
+    messages: list[dict[str, str]],
+    model_name: str = "openai/gpt-4o-mini",
+    base_url: str = "https://openrouter.ai/api/v1/chat/completions",
+    timeout_seconds: int = 120,
+) -> str:
+    """
+    Generate a response using OpenRouter's OpenAI-compatible chat API.
+
+    Args:
+        messages: Chat-style messages.
+        model_name: Name of the OpenRouter model to use.
+        base_url: OpenRouter chat completions endpoint.
+        timeout_seconds: Request timeout in seconds.
+
+    Returns:
+        Model response text.
+
+    Raises:
+        LLMClientError: If the API key is missing, OpenRouter is unavailable,
+            or the response format is invalid.
+    """
+    api_key = os.getenv("OPENROUTER_API_KEY")
+
+    if not api_key:
+        raise LLMClientError(
+            "OPENROUTER_API_KEY is not set. Add it to your environment before "
+            "using OpenRouter mode."
+        )
+
+    payload: dict[str, Any] = {
+        "model": model_name,
+        "messages": messages,
+        "temperature": 0.2,
+        "max_tokens": 160,
+    }
+
+    headers = {
+        "Authorization": f"Bearer {api_key}",
+        "Content-Type": "application/json",
+    }
+
+    try:
+        response = requests.post(
+            base_url,
+            json=payload,
+            headers=headers,
+            timeout=timeout_seconds,
+        )
+        response.raise_for_status()
+    except requests.RequestException as exc:
+        raise LLMClientError(
+            "Could not generate response from OpenRouter. "
+            "Check your API key, internet connection, model name, and account credits."
+        ) from exc
+
+    data = response.json()
+
+    try:
+        content = data["choices"][0]["message"]["content"]
+    except (KeyError, IndexError, TypeError) as exc:
+        raise LLMClientError(
+            f"OpenRouter returned an unexpected response format: {data}"
+        ) from exc
+
+    cleaned_content = content.strip()
+
+    if not cleaned_content:
+        raise LLMClientError("OpenRouter returned an empty response.")
+
+    return cleaned_content
+
+
 def generate_llm_response(
     messages: list[dict[str, str]],
     mode: LLMMode = "mock",
@@ -112,6 +186,12 @@ def generate_llm_response(
 
     if mode == "ollama":
         return generate_ollama_response(
+            messages=messages,
+            model_name=model_name,
+        )
+
+    if mode == "openrouter":
+        return generate_openrouter_response(
             messages=messages,
             model_name=model_name,
         )

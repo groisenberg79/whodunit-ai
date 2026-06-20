@@ -33,7 +33,8 @@
       },
       "real_secret": "Clara secretly tried to influence Edward's will. She may have forged or altered a private letter suggesting that Edward had promised her a larger inheritance. This makes her look guilty, but her crime is fraud, not murder.",
       "alibi": {
-        "public_claim": "Clara claims she was in the drawing room after dinner, writing letters.",
+        "public_claim": "Clara claims she was in Edward's study after dinner, writing letters and avoiding the family quarrels.",
+        "crime_time_location_id": "edward_study",
         "hidden_truth": "Clara later passed near the library, saw or sensed something was wrong, panicked, and left without immediately raising the alarm.",
         "weakness": "Nobody can fully confirm her location for the entire period around the murder."
       },
@@ -129,6 +130,7 @@
       "real_secret": "Julian came back because he needed money, but also because he wanted Edward to acknowledge the harm he had done to him. He threatened Edward during their argument, but he did not intend to kill him.",
       "alibi": {
         "public_claim": "Julian claims he left the library after arguing with Edward and went outside to the garden path to cool down.",
+        "crime_time_location_id": "garden_path",
         "hidden_truth": "Julian did go outside after the argument. In anger, he threw his pocket watch against the stone path, breaking it.",
         "weakness": "He was alone outside for several minutes, so his alibi is emotionally plausible but not fully witnessed."
       },
@@ -215,6 +217,7 @@
       "real_secret": "Beatrice was Edward's lover, and she was devastated when he ended the affair. However, she did not kill him. She lies because she wants to hide the affair and protect her reputation.",
       "alibi": {
         "public_claim": "Beatrice claims she went to her room after dinner because she felt unwell.",
+        "crime_time_location_id": "beatrice_room",
         "hidden_truth": "Beatrice came downstairs and approached the library, intending to speak to Edward again, but lost courage and retreated without entering.",
         "weakness": "There is a gap in her timeline, and she initially hides her attempt to see Edward."
       },
@@ -306,7 +309,8 @@
       },
       "real_secret": "Henry killed Edward to prevent exposure of the old medical cover-up. He knew about Beatrice's affair with Edward, but he was not truly jealous. He is himself involved in another affair and considers his marriage to Beatrice practically finished.",
       "alibi": {
-        "public_claim": "Henry claims he was in the study reviewing medical correspondence.",
+        "public_claim": "Henry claims he was in his study reviewing medical correspondence.",
+        "crime_time_location_id": "henry_study",
         "hidden_truth": "Henry entered the library around 9:22 PM, drugged Edward's brandy, killed him, staged the scene, and returned to his study.",
         "weakness": "His alibi depends almost entirely on his own testimony."
       },

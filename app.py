@@ -144,6 +144,20 @@ def main() -> None:
         placeholder="Example: Where were you when Edward was killed?",
     )
 
+    response_mode = st.selectbox(
+        "Response mode",
+        options=["mock", "ollama", "openrouter"],
+        help="Use mock for fast testing, Ollama for local generation, or OpenRouter for the live demo.",
+    )
+
+    model_names = {
+        "mock": "mock",
+        "ollama": "llama3.1:8b",
+        "openrouter": "openai/gpt-4o-mini",
+    }
+
+    selected_model_name = model_names[response_mode]
+
     discovered_clues_for_options = get_discovered_clue_details()
 
     clue_options = {"No evidence": None}
@@ -176,8 +190,8 @@ def main() -> None:
                 "retrieved_context": "",
                 "interview_context": {},
                 "messages": [],
-                "llm_mode": "mock",
-                "model_name": "llama3.1:8b",
+                "llm_mode": response_mode,
+                "model_name": selected_model_name,
                 "npc_response": "",
                 "validation_result": None,
             }
@@ -195,19 +209,19 @@ def main() -> None:
 
         st.subheader("Latest response")
         st.write(interview_result["npc_response"])
-    
-    st.subheader("Dialogue history with this suspect")
 
-    selected_history = [
-        entry
-        for entry in game_state.dialogue_history
-        if entry.suspect_id == interview_result["suspect_id"]
-    ]
+        st.subheader("Dialogue history with this suspect")
 
-    for entry in selected_history:
-        with st.container(border=True):
-            st.markdown(f"**You:** {entry.player_question}")
-            st.markdown(f"**{selected_suspect_name}:** {entry.npc_response}")
+        selected_history = [
+            entry
+            for entry in game_state.dialogue_history
+            if entry.suspect_id == interview_result["suspect_id"]
+        ]
+
+        for entry in selected_history:
+            with st.container(border=True):
+                st.markdown(f"**You:** {entry.player_question}")
+                st.markdown(f"**{selected_suspect_name}:** {entry.npc_response}")
     
     st.divider()
 

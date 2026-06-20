@@ -134,6 +134,10 @@ def build_npc_system_prompt(
     knowledge = format_list(suspect["knowledge"])
     lies = format_list(suspect["lies"])
     forbidden_behavior = format_list(suspect["forbidden_behavior"])
+    crime_time_location_id = suspect["alibi"].get(
+        "crime_time_location_id",
+        "No specific crime-time location is provided.",
+    )
 
     return f"""
 You are roleplaying as a suspect in an interactive detective mystery game.
@@ -165,6 +169,7 @@ Real secret:
 
 Alibi:
 Public claim: {suspect['alibi']['public_claim']}
+Crime-time location ID: {crime_time_location_id}
 Hidden truth: {suspect['alibi']['hidden_truth']}
 Weakness: {suspect['alibi']['weakness']}
 
@@ -179,6 +184,12 @@ Forbidden behavior:
 
 Important instruction:
 Answer as {suspect['name']} only. Do not narrate as the game system. Do not reveal hidden plot information unless the current evidence reaction guidance allows it. You may improvise harmless personal details only when they do not affect the mystery or contradict established facts.
+
+Grounding rule:
+Treat the character profile, evidence reaction guidance, retrieved context, and previous dialogue as the only source of mystery-relevant factual information. Do not invent specific rooms, locations, alibis, activities, habits, substances, documents, relationships, or explanations that are not explicitly provided in the prompt.
+
+Harmless improvisation rule:
+You may improvise minor personal opinions, manners, and atmospheric reactions when they do not create new facts about the murder, evidence, timeline, locations, suspects, motives, relationships, or alibis.
 """.strip()
 
 
@@ -243,7 +254,7 @@ Previous dialogue with this suspect:
 Respond to the player's question in character.
 
 Constraints:
-- Keep the response concise: 2 to 5 sentences.
+- Keep the response concise: 2 to 4 sentences.
 - Reply only with spoken dialogue; do not use stage directions, parenthetical actions, or narration.
 - React directly to confronted evidence if evidence was presented.
 - Follow the evidence reaction guidance when it exists.
@@ -251,11 +262,28 @@ Constraints:
 - Do not treat retrieved context as permission to reveal hidden solution details.
 - Do not confess to the murder unless explicitly allowed by the ending logic.
 - Do not reveal the final solution.
-- You may add minor character flavor, but do not invent plot-relevant facts.
-- Do not invent new clues, motives, alibis, suspects, locations, crimes, documents, relationships, or solution details.
-- If asked about an unprovided personal detail, answer in character only if the answer is harmless and does not affect the mystery.
-- Stay consistent with established improvised personal facts.
-- Do not invent alternative explanations for evidence unless they are explicitly provided in the prompt; instead, cast doubt on the player's interpretation.
+- Do not invent plot-relevant facts.
+- Do not invent new clues, motives, alibis, suspects, locations, crimes, documents, relationships, habits, substances, or solution details.
+- Do not invent specific alternative explanations for evidence unless they are explicitly provided in the prompt.
+- If challenged about evidence and no explicit alternative explanation is provided, cast doubt on the player's interpretation without suggesting any cause, alternative source, contamination, accident, mistake, or innocent explanation.
+- If asked where you were or what you were doing when the crime occurred, use only the public alibi and Crime-time location ID from the character profile. Do not invent a new room, location, errand, activity, or witness.
+- If a Crime-time location ID is provided, do not replace it with a different room or a generic phrase like "my room" unless that exact phrase is in the public alibi. If no Crime-time location ID is provided, do not supply a location.
+- If asked about an unprovided harmless personal opinion or atmospheric detail, answer in character without creating new mystery facts.
+- Stay consistent with established improvised personal facts, but never let improvised details become evidence, alibi information, or solution logic.
+
+Bad response patterns:
+"It was probably residue from cheap liquor."
+"It could be contamination."
+"It may have come from some innocent source."
+"There are many harmless explanations."
+
+Good response pattern:
+"Residue in a glass proves very little unless one already knows what one wishes it to prove. I would advise caution before treating such a small trace as proof."
+
+Harmless small-talk example:
+Player: "What do you think of the weather tonight?"
+Good response pattern:
+"This storm is dreadful, but hardly surprising for Blackwood Manor. It suits the mood of the house rather too well."
 """.strip()
 
 
