@@ -1,7 +1,8 @@
 from __future__ import annotations
 
-from src.game_engine import inspect_location_area
+from src.game_engine import inspect_location_area, submit_accusation
 from src.data_loader import get_clue_by_id, load_game_data
+from src.accusation_evaluator import evaluate_free_form_accusation
 from src.game_state import GameState
 from src.interview_graph import build_interview_graph
 from src.rag_index import load_embedding_model, load_rag_index
@@ -37,6 +38,9 @@ def reset_game() -> None:
     st.session_state.game_state = GameState.from_case_data(
         st.session_state.game_data["case"]
     )
+
+    if "last_accusation_result" in st.session_state:
+        del st.session_state.last_accusation_result
 
 def get_discovered_clue_details() -> list[dict]:
     """
@@ -153,7 +157,7 @@ def main() -> None:
     model_names = {
         "mock": "mock",
         "ollama": "llama3.1:8b",
-        "openrouter": "openai/gpt-4o-mini",
+        "openrouter": "openai/gpt-5.5",
     }
 
     selected_model_name = model_names[response_mode]
@@ -282,6 +286,112 @@ def main() -> None:
                 st.success(f"New clue discovered: **{clue_name}**")
             else:
                 st.info(f"You already discovered this clue: **{clue_name}**")
+
+
+    st.divider()
+
+    st.header("Make your accusation")
+    st.write(
+        "When you think you understand the case, choose a suspect and explain "
+        "your accusation in your own words."
+    )
+
+    solution_data = game_data["solution"]
+    accusation_options = solution_data["accusation_options"]
+
+    culprit_options = {
+        option["label"]: option["id"]
+        for option in accusation_options["culprits"]
+    }
+
+    selected_culprit_label = st.selectbox(
+        "Who do you accuse?",
+        options=list(culprit_options.keys()),
+    )
+
+    accusation_text = st.text_area(
+        "Explain your accusation",
+        placeholder=(
+            "Example: I accuse [suspect] because [motive]. I think they committed "
+            "the murder by [method]. The clues that support this are [clue 1], "
+            "[clue 2], and [clue 3]."
+        ),
+        height=180,
+    )
+
+    st.caption(
+        "Only clues you have discovered in Case notes can be counted as supporting evidence."
+    )
+
+    if st.button("Submit accusation"):
+        if not accusation_text.strip():
+            st.warning("Please explain your accusation before submitting it.")
+        else:
+            discovered_clues = get_discovered_clue_details()
+
+            with st.spinner("Interpreting your accusation..."):
+                interpreted_accusation = evaluate_free_form_accusation(
+                    game_data=game_data,
+                    accused_culprit_id=culprit_options[selected_culprit_label],
+                    accusation_text=accusation_text,
+                    discovered_clues=discovered_clues,
+                )
+
+            accusation_output = submit_accusation(
+                state=game_state,
+                game_data=game_data,
+                culprit_id=interpreted_accusation["culprit_id"],
+                motive_id=interpreted_accusation["motive_id"],
+                method_id=interpreted_accusation["method_id"],
+                evidence_ids=interpreted_accusation["evidence_ids"],
+            )
+
+            st.session_state.last_accusation_result = accusation_output
+            st.session_state.last_interpreted_accusation = interpreted_accusation
+            st.rerun()
+
+    if "last_accusation_result" in st.session_state:
+        accusation_output = st.session_state.last_accusation_result
+        interpreted_accusation = st.session_state.get(
+            "last_interpreted_accusation",
+            {},
+        )
+
+        result = accusation_output["result"]
+        result_data = result if isinstance(result, dict) else result.__dict__
+
+        st.subheader("Accusation interpretation")
+
+        if interpreted_accusation.get("summary"):
+            st.write(interpreted_accusation["summary"])
+
+        with st.expander("Structured interpretation"):
+            st.json(interpreted_accusation)
+
+        st.subheader("Accusation result")
+
+        score = result_data.get("score")
+        max_score = solution_data["scoring"]["max_score"]
+
+        if score is not None:
+            st.write(f"Score: **{score} / {max_score}**")
+
+        title = result_data.get("title")
+        message = result_data.get("message")
+
+        if accusation_output["game_status"] == "solved":
+            st.success(title or "Correct accusation")
+            st.subheader("Case closed")
+            st.write(solution_data["ending_text"]["correct_ending"])
+        else:
+            st.warning(title or "Accusation incomplete")
+
+        if message:
+            st.write(message)
+
+        feedback_key = result_data.get("feedback_key")
+        if feedback_key:
+            st.caption(f"Feedback category: {feedback_key}")
 
 
 if __name__ == "__main__":

@@ -126,7 +126,7 @@ def generate_openrouter_response(
         "model": model_name,
         "messages": messages,
         "temperature": 0.2,
-        "max_tokens": 160,
+        "max_tokens": 500,
     }
 
     headers = {
@@ -151,11 +151,16 @@ def generate_openrouter_response(
     data = response.json()
 
     try:
-        content = data["choices"][0]["message"]["content"]
+        content = data["choices"][0]["message"].get("content")
     except (KeyError, IndexError, TypeError) as exc:
         raise LLMClientError(
             f"OpenRouter returned an unexpected response format: {data}"
         ) from exc
+
+    if not isinstance(content, str):
+        raise LLMClientError(
+            f"OpenRouter returned non-text content for model {model_name}: {content!r}"
+        )
 
     cleaned_content = content.strip()
 
