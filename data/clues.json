@@ -5,8 +5,12 @@
       "name": "Torn Will Note",
       "location_id": "edward_study",
       "discovery_area_id": "wastebasket",
-      "related_suspect_ids": ["clara_vale"],
-      "confrontation_targets": ["clara_vale"],
+      "related_suspect_ids": [
+        "clara_vale"
+      ],
+      "confrontation_targets": [
+        "clara_vale"
+      ],
       "type": "red_herring",
       "category": "inheritance_motive",
       "is_solution_critical": false,
@@ -32,8 +36,14 @@
       "name": "Beatrice's Furious Letters",
       "location_id": "beatrice_room",
       "discovery_area_id": "writing_box",
-      "related_suspect_ids": ["beatrice_ashford", "henry_ashford"],
-      "confrontation_targets": ["beatrice_ashford", "henry_ashford"],
+      "related_suspect_ids": [
+        "beatrice_ashford",
+        "henry_ashford"
+      ],
+      "confrontation_targets": [
+        "beatrice_ashford",
+        "henry_ashford"
+      ],
       "type": "red_herring",
       "category": "romantic_motive",
       "is_solution_critical": false,
@@ -57,28 +67,71 @@
       ]
     },
     {
-      "id": "broken_watch",
-      "name": "Julian's Broken Watch",
-      "location_id": "garden_path",
-      "discovery_area_id": "stone_path",
-      "related_suspect_ids": ["julian_blackwood"],
-      "confrontation_targets": ["julian_blackwood"],
+      "id": "gambling_debt_notice",
+      "name": "Gambling Debt Notice",
+      "location_id": "edward_study",
+      "discovery_area_id": "correspondence_box",
+      "related_suspect_ids": [
+        "julian_blackwood"
+      ],
+      "confrontation_targets": [
+        "julian_blackwood"
+      ],
       "type": "red_herring",
-      "category": "timeline",
+      "category": "financial_desperation",
       "is_solution_critical": false,
-      "image_path": "assets/evidence/broken_watch.png",
-      "description": "Julian's pocket watch, found cracked on the garden path. It stopped around 9:20.",
-      "discovery_text": "Near the stone path, half-hidden by rain and mud, you find a cracked pocket watch. The hands are stopped around 9:20.",
-      "what_it_suggests": "Julian was outside around the time of the murder and may be lying about his movements.",
-      "what_it_actually_means": "Julian did go outside after arguing with Edward. The broken watch supports part of his story rather than disproving it. It shows anger, but not murder.",
+      "image_path": "assets/evidence/gambling_debt_notice.png",
+      "description": "A creditor's notice addressed to Julian Blackwood, found among Edward's correspondence. It demands immediate payment of a large gambling debt and warns that family money will no longer protect him.",
+      "discovery_text": "Inside Edward's correspondence box, you find a creditor's notice addressed to Julian Blackwood. It demands immediate payment of a large gambling debt and warns that family money will no longer protect him.",
+      "what_it_suggests": "Julian urgently needed money and may have returned to Blackwood Manor to demand help from Edward.",
+      "what_it_actually_means": "Julian was financially desperate and did ask Edward for money, but this explains his argument with Edward rather than the murder itself.",
       "dialogue_effects": {
-        "default": "This clue can be used to confront Julian about his movements after the argument.",
-        "when_confronting_julian_blackwood": "Julian may admit he stormed out after the argument, broke the watch in anger, and said he wished Edward dead. He should still deny murder."
+        "default": "This clue can be used to confront Julian about his gambling debts and financial desperation.",
+        "when_confronting_julian_blackwood": "Julian should become defensive and admit he needed money. He may admit asking Edward for help, but he should deny killing him."
       },
+      "combo_clues": [
+        "torn_julian_cuff"
+      ],
       "rag_tags": [
         "clue",
-        "timeline",
-        "garden_path",
+        "gambling",
+        "debt",
+        "money",
+        "julian_blackwood",
+        "red_herring"
+      ]
+    },
+    {
+      "id": "torn_julian_cuff",
+      "name": "Torn Cuff with Julian's Initials",
+      "location_id": "library",
+      "discovery_area_id": "fireplace",
+      "related_suspect_ids": [
+        "julian_blackwood"
+      ],
+      "confrontation_targets": [
+        "julian_blackwood"
+      ],
+      "type": "red_herring",
+      "category": "physical_argument",
+      "is_solution_critical": false,
+      "image_path": "assets/evidence/torn_julian_cuff.png",
+      "description": "A torn piece of dark jacket cuff found near the library fireplace. The inner seam bears the embroidered initials 'J.B.'.",
+      "discovery_text": "Near the library fireplace, you find a torn piece of dark jacket cuff. The inner seam bears the embroidered initials 'J.B.'.",
+      "what_it_suggests": "Julian may have been in a physical confrontation with Edward in the library before the murder.",
+      "what_it_actually_means": "Julian did struggle with Edward during their argument, but Edward was still alive when Julian left. The torn cuff points to a violent argument, not the true murder method.",
+      "dialogue_effects": {
+        "default": "This clue can be used to confront Julian about a physical argument with Edward.",
+        "when_confronting_julian_blackwood": "Julian should admit the argument became physical and that he threatened Edward. He should insist that Edward was alive when he left the library."
+      },
+      "combo_clues": [
+        "gambling_debt_notice"
+      ],
+      "rag_tags": [
+        "clue",
+        "torn_cloth",
+        "jacket_cuff",
+        "physical_argument",
         "julian_blackwood",
         "red_herring"
       ]
@@ -88,8 +141,12 @@
       "name": "Small Medical Vial",
       "location_id": "henry_room",
       "discovery_area_id": "medical_bag",
-      "related_suspect_ids": ["henry_ashford"],
-      "confrontation_targets": ["henry_ashford"],
+      "related_suspect_ids": [
+        "henry_ashford"
+      ],
+      "confrontation_targets": [
+        "henry_ashford"
+      ],
       "type": "solution_clue",
       "category": "method",
       "is_solution_critical": true,
@@ -102,7 +159,9 @@
         "default": "This clue can be used to confront Henry about his access to medicine.",
         "when_confronting_henry_ashford": "If confronted with the vial alone, Henry should dismiss it as ordinary medicine and imply that the accusation is naive. If the brandy residue has also been discovered, he should become more guarded but still not confess."
       },
-      "combo_clues": ["brandy_glass_residue"],
+      "combo_clues": [
+        "brandy_glass_residue"
+      ],
       "rag_tags": [
         "clue",
         "medical",
@@ -117,8 +176,12 @@
       "name": "Residue on the Brandy Glass",
       "location_id": "library",
       "discovery_area_id": "brandy_glass",
-      "related_suspect_ids": ["henry_ashford"],
-      "confrontation_targets": ["henry_ashford"],
+      "related_suspect_ids": [
+        "henry_ashford"
+      ],
+      "confrontation_targets": [
+        "henry_ashford"
+      ],
       "type": "solution_clue",
       "category": "method",
       "is_solution_critical": true,
@@ -131,7 +194,9 @@
         "default": "This clue can be used to confront Henry about the possibility that Edward was drugged.",
         "when_confronting_henry_ashford": "Henry should remain controlled and suggest contamination, uncertainty, or amateur speculation. If the medical vial has also been discovered, he should become more guarded but still not confess."
       },
-      "combo_clues": ["medical_vial"],
+      "combo_clues": [
+        "medical_vial"
+      ],
       "rag_tags": [
         "clue",
         "brandy",
@@ -147,8 +212,14 @@
       "name": "Silver Letter Opener",
       "location_id": "library",
       "discovery_area_id": "letter_opener_area",
-      "related_suspect_ids": ["clara_vale", "henry_ashford"],
-      "confrontation_targets": ["clara_vale", "henry_ashford"],
+      "related_suspect_ids": [
+        "clara_vale",
+        "henry_ashford"
+      ],
+      "confrontation_targets": [
+        "clara_vale",
+        "henry_ashford"
+      ],
       "type": "mixed_clue",
       "category": "staged_weapon",
       "is_solution_critical": false,
@@ -176,16 +247,20 @@
       "name": "Altered Death Certificate",
       "location_id": "henry_room",
       "discovery_area_id": "henry_locked_drawer",
-      "related_suspect_ids": ["henry_ashford"],
-      "confrontation_targets": ["henry_ashford"],
+      "related_suspect_ids": [
+        "henry_ashford"
+      ],
+      "confrontation_targets": [
+        "henry_ashford"
+      ],
       "type": "solution_clue",
       "category": "true_motive",
       "is_solution_critical": true,
       "image_path": "assets/evidence/altered_death_certificate.png",
-      "description": "An old death certificate related to Edward's late wife. It shows signs of alteration. The handwriting resembles Henry's medical hand, and dates or dosages appear inconsistent.",
-      "discovery_text": "Inside Henry's locked drawer, you find an old death certificate connected to Edward's late wife. Some dates and dosages appear to have been altered by hand.",
-      "what_it_suggests": "Henry was involved in falsifying records related to a death years earlier.",
-      "what_it_actually_means": "This is the deepest clue. Edward had discovered Henry's old medical cover-up and intended to expose him. This is Henry's true motive.",
+      "description": "An old death certificate for Edward's late wife, found folded together with a treatment note. The certificate records her death as natural heart failure, but the note lists a stronger dose of digitalis, a heart medication marked as dangerous in higher doses. Several figures on the certificate have been overwritten by hand, and Dr. Ashford's signature appears beside the alteration.",
+      "discovery_text": "Inside Dr. Ashford's locked drawer, you find an old death certificate for Edward's late wife folded together with a treatment note. The certificate records her death as natural heart failure, but the note lists a stronger dose of digitalis, a heart medication marked as dangerous in higher doses. Several figures on the certificate have been overwritten by hand, and Dr. Ashford's signature appears beside the alteration.",
+      "what_it_suggests": "Henry may have altered medical records connected to Edward's late wife, giving Edward a reason to confront him.",
+      "what_it_actually_means": "Henry concealed a dangerous medical mistake or deliberate overmedication connected to the death of Edward's wife. Edward discovered the altered record and intended to expose him.",
       "dialogue_effects": {
         "default": "This clue can be used to confront Henry about the old medical cover-up.",
         "when_confronting_henry_ashford": "Henry should become colder and more evasive. He may imply that Edward was investigating dangerous old matters, but he must not fully explain the cover-up or confess."
@@ -204,8 +279,12 @@
       "name": "Edward's Final Appointment Note",
       "location_id": "edward_study",
       "discovery_area_id": "writing_desk",
-      "related_suspect_ids": ["henry_ashford"],
-      "confrontation_targets": ["henry_ashford"],
+      "related_suspect_ids": [
+        "henry_ashford"
+      ],
+      "confrontation_targets": [
+        "henry_ashford"
+      ],
       "type": "solution_clue",
       "category": "opportunity",
       "is_solution_critical": false,
@@ -218,7 +297,9 @@
         "default": "This clue can be used to confront Henry about his private meeting with Edward.",
         "when_confronting_henry_ashford": "Henry should minimize the note and suggest that Edward often arranged private conversations with many people. He should avoid confirming that the meeting was about the medical records."
       },
-      "combo_clues": ["altered_death_certificate"],
+      "combo_clues": [
+        "altered_death_certificate"
+      ],
       "rag_tags": [
         "clue",
         "appointment",

@@ -27,6 +27,7 @@ def is_document_allowed_for_interview(
     state: GameState,
     suspect_id: str,
     confronted_clue_id: str | None = None,
+    confronted_clue_ids: list[str] | None = None,
 ) -> bool:
     """
     Check whether a retrieved RAG document is allowed in an NPC interview prompt.
@@ -42,6 +43,9 @@ def is_document_allowed_for_interview(
     """
     metadata = document["metadata"]
     visibility = metadata["visibility"]
+    presented_clue_ids = set(confronted_clue_ids or [])
+    if confronted_clue_id is not None:
+        presented_clue_ids.add(confronted_clue_id)
 
     if visibility == "internal_only":
         return False
@@ -63,26 +67,23 @@ def is_document_allowed_for_interview(
         return clue_id in state.discovered_clues
 
     if visibility == "only_when_confronted":
-        if confronted_clue_id is None:
-            return False
+        clue_id = metadata.get("clue_id")
 
         return (
             metadata.get("suspect_id") == suspect_id
-            and metadata.get("clue_id") == confronted_clue_id
-            and confronted_clue_id in state.discovered_clues
+            and clue_id in presented_clue_ids
+            and clue_id in state.discovered_clues
         )
 
     if visibility == "only_when_combo_applies":
-        required_clue_ids = metadata["required_clue_ids"]
-        trigger_clue_ids = metadata["trigger_clue_ids"]
-
-        if confronted_clue_id is None:
-            return False
+        required_clue_ids = set(metadata["required_clue_ids"])
+        trigger_clue_ids = set(metadata["trigger_clue_ids"])
 
         return (
             metadata.get("suspect_id") == suspect_id
-            and confronted_clue_id in trigger_clue_ids
-            and has_discovered_all_required_clues(state, required_clue_ids)
+            and required_clue_ids.issubset(presented_clue_ids)
+            and trigger_clue_ids.intersection(presented_clue_ids)
+            and has_discovered_all_required_clues(state, list(required_clue_ids))
         )
 
     return False
@@ -93,6 +94,7 @@ def filter_documents_for_interview(
     state: GameState,
     suspect_id: str,
     confronted_clue_id: str | None = None,
+    confronted_clue_ids: list[str] | None = None,
 ) -> list[dict[str, Any]]:
     """
     Filter retrieved RAG documents for an NPC interview.
@@ -114,6 +116,7 @@ def filter_documents_for_interview(
             state=state,
             suspect_id=suspect_id,
             confronted_clue_id=confronted_clue_id,
+            confronted_clue_ids=confronted_clue_ids,
         )
     ]
 

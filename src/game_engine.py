@@ -163,6 +163,7 @@ def get_applicable_evidence_reaction(
     state: GameState,
     suspect: dict[str, Any],
     confronted_clue_id: str,
+    confronted_clue_ids: list[str] | None = None,
 ) -> dict[str, Any] | None:
     """
     Return the best evidence reaction for a suspect and confronted clue.
@@ -178,6 +179,7 @@ def get_applicable_evidence_reaction(
     Returns:
         Evidence reaction dictionary if one applies, otherwise None.
     """
+    presented_clue_ids = set(confronted_clue_ids or [confronted_clue_id])
     combo_reactions = suspect.get("combo_evidence_reactions", [])
 
     for reaction in combo_reactions:
@@ -185,7 +187,8 @@ def get_applicable_evidence_reaction(
         trigger_clue_ids = set(reaction["trigger_clue_ids"])
 
         if (
-            confronted_clue_id in trigger_clue_ids
+            required_clue_ids.issubset(presented_clue_ids)
+            and trigger_clue_ids.intersection(presented_clue_ids)
             and required_clue_ids.issubset(state.discovered_clues)
         ):
             return reaction
@@ -199,6 +202,7 @@ def build_interview_context(
     suspect_id: str,
     player_question: str,
     confronted_clue_id: str | None = None,
+    confronted_clue_ids: list[str] | None = None,
 ) -> dict[str, Any]:
     """
     Build structured context for a suspect interview.
@@ -233,36 +237,52 @@ def build_interview_context(
         raise ValueError(f"Unknown suspect ID: {suspect_id}")
 
     confronted_clue = None
+    confronted_clues = []
     evidence_reaction = None
 
-    if confronted_clue_id is not None:
-        can_confront = can_confront_suspect_with_clue(
-            state=state,
-            clues_data=game_data["clues"],
-            suspect_id=suspect_id,
-            clue_id=confronted_clue_id,
-        )
+    presented_clue_ids = confronted_clue_ids or []
+    if confronted_clue_id is not None and confronted_clue_id not in presented_clue_ids:
+        presented_clue_ids = [confronted_clue_id, *presented_clue_ids]
 
-        if not can_confront:
-            raise ValueError(
-                f"Clue '{confronted_clue_id}' cannot be used to confront suspect '{suspect_id}'."
+    confronted_clue_is_related_to_suspect = False
+
+    if presented_clue_ids:
+        valid_clues_by_id = {
+            clue["id"]: clue
+            for clue in clues
+        }
+
+        for clue_id in presented_clue_ids:
+            if clue_id not in state.discovered_clues:
+                raise ValueError(f"Clue '{clue_id}' has not been discovered yet.")
+
+            if clue_id not in valid_clues_by_id:
+                raise ValueError(f"Unknown clue ID: {clue_id}")
+
+            clue = valid_clues_by_id[clue_id]
+            confronted_clues.append(clue)
+
+            confrontation_targets = clue.get("confrontation_targets", [])
+            if suspect_id in confrontation_targets:
+                confronted_clue_is_related_to_suspect = True
+
+        confronted_clue = confronted_clues[0]
+
+        if confronted_clue_is_related_to_suspect:
+            evidence_reaction = get_applicable_evidence_reaction(
+                state=state,
+                suspect=suspect,
+                confronted_clue_id=confronted_clue["id"],
+                confronted_clue_ids=presented_clue_ids,
             )
-
-        for clue in clues:
-            if clue["id"] == confronted_clue_id:
-                confronted_clue = clue
-                break
-
-        evidence_reaction = get_applicable_evidence_reaction(
-            state=state,
-            suspect=suspect,
-            confronted_clue_id=confronted_clue_id,
-        )
 
     return {
         "suspect": suspect,
         "player_question": player_question,
         "confronted_clue": confronted_clue,
+        "confronted_clues": confronted_clues,
+        "confronted_clue_ids": presented_clue_ids,
+        "confronted_clue_is_related_to_suspect": confronted_clue_is_related_to_suspect,
         "evidence_reaction": evidence_reaction,
         "discovered_clue_ids": state.discovered_clues,
         "revealed_clue_ids_for_suspect": state.revealed_clues[suspect_id],
@@ -301,16 +321,17 @@ def record_interview_exchange(
         ValueError: If the confronted clue is invalid for the selected suspect.
     """
     if confronted_clue_id is not None:
-        can_confront = can_confront_suspect_with_clue(
-            state=state,
-            clues_data=game_data["clues"],
-            suspect_id=suspect_id,
-            clue_id=confronted_clue_id,
-        )
+        valid_clue_ids = {
+            clue["id"]
+            for clue in game_data["clues"]["clues"]
+        }
 
-        if not can_confront:
+        if confronted_clue_id not in valid_clue_ids:
+            raise ValueError(f"Unknown clue ID: {confronted_clue_id}")
+
+        if confronted_clue_id not in state.discovered_clues:
             raise ValueError(
-                f"Clue '{confronted_clue_id}' cannot be used to confront suspect '{suspect_id}'."
+                f"Clue '{confronted_clue_id}' has not been discovered yet."
             )
 
     entry = state.add_dialogue_entry(

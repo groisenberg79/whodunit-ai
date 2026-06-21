@@ -27,6 +27,7 @@ def build_context_node(state: InterviewGraphState) -> InterviewGraphState:
         suspect_id=state["suspect_id"],
         player_question=state["player_question"],
         confronted_clue_id=state["confronted_clue_id"],
+        confronted_clue_ids=state.get("confronted_clue_ids", []),
     )
 
     return {
@@ -62,6 +63,7 @@ def filter_rag_node(state: InterviewGraphState) -> InterviewGraphState:
         state=state["game_state"],
         suspect_id=state["suspect_id"],
         confronted_clue_id=state["confronted_clue_id"],
+        confronted_clue_ids=state.get("confronted_clue_ids", []),
     )
 
     retrieved_context = format_retrieved_context(filtered_rag_results)
@@ -220,6 +222,7 @@ class InterviewGraphState(TypedDict):
     suspect_id: str
     player_question: str
     confronted_clue_id: str | None
+    confronted_clue_ids: list[str]
 
     rag_index: Any
     rag_documents: list[dict[str, Any]]

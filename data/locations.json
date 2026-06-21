@@ -10,7 +10,8 @@
       "available_from_start": true,
       "clue_ids": [
         "brandy_glass_residue",
-        "letter_opener"
+        "letter_opener",
+        "torn_julian_cuff"
       ],
       "inspectable_areas": [
         {
@@ -41,9 +42,9 @@
           "id": "fireplace",
           "label": "Fireplace",
           "description": "A low fire burns in the hearth.",
-          "result_text": "The fire is low. The ashes show signs of burned paper, but nothing readable remains.",
-          "clue_id": null,
-          "has_clue": false
+          "result_text": "Near the library fireplace, you find a torn piece of dark jacket cuff. The inner seam bears the embroidered initials 'J.B.'.",
+          "clue_id": "torn_julian_cuff",
+          "has_clue": true
         },
         {
           "id": "library_window",
@@ -60,7 +61,8 @@
         "crime_scene",
         "brandy",
         "letter_opener",
-        "method"
+        "method",
+        "torn_julian_cuff"
       ]
     },
     {
@@ -73,7 +75,8 @@
       "available_from_start": true,
       "clue_ids": [
         "torn_will_note",
-        "final_appointment_note"
+        "final_appointment_note",
+        "gambling_debt_notice"
       ],
       "inspectable_areas": [
         {
@@ -96,9 +99,9 @@
           "id": "correspondence_box",
           "label": "Correspondence box",
           "description": "A wooden box contains old letters and business correspondence.",
-          "result_text": "The box contains business letters and old publishing contracts. Nothing here seems directly connected to the murder.",
-          "clue_id": null,
-          "has_clue": false
+          "result_text": "Inside Edward's correspondence box, you find a creditor's notice addressed to Julian Blackwood. It demands immediate payment of a large gambling debt and warns that family money will no longer protect him.",
+          "clue_id": "gambling_debt_notice",
+          "has_clue": true
         },
         {
           "id": "study_bookshelf",
@@ -122,7 +125,8 @@
         "edward_study",
         "will",
         "appointment_note",
-        "private_documents"
+        "private_documents",
+        "gambling_debt_notice"
       ]
     },
     {
@@ -194,17 +198,15 @@
       "description": "The garden path runs along the side of the manor, beneath the library windows. Rain has softened the gravel and mud. A stone bench sits near the rose bushes, half-hidden in the dark.",
       "function_in_mystery": "The garden path supports Julian's story and complicates the timeline. It makes him look suspicious, but also gives evidence that he left the library before the murder.",
       "available_from_start": true,
-      "clue_ids": [
-        "broken_watch"
-      ],
+      "clue_ids": [],
       "inspectable_areas": [
         {
           "id": "stone_path",
           "label": "Stone path",
           "description": "The stone path is wet and uneven, with mud collecting between the stones.",
-          "result_text": "Near the stone path, half-hidden by rain and mud, you find a cracked pocket watch. The hands are stopped around 9:20.",
-          "clue_id": "broken_watch",
-          "has_clue": true
+          "result_text": "The rain has darkened the stone path, and several muddy footprints overlap near the garden. Nothing here clearly identifies who passed this way.",
+          "clue_id": null,
+          "has_clue": false
         },
         {
           "id": "library_window_exterior",
@@ -243,7 +245,6 @@
         "location",
         "garden_path",
         "julian_blackwood",
-        "broken_watch",
         "timeline"
       ]
     },
@@ -272,7 +273,7 @@
           "id": "henry_locked_drawer",
           "label": "Locked drawer",
           "description": "A locked drawer sits beneath Henry's writing desk.",
-          "result_text": "Inside Henry's locked drawer, you find an old death certificate connected to Edward's late wife. Some dates and dosages appear to have been altered by hand.",
+          "result_text": "Inside Dr. Ashford's locked drawer, you find an old death certificate for Edward's late wife folded together with a treatment note. The certificate records her death as natural heart failure, but the note lists a stronger dose of digitalis, a heart medication marked as dangerous in higher doses. Several figures on the certificate have been overwritten by hand, and Dr. Ashford's signature appears beside the alteration.",
           "clue_id": "altered_death_certificate",
           "has_clue": true
         },

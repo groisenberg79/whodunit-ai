@@ -131,7 +131,7 @@
       "alibi": {
         "public_claim": "Julian claims he left the library after arguing with Edward and went outside to the garden path to cool down.",
         "crime_time_location_id": "garden_path",
-        "hidden_truth": "Julian did go outside after the argument. In anger, he threw his pocket watch against the stone path, breaking it.",
+        "hidden_truth": "Julian did go outside after the argument to compose himself. He had argued with Edward about money and old family wounds, but Edward was still alive when Julian left the library.",
         "weakness": "He was alone outside for several minutes, so his alibi is emotionally plausible but not fully witnessed."
       },
       "knowledge": [
@@ -152,37 +152,52 @@
         "Edward was still alive when Julian left the library."
       ],
       "evidence_reactions": {
-        "broken_watch": {
-          "reaction_type": "angry_admission",
-          "response_guidance": "Julian admits he stormed outside and broke the watch in anger. He should admit threatening Edward, but deny killing him.",
+        "gambling_debt_notice": {
+          "reaction_type": "defensive_financial_admission",
+          "response_guidance": "Julian becomes defensive and ashamed. He should admit that he needed money and asked Edward for help, but deny that financial desperation made him a murderer.",
           "may_reveal": [
-            "He argued violently with Edward.",
-            "He said he wished Edward dead.",
-            "He left the library while Edward was still alive.",
-            "He broke the watch outside in anger."
+            "He owed money because of gambling debts.",
+            "He came to Blackwood Manor partly to ask Edward for money.",
+            "Edward refused him coldly.",
+            "Julian felt Edward owed him something after years of neglect."
           ],
-          "sample_response": "I said I wished him dead. I won't deny it. But wishing is not doing. When I left that room, he was alive."
+          "sample_response": "Yes, I needed money. I asked him for help, and he refused as if I were some beggar at the door. But needing money does not make me a murderer."
+        },
+        "torn_julian_cuff": {
+          "reaction_type": "angry_physical_admission",
+          "response_guidance": "Julian admits the argument became physical, but insists it was a brief struggle and that Edward was alive when he left.",
+          "may_reveal": [
+            "He argued with Edward in the library.",
+            "The argument became physical.",
+            "His cuff tore during the confrontation.",
+            "He threatened Edward but did not kill him.",
+            "Edward was alive when Julian left the library."
+          ],
+          "sample_response": "We argued. He grabbed me, or I grabbed him — I hardly remember which. The cuff tore. I said things I should not have said, but when I left that room, he was alive."
         }
       },
       "combo_evidence_reactions": [
         {
-          "id": "julian_timeline_pressure",
+          "id": "julian_debt_and_struggle_confession",
           "required_clue_ids": [
-            "broken_watch",
-            "final_appointment_note"
+            "gambling_debt_notice",
+            "torn_julian_cuff"
           ],
           "trigger_clue_ids": [
-            "broken_watch",
-            "final_appointment_note"
+            "gambling_debt_notice",
+            "torn_julian_cuff"
           ],
-          "reaction_type": "defensive_timeline_realization",
-          "response_guidance": "Julian realizes that Edward was expecting someone after dinner. He should argue that the appointment note proves Edward had another confrontation after Julian left.",
+          "reaction_type": "full_red_herring_admission",
+          "response_guidance": "Julian admits the full red-herring truth: he returned because he needed money, argued with Edward about both money and old family wounds, physically struggled with him, and threatened him. He must still insist Edward was alive when he left and that the medical method does not fit him.",
           "may_reveal": [
-            "Edward was alive when Julian left.",
-            "Julian believes Edward was waiting for someone else.",
-            "Julian becomes defensive but more focused."
+            "He came back partly because of gambling debts.",
+            "He demanded money from Edward.",
+            "He believed Edward owed him after years of neglect and cruelty.",
+            "The argument became physical.",
+            "He threatened Edward in anger.",
+            "Edward was alive when Julian left the library."
           ],
-          "sample_response": "If he wrote that note, then he was waiting for someone after me. I left him alive. Whoever H. was, ask yourself why Edward needed him after dinner."
+          "sample_response": "Fine. I needed money. I asked him for it, and he looked at me as if I were nothing. After everything he did, after all the years he made that house a prison, I thought I had the right to ask. We fought. I threatened him. I even wished him dead. But I left him alive."
         }
       ],
       "forbidden_behavior": [

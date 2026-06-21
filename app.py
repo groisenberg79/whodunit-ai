@@ -169,12 +169,29 @@ def main() -> None:
     for clue in discovered_clues_for_options:
         clue_options[clue["name"]] = clue["id"]
 
-    selected_clue_name = st.selectbox(
+    selected_clue_names = st.multiselect(
         "Optional: confront with evidence",
-        options=list(clue_options.keys()),
+        options=[
+            clue_name
+            for clue_name in clue_options.keys()
+            if clue_name != "No evidence"
+        ],
+        help=(
+            "You may present one or more discovered clues. Some suspects may react "
+            "differently when confronted with a combination of evidence."
+        ),
     )
 
-    confronted_clue_id = clue_options[selected_clue_name]
+    confronted_clue_ids = [
+        clue_options[clue_name]
+        for clue_name in selected_clue_names
+    ]
+
+    confronted_clue_id = (
+        confronted_clue_ids[0]
+        if confronted_clue_ids
+        else None
+    )
 
     if st.button("Ask suspect"):
         if not player_question.strip():
@@ -186,6 +203,7 @@ def main() -> None:
                 "suspect_id": selected_suspect_id,
                 "player_question": player_question,
                 "confronted_clue_id": confronted_clue_id,
+                "confronted_clue_ids": confronted_clue_ids,
                 "rag_index": st.session_state.rag_index,
                 "rag_documents": st.session_state.rag_documents,
                 "embedding_model": st.session_state.embedding_model,
@@ -272,20 +290,26 @@ def main() -> None:
     if "last_inspection_result" in st.session_state:
         result = st.session_state.last_inspection_result
 
-        st.subheader("Inspection result")
-        st.write(result["result_text"])
+        result_matches_current_selection = (
+            result["location_id"] == selected_location["id"]
+            and result["area_id"] == area_options[selected_area_label]
+        )
 
-        if result["has_clue"]:
-            clue = get_clue_by_id(
-                game_data=game_data,
-                clue_id=result["clue_id"],
-            )
-            clue_name = clue["name"]
+        if result_matches_current_selection:
+            st.subheader("Inspection result")
+            st.write(result["result_text"])
 
-            if result["newly_discovered"]:
-                st.success(f"New clue discovered: **{clue_name}**")
-            else:
-                st.info(f"You already discovered this clue: **{clue_name}**")
+            if result["has_clue"]:
+                clue = get_clue_by_id(
+                    game_data=game_data,
+                    clue_id=result["clue_id"],
+                )
+                clue_name = clue["name"]
+
+                if result["newly_discovered"]:
+                    st.success(f"New clue discovered: **{clue_name}**")
+                else:
+                    st.info(f"You already discovered this clue: **{clue_name}**")
 
 
     st.divider()

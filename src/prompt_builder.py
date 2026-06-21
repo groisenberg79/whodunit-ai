@@ -93,18 +93,39 @@ def format_confronted_clue(confronted_clue: dict[str, Any] | None) -> str:
     )
 
 
-def format_evidence_reaction(evidence_reaction: dict[str, Any] | None) -> str:
+def format_evidence_reaction(
+    evidence_reaction: dict[str, Any] | None,
+    confronted_clue: dict[str, Any] | None,
+    clue_is_related_to_suspect: bool,
+) -> str:
     """
     Format evidence reaction guidance for prompt context.
 
     Args:
         evidence_reaction: Evidence reaction dictionary, if any.
+        confronted_clue: Clue dictionary selected for confrontation, if any.
+        clue_is_related_to_suspect: Whether the clue directly targets this suspect.
 
     Returns:
         Formatted evidence reaction guidance.
     """
+    if confronted_clue is None:
+        return "No evidence was presented, so no special evidence reaction applies."
+
+    if not clue_is_related_to_suspect:
+        return (
+            "The presented evidence is not specifically connected to this suspect. "
+            "The NPC should still answer naturally from their own knowledge and personality. "
+            "They may deny knowledge, express surprise, dismiss its relevance, or redirect suspicion, "
+            "but they must not invent new plot facts, new alibis, new witnesses, new documents, "
+            "or hidden knowledge about the clue."
+        )
+
     if evidence_reaction is None:
-        return "No special evidence reaction applies."
+        return (
+            "This evidence is connected to the suspect, but no special reaction is defined. "
+            "The NPC should respond cautiously using only established character knowledge and the clue text."
+        )
 
     may_reveal = evidence_reaction.get("may_reveal", [])
 
@@ -207,7 +228,11 @@ def build_npc_user_prompt(interview_context: dict[str, Any]) -> str:
         interview_context["confronted_clue"]
     )
     evidence_reaction_text = format_evidence_reaction(
-        interview_context["evidence_reaction"]
+        evidence_reaction=interview_context["evidence_reaction"],
+        confronted_clue=interview_context["confronted_clue"],
+        clue_is_related_to_suspect=interview_context[
+            "confronted_clue_is_related_to_suspect"
+        ],
     )
     dialogue_history_text = format_dialogue_history(
         interview_context["dialogue_history"]

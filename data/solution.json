@@ -58,8 +58,7 @@
   ],
   "red_herring_evidence_ids": [
     "torn_will_note",
-    "beatrice_letters",
-    "broken_watch"
+    "beatrice_letters"
   ],
   "correct_accusation": {
     "culprit_id": "henry_ashford",
@@ -182,7 +181,7 @@
     },
     "wrong_julian": {
       "title": "Incorrect Accusation: Julian Blackwood",
-      "message": "Julian's anger was real, but his broken watch supports that he left the library after the argument. His motive was emotional, but the method points elsewhere."
+      "message": "Julian's anger was real, and he had reason to resent Edward, but the murder method points elsewhere."
     },
     "wrong_generic": {
       "title": "Incorrect Accusation",
