@@ -309,9 +309,9 @@
       },
       "real_secret": "Henry killed Edward to prevent exposure of the old medical cover-up. He knew about Beatrice's affair with Edward, but he was not truly jealous. He is himself involved in another affair and considers his marriage to Beatrice practically finished.",
       "alibi": {
-        "public_claim": "Henry claims he was in his study reviewing medical correspondence.",
-        "crime_time_location_id": "henry_study",
-        "hidden_truth": "Henry entered the library around 9:22 PM, drugged Edward's brandy, killed him, staged the scene, and returned to his study.",
+        "public_claim": "Henry claims he was in his assigned room reviewing medical correspondence.",
+        "crime_time_location_id": "henry_room",
+        "hidden_truth": "Henry entered the library around 9:22 PM, drugged Edward's brandy, killed him, staged the scene, and returned to his assigned room.",
         "weakness": "His alibi depends almost entirely on his own testimony."
       },
       "knowledge": [

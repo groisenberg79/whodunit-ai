@@ -86,7 +86,7 @@
     {
       "id": "medical_vial",
       "name": "Small Medical Vial",
-      "location_id": "henry_study",
+      "location_id": "henry_room",
       "discovery_area_id": "medical_bag",
       "related_suspect_ids": ["henry_ashford"],
       "confrontation_targets": ["henry_ashford"],
@@ -174,7 +174,7 @@
     {
       "id": "altered_death_certificate",
       "name": "Altered Death Certificate",
-      "location_id": "henry_study",
+      "location_id": "henry_room",
       "discovery_area_id": "henry_locked_drawer",
       "related_suspect_ids": ["henry_ashford"],
       "confrontation_targets": ["henry_ashford"],

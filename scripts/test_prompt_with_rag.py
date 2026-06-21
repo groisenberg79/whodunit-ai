@@ -23,7 +23,7 @@ def main() -> None:
     state = GameState.from_case_data(game_data["case"])
 
     library = get_location_by_id(game_data, "library")
-    henry_study = get_location_by_id(game_data, "henry_study")
+    henry_room = get_location_by_id(game_data, "henry_room")
 
     inspect_location_area(
         state=state,
@@ -33,7 +33,7 @@ def main() -> None:
 
     inspect_location_area(
         state=state,
-        location=henry_study,
+        location=henry_room,
         area_id="medical_bag",
     )
 

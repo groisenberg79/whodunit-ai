@@ -42,7 +42,7 @@
     "description": "Henry used his medical knowledge and access to medicine to weaken Edward by adding a sedative or cardiac drug to Edward's brandy. After Edward was weakened, Henry used the silver letter opener to stage the murder as a sudden violent attack and redirect suspicion toward Clara, Julian, or Beatrice."
   },
   "opportunity": {
-    "description": "Edward had arranged to meet Henry privately after dinner. Henry entered the library around 9:22 PM, drugged Edward's brandy, killed him, staged the scene, and returned to his study before the body was discovered.",
+    "description": "Edward had arranged to meet Henry privately after dinner. Henry entered the library around 9:22 PM, drugged Edward's brandy, killed him, staged the scene, and returned to his assigned room before the body was discovered.",
     "supporting_clues": [
       "final_appointment_note"
     ]

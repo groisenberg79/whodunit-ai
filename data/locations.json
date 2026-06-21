@@ -248,12 +248,12 @@
       ]
     },
     {
-      "id": "henry_study",
-      "name": "Henry's Study",
-      "image_path": "assets/locations/henry_study.png",
-      "short_description": "Henry Ashford's tidy and cold medical study.",
-      "description": "Henry's study is tidy, cold, and almost unnervingly precise. Medical books are stacked in perfect order. A locked drawer sits beneath the writing desk, and Henry's black medical bag rests near the chair.",
-      "function_in_mystery": "Henry's study contains the deepest solution clues. It connects Henry to both the method and the true motive.",
+      "id": "henry_room",
+      "name": "Dr. Ashford's Room",
+      "image_path": "assets/locations/henry_room.png",
+      "short_description": "The guest room assigned to Dr. Henry Ashford during his stay at Blackwood Manor.",
+      "description": "A spare upstairs room assigned to Dr. Henry Ashford during his stay at Blackwood Manor. It is neat, restrained, and almost clinically ordered. His medical bag rests near a chair, and a writing desk holds correspondence, folded papers, and a locked drawer.",
+      "function_in_mystery": "This room connects Henry to the medical evidence and the hidden documents that reveal his motive.",
       "available_from_start": true,
       "clue_ids": [
         "medical_vial",
@@ -303,7 +303,7 @@
       ],
       "rag_tags": [
         "location",
-        "henry_study",
+        "henry_room",
         "medical_vial",
         "altered_death_certificate",
         "true_motive",
