@@ -83,7 +83,7 @@
           "id": "wastebasket",
           "label": "Wastebasket",
           "description": "A small wastebasket sits beside Edward's writing desk.",
-          "result_text": "Inside the wastebasket, you find a torn note. Several words are missing, but Clara's name and the phrase 'revision of the will' are still visible.",
+          "result_text": "Inside the wastebasket, you find a torn piece of Edward's handwritten legal draft. Only fragments remain readable:\n\n\"Revision of my will...\"\n\"Clara Vale...\"\n\"monthly allowance to be reduced...\"\n\"no claim upon the principal estate...\"\n\nThe lower half of the page is missing.",
           "clue_id": "torn_will_note",
           "has_clue": true
         },
@@ -198,7 +198,9 @@
       "description": "The garden path runs along the side of the manor, beneath the library windows. Rain has softened the gravel and mud. A stone bench sits near the rose bushes, half-hidden in the dark.",
       "function_in_mystery": "The garden path supports Julian's story and complicates the timeline. It makes him look suspicious, but also gives evidence that he left the library before the murder.",
       "available_from_start": true,
-      "clue_ids": [],
+      "clue_ids": [
+        "hidden_legal_fragment"
+      ],
       "inspectable_areas": [
         {
           "id": "stone_path",
@@ -220,9 +222,9 @@
           "id": "stone_bench",
           "label": "Stone bench",
           "description": "A stone bench sits near the rose bushes.",
-          "result_text": "Rainwater gathers on the bench. Someone may have stood here recently, but nothing points clearly to the killer.",
-          "clue_id": null,
-          "has_clue": false
+          "result_text": "Near the stone bench, you find a small evening handbag damp from the rain. Clara Vale's initials are sewn into the lining. Inside, you find a folded scrap of legal paper. Its torn edge appears to match the note from Edward's wastebasket. The readable lines say:\n\n\"...remove Clara Vale from the principal inheritance...\"\n\"...effective upon my signature...\"\n\"...no further advances or household allowance...\"",
+          "clue_id": "hidden_legal_fragment",
+          "has_clue": true
         },
         {
           "id": "rose_bushes",
@@ -245,6 +247,8 @@
         "location",
         "garden_path",
         "julian_blackwood",
+        "hidden_legal_fragment",
+        "clara_vale",
         "timeline"
       ]
     },

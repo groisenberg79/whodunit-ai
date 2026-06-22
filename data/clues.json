@@ -15,19 +15,55 @@
       "category": "inheritance_motive",
       "is_solution_critical": false,
       "image_path": "assets/evidence/torn_will_note.png",
-      "description": "A torn handwritten note found in Edward's study. It appears to mention a planned change to the will and includes Clara's name.",
-      "discovery_text": "Inside the wastebasket, you find a torn note. Several words are missing, but Clara's name and the phrase 'revision of the will' are still visible.",
-      "what_it_suggests": "Clara may have killed Edward to prevent him from cutting her out of the inheritance.",
-      "what_it_actually_means": "Clara was desperate about the inheritance and may have tried to manipulate Edward, but this does not prove murder.",
+      "description": "A torn piece of Edward's handwritten legal draft found in the wastebasket. Only fragments remain readable: 'Revision of my will...', 'Clara Vale...', 'monthly allowance to be reduced...', and 'no claim upon the principal estate...'. The lower half of the page is missing.",
+      "discovery_text": "Inside the wastebasket, you find a torn piece of Edward's handwritten legal draft. Only fragments remain readable:\n\n\"Revision of my will...\"\n\"Clara Vale...\"\n\"monthly allowance to be reduced...\"\n\"no claim upon the principal estate...\"\n\nThe lower half of the page is missing.",
+      "what_it_suggests": "Edward was preparing a serious inheritance change involving Clara.",
+      "what_it_actually_means": "Edward intended to reduce or remove Clara's financial support, giving her a reason to fear the will revision. Clara later hid the missing fragment, but this points to panic and concealment rather than the murder method.",
       "dialogue_effects": {
-        "default": "This clue can be used to confront Clara about her financial fear and possible dishonesty.",
-        "when_confronting_clara_vale": "Clara becomes defensive. She may admit she was afraid of losing her inheritance and that she acted dishonestly, but she denies killing Edward."
+        "default": "This clue can be used to ask about Edward's planned will revision involving Clara.",
+        "when_confronting_clara_vale": "Clara should react defensively to the inheritance implications, but she should not be told by the prompt that the clue implies murder."
       },
       "rag_tags": [
         "clue",
         "inheritance",
         "will",
         "clara_vale",
+        "red_herring"
+      ]
+    },
+    {
+      "id": "hidden_legal_fragment",
+      "name": "Hidden Legal Fragment",
+      "location_id": "garden_path",
+      "discovery_area_id": "stone_bench",
+      "related_suspect_ids": [
+        "clara_vale"
+      ],
+      "confrontation_targets": [
+        "clara_vale"
+      ],
+      "type": "red_herring",
+      "category": "inheritance_concealment",
+      "is_solution_critical": false,
+      "image_path": "assets/evidence/hidden_legal_fragment.png",
+      "description": "A folded scrap of legal paper found inside Clara's handbag near the garden path. Its torn edge appears to match the note from Edward's wastebasket. The readable lines say: 'remove Clara Vale from the principal inheritance...', 'effective upon my signature...', and 'no further advances or household allowance...'.",
+      "discovery_text": "Near the stone bench, you find a small evening handbag damp from the rain. Clara Vale's initials are sewn into the lining. Inside, you find a folded scrap of legal paper. Its torn edge appears to match the note from Edward's wastebasket. The readable lines say:\n\n\"...remove Clara Vale from the principal inheritance...\"\n\"...effective upon my signature...\"\n\"...no further advances or household allowance...\"",
+      "what_it_suggests": "The fragment appears to be the missing part of Edward's will revision, and Clara had hidden it in her handbag.",
+      "what_it_actually_means": "Clara concealed part of the will revision because it showed Edward intended to remove her from the principal inheritance and cut off further financial support. This shows fear and dishonesty, not the true murder method.",
+      "dialogue_effects": {
+        "default": "This clue can be used to confront Clara about hiding the missing part of Edward's will revision.",
+        "when_confronting_clara_vale": "Clara should become defensive and admit she hid the fragment out of fear, but deny killing Edward."
+      },
+      "combo_clues": [
+        "torn_will_note"
+      ],
+      "rag_tags": [
+        "clue",
+        "inheritance",
+        "will",
+        "legal_fragment",
+        "clara_vale",
+        "garden_path",
         "red_herring"
       ]
     },

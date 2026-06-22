@@ -31,6 +31,13 @@ def initialize_session_state() -> None:
     if "interview_graph" not in st.session_state:
         st.session_state.interview_graph = build_interview_graph()
 
+def render_multiline_text(text: str) -> None:
+    """
+    Render text while preserving intended line breaks in Streamlit Markdown.
+    """
+    st.markdown(text.replace("\n", "  \n"))
+
+
 def reset_game() -> None:
     """
     Reset the game state while keeping the loaded game data.
@@ -115,7 +122,7 @@ def main() -> None:
     else:
         for clue in discovered_clue_details:
             with st.expander(clue["name"]):
-                st.write(clue["description"])
+                render_multiline_text(clue["description"])
 
     st.divider()
 
@@ -297,7 +304,7 @@ def main() -> None:
 
         if result_matches_current_selection:
             st.subheader("Inspection result")
-            st.write(result["result_text"])
+            render_multiline_text(result["result_text"])
 
             if result["has_clue"]:
                 clue = get_clue_by_id(

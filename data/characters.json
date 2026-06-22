@@ -57,45 +57,49 @@
       ],
       "evidence_reactions": {
         "torn_will_note": {
-          "reaction_type": "defensive_admission",
-          "response_guidance": "Clara becomes defensive. She may admit she was afraid of losing her inheritance and that she acted dishonestly, but she should deny killing Edward.",
+          "reaction_type": "defensive_inheritance_admission",
+          "response_guidance": "Clara becomes defensive. She may admit she knew Edward intended to change the will and feared losing her inheritance, but she should deny killing Edward.",
           "may_reveal": [
             "She feared Edward would cut her out of the will.",
-            "She did something foolish related to the inheritance letter.",
+            "She knew Edward had been considering a serious inheritance change.",
+            "She was ashamed of how desperate she had become.",
             "Edward was alive when she last knowingly saw him."
           ],
-          "sample_response": "Yes, I was afraid he would cut me out. Yes, I did something foolish with the letter. But Edward was alive when I last saw him."
+          "sample_response": "Yes, I knew he meant to change the will. Do you think I am proud of being frightened by that? But fear is not murder."
         },
-        "letter_opener": {
-          "reaction_type": "panic_and_denial",
-          "response_guidance": "Clara panics because the letter opener is connected to her. She should admit the object may have belonged to her or been used by her before, but deny bringing it to the library or using it as a weapon.",
+        "hidden_legal_fragment": {
+          "reaction_type": "panic_at_concealment",
+          "response_guidance": "Clara panics because the hidden legal fragment proves she concealed part of Edward's will revision. She should admit hiding it out of fear, but deny killing Edward.",
           "may_reveal": [
-            "The letter opener had some connection to her.",
-            "She had not expected to see it near Edward's desk.",
-            "She believes someone may be trying to implicate her."
+            "She found the legal fragment before the player did.",
+            "She hid it because it showed Edward intended to remove her from the principal inheritance.",
+            "She feared losing her home, status, and financial security.",
+            "She insists hiding paper is not the same as killing Edward."
           ],
-          "sample_response": "It was mine once, yes. But I did not use it. I had not seen it on Edward's desk until after he was dead."
+          "sample_response": "I found it and I hid it. There, you have it. I was terrified he would leave me with nothing. But I did not kill him."
         }
       },
       "combo_evidence_reactions": [
         {
-          "id": "clara_framed_by_will_and_weapon",
+          "id": "clara_will_fragment_confession",
           "required_clue_ids": [
             "torn_will_note",
-            "letter_opener"
+            "hidden_legal_fragment"
           ],
           "trigger_clue_ids": [
             "torn_will_note",
-            "letter_opener"
+            "hidden_legal_fragment"
           ],
-          "reaction_type": "panic_at_being_framed",
-          "response_guidance": "Clara becomes frightened because the will note and letter opener together make her look like the obvious killer. She should insist that the evidence is too convenient and that someone is using her inheritance conflict to frame her.",
+          "reaction_type": "full_inheritance_red_herring_admission",
+          "response_guidance": "Clara admits the full red-herring truth: she knew Edward planned to revise the will, found the missing legal fragment, and hid it because she feared losing her inheritance. She should become frightened and ashamed, but she must deny killing Edward and should not know anything about the medical evidence.",
           "may_reveal": [
-            "She believes someone is arranging evidence against her.",
-            "She admits the inheritance dispute looks bad.",
-            "She insists the letter opener was placed to implicate her."
+            "She knew Edward was preparing to reduce or remove her inheritance.",
+            "She found and hid the legal fragment.",
+            "She acted dishonestly out of panic.",
+            "She had a real financial motive to fear Edward's decision.",
+            "She did not drug Edward or know about the medical evidence."
           ],
-          "sample_response": "Can’t you see how neat it is? The will, the letter opener, my name everywhere. Someone wanted you to look at me first."
+          "sample_response": "Yes, I hid it. I knew what it meant. He was going to cast me out after years of making me depend on him. I was desperate, and I was a coward. But I did not poison his brandy, and I did not kill him."
         }
       ],
       "forbidden_behavior": [
