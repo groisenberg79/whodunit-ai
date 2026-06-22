@@ -11,7 +11,8 @@
       "clue_ids": [
         "brandy_glass_residue",
         "letter_opener",
-        "torn_julian_cuff"
+        "torn_julian_cuff",
+        "beatrice_letters"
       ],
       "inspectable_areas": [
         {
@@ -53,6 +54,14 @@
           "result_text": "The window is closed from the inside. It does not look like anyone escaped this way.",
           "clue_id": null,
           "has_clue": false
+        },
+        {
+          "id": "edward_private_folio",
+          "label": "Edward's private folio",
+          "description": "A leather folio lies tucked beside Edward's reading chair.",
+          "result_text": "In a leather folio tucked beside Edward's reading chair, you find three letters from Beatrice Ashford.\n\nThe first is dated 7 October 1936:\n\n\"Dear Mr. Blackwood,\n\nI have tried, for several days, to accept your request with the dignity you seem so eager to demand from me. You say that what passed between us must now be regarded as a mistake, a weakness, a private disorder from which we have both recovered. How convenient that must be for you.\n\nYou cannot ask me to pretend that these months meant nothing. I gave you more of myself than propriety or prudence allowed, and I did so because you made me believe that I was not merely amusing to you. You spoke of tenderness. You spoke of a future, however impossible. Now you write as though I were a social inconvenience to be put away before dinner.\n\nI will not make a scene. I know what I owe to my name, to my marriage, and to the roof under which I am received. But do not mistake restraint for consent. You have wounded me more deeply than you seem willing to understand.\n\nYours sincerely,\nBeatrice Ashford\"\n\nThe second is dated 10 October 1936:\n\n\"Edward,\n\nYou ask for discretion after making me ridiculous in my own house. You say it is better that we 'return to our proper places,' as if I were a chair moved too close to the fire.\n\nDo not dress cruelty as honor. You tired of me, and now you would like the whole affair to become tasteful silence. I wonder whether you have any idea what silence costs a woman. You may walk through the halls with your reputation intact. I am expected to smile beside Henry and pretend I was never foolish enough to love you.\n\nI will not be dismissed like a servant who has misunderstood her position.\n\nB.\"\n\nThe third is dated 14 October 1936:\n\n\"Edward,\n\nDo not avoid me tonight.\n\nIf you humiliate me before them, if you make me stand there while you behave as though I meant nothing, I swear you will regret it.\n\nB.\"",
+          "clue_id": "beatrice_letters",
+          "has_clue": true
         }
       ],
       "rag_tags": [
@@ -62,7 +71,10 @@
         "brandy",
         "letter_opener",
         "method",
-        "torn_julian_cuff"
+        "torn_julian_cuff",
+        "beatrice_letters",
+        "beatrice_ashford",
+        "affair"
       ]
     },
     {
@@ -137,17 +149,15 @@
       "description": "Beatrice's room is elegant but disordered. A perfume bottle lies open on the dressing table, gloves are tossed onto a chair, and several torn pieces of stationery are hidden beneath a folded shawl. The room suggests someone trying to preserve dignity while quietly falling apart.",
       "function_in_mystery": "Beatrice's room reveals the affair between Beatrice and Edward and creates a strong romantic red herring.",
       "available_from_start": true,
-      "clue_ids": [
-        "beatrice_letters"
-      ],
+      "clue_ids": [],
       "inspectable_areas": [
         {
           "id": "writing_box",
           "label": "Writing box",
-          "description": "A polished writing box sits half-open beneath a folded shawl.",
-          "result_text": "In Beatrice's writing box, you find several letters addressed to Edward. The handwriting grows more frantic from page to page. She begs him not to abandon her, then accuses him of cruelty.",
-          "clue_id": "beatrice_letters",
-          "has_clue": true
+          "description": "A polished writing box sits on the dressing table.",
+          "result_text": "Inside the writing box, you find stationery, sealing wax, and several torn scraps of unused paper, but no complete letter.",
+          "clue_id": null,
+          "has_clue": false
         },
         {
           "id": "dressing_table",

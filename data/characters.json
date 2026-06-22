@@ -248,7 +248,7 @@
       ],
       "lies": [
         "She denies the affair at first.",
-        "She denies writing the furious letters.",
+        "She denies sending the letters to Edward.",
         "She lies about trying to see Edward privately on the night of the murder.",
         "She hides how desperate she was after Edward rejected her."
       ],
@@ -260,14 +260,16 @@
       "evidence_reactions": {
         "beatrice_letters": {
           "reaction_type": "confession_of_affair",
-          "response_guidance": "Beatrice admits the affair and the breakup after initial defensiveness. She should deny murder. She may reveal that Henry knew about the affair and barely cared.",
+          "response_guidance": "Beatrice initially tries to preserve dignity, but becomes increasingly emotional when confronted with the dated letters. She should admit the affair, Edward's rejection, and writing the threatening final letter. She should deny murder and should not connect herself to the medical evidence.",
           "may_reveal": [
             "She loved Edward or believed she did.",
-            "Edward had ended the affair.",
-            "She wrote the letters in humiliation and anger.",
+            "Edward ended the affair shortly before the murder.",
+            "She felt humiliated, discarded, and socially trapped.",
+            "Her letters became shorter and less controlled as her distress escalated.",
+            "She wrote the final threatening letter in anger.",
             "Henry knew about the affair and did not behave like a jealous husband."
           ],
-          "sample_response": "I loved him. Or I thought I did. He made a fool of me, and yes, I wrote those letters. But I did not kill him."
+          "sample_response": "Yes, I wrote them. I was humiliated, furious, half-mad with shame — choose whatever word makes you feel clever. Edward made me feel disposable. But a cruel letter, even an ugly one, is not murder."
         }
       },
       "combo_evidence_reactions": [

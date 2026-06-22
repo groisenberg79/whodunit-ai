@@ -69,9 +69,9 @@
     },
     {
       "id": "beatrice_letters",
-      "name": "Beatrice's Furious Letters",
-      "location_id": "beatrice_room",
-      "discovery_area_id": "writing_box",
+      "name": "Beatrice's Letters",
+      "location_id": "library",
+      "discovery_area_id": "edward_private_folio",
       "related_suspect_ids": [
         "beatrice_ashford",
         "henry_ashford"
@@ -84,13 +84,13 @@
       "category": "romantic_motive",
       "is_solution_critical": false,
       "image_path": "assets/evidence/beatrice_letters.png",
-      "description": "A bundle of emotional, bitter letters from Beatrice to Edward. They reveal that Edward ended their affair and that Beatrice did not accept it.",
-      "discovery_text": "In Beatrice's writing box, you find several letters addressed to Edward. The handwriting grows more frantic from page to page. She begs him not to abandon her, then accuses him of cruelty.",
-      "what_it_suggests": "Beatrice may have killed Edward because he rejected and humiliated her.",
-      "what_it_actually_means": "Beatrice was emotionally devastated and lied about the affair, but she did not kill Edward. The letters also reveal that Henry's apparent jealousy may be misleading, since he knew about the affair and barely cared.",
+      "description": "A bundle of three letters from Beatrice to Edward, found among Edward's private papers in the library. The letters are dated 7 October, 10 October, and 14 October 1936. Their tone changes from wounded formality to anger and then to a short, threatening note.",
+      "discovery_text": "In a leather folio tucked beside Edward's reading chair, you find three letters from Beatrice Ashford.\n\nThe first is dated 7 October 1936:\n\n\"Dear Mr. Blackwood,\n\nI have tried, for several days, to accept your request with the dignity you seem so eager to demand from me. You say that what passed between us must now be regarded as a mistake, a weakness, a private disorder from which we have both recovered. How convenient that must be for you.\n\nYou cannot ask me to pretend that these months meant nothing. I gave you more of myself than propriety or prudence allowed, and I did so because you made me believe that I was not merely amusing to you. You spoke of tenderness. You spoke of a future, however impossible. Now you write as though I were a social inconvenience to be put away before dinner.\n\nI will not make a scene. I know what I owe to my name, to my marriage, and to the roof under which I am received. But do not mistake restraint for consent. You have wounded me more deeply than you seem willing to understand.\n\nYours sincerely,\nBeatrice Ashford\"\n\nThe second is dated 10 October 1936:\n\n\"Edward,\n\nYou ask for discretion after making me ridiculous in my own house. You say it is better that we 'return to our proper places,' as if I were a chair moved too close to the fire.\n\nDo not dress cruelty as honor. You tired of me, and now you would like the whole affair to become tasteful silence. I wonder whether you have any idea what silence costs a woman. You may walk through the halls with your reputation intact. I am expected to smile beside Henry and pretend I was never foolish enough to love you.\n\nI will not be dismissed like a servant who has misunderstood her position.\n\nB.\"\n\nThe third is dated 14 October 1936:\n\n\"Edward,\n\nDo not avoid me tonight.\n\nIf you humiliate me before them, if you make me stand there while you behave as though I meant nothing, I swear you will regret it.\n\nB.\"",
+      "what_it_suggests": "The letters show that Beatrice's relationship with Edward had collapsed shortly before the murder, and that she felt wounded, humiliated, and increasingly angry.",
+      "what_it_actually_means": "Beatrice had a real emotional motive and lied to hide the affair, but the letters do not connect her to the medical evidence, the brandy, or the staging of Edward's death.",
       "dialogue_effects": {
-        "default": "This clue can be used to confront Beatrice about the affair and her emotional state.",
-        "when_confronting_beatrice_ashford": "Beatrice may admit the affair and the breakup. She should deny murder and may reveal that Henry knew about the affair but seemed strangely indifferent.",
+        "default": "This clue can be used to ask Beatrice about her relationship with Edward, the breakup, and the threatening final letter.",
+        "when_confronting_beatrice_ashford": "Beatrice should react emotionally and defensively. She may admit the affair, the rejection, and writing the letters, but she should deny killing Edward.",
         "when_confronting_henry_ashford": "Henry may admit or imply that he knew about the affair, but he should not behave like a jealous husband. This weakens jealousy as his true motive."
       },
       "rag_tags": [
