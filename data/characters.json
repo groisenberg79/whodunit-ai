@@ -406,12 +406,13 @@
         },
         "letter_opener": {
           "reaction_type": "redirect_to_clara",
-          "response_guidance": "Henry should subtly redirect suspicion toward Clara without seeming too eager.",
+          "response_guidance": "Henry should treat the letter opener as obvious surface evidence and encourage the player to focus on the visible violence rather than the medical details. He should avoid tying it to any particular suspect.",
           "may_reveal": [
-            "The letter opener appears connected to Clara.",
-            "Henry wants the player to focus on the inheritance dispute."
+            "The letter opener appears to explain the visible wound.",
+            "Henry wants the player to focus on the apparent stabbing rather than the medical evidence.",
+            "He treats the scene as simpler than it really is."
           ],
-          "sample_response": "If the object belonged to Miss Vale, perhaps your questions would be better directed toward her."
+          "sample_response": "A dead man, a wound, and a sharp object nearby — most people would consider that sufficient. But by all means, continue making the obvious complicated."
         }
       },
       "combo_evidence_reactions": [

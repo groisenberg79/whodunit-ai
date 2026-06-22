@@ -206,7 +206,7 @@
       "image_path": "assets/locations/garden_path.png",
       "short_description": "The rain-soaked path outside the manor, beneath the library windows.",
       "description": "The garden path runs along the side of the manor, beneath the library windows. Rain has softened the gravel and mud. A stone bench sits near the rose bushes, half-hidden in the dark.",
-      "function_in_mystery": "The garden path supports Julian's story and complicates the timeline. It makes him look suspicious, but also gives evidence that he left the library before the murder.",
+      "function_in_mystery": "The garden path complicates the suspects' movements outside the manor and contains evidence that someone tried to hide or discard something away from the main rooms.",
       "available_from_start": true,
       "clue_ids": [
         "hidden_legal_fragment"
@@ -248,7 +248,7 @@
           "id": "side_door",
           "label": "Side door",
           "description": "A side door leads from the garden path into the corridor near the library.",
-          "result_text": "The side door leads back into the corridor near the library. It could explain Julian's movements after the argument.",
+          "result_text": "The side door leads back into the corridor near the library. It could explain how someone moved between the garden path and the house without crossing the main hall.",
           "clue_id": null,
           "has_clue": false
         }

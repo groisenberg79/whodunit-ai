@@ -260,13 +260,12 @@
       "category": "staged_weapon",
       "is_solution_critical": false,
       "image_path": "assets/evidence/letter_opener.png",
-      "description": "A silver letter opener found near Edward's desk. It appears to be the murder weapon. It is connected to Clara, or at least was recently used by her.",
+      "description": "A silver letter opener found near Edward's desk. It appears to be the visible murder weapon, though its placement feels almost too convenient.",
       "discovery_text": "A silver letter opener lies near Edward's desk. Its polished handle catches the firelight. It seems too conveniently placed.",
-      "what_it_suggests": "Clara may have killed Edward with an object connected to her.",
-      "what_it_actually_means": "Henry used or planted the letter opener to redirect suspicion toward Clara and the inheritance dispute. The letter opener is part of the staging, not the whole method.",
+      "what_it_suggests": "Edward appears to have been killed in a sudden violent attack with the letter opener.",
+      "what_it_actually_means": "The letter opener was used as part of Henry's staging. It makes the death look like a simple violent attack, distracting from the medical evidence and the drugged brandy.",
       "dialogue_effects": {
-        "default": "This clue can be used to confront Clara about the weapon or Henry about the staging.",
-        "when_confronting_clara_vale": "Clara panics because the letter opener is connected to her, but she denies bringing it to the library or using it.",
+        "default": "This clue can be used to ask suspects about the apparent stabbing and whether the scene was staged.",
         "when_confronting_henry_ashford": "Henry should subtly redirect suspicion toward Clara without seeming too eager."
       },
       "rag_tags": [

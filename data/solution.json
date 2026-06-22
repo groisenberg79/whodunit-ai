@@ -39,7 +39,7 @@
   "method": {
     "id": "drugged_brandy_and_staged_stabbing",
     "label": "Drugged brandy and staged stabbing",
-    "description": "Henry used his medical knowledge and access to medicine to weaken Edward by adding a sedative or cardiac drug to Edward's brandy. After Edward was weakened, Henry used the silver letter opener to stage the murder as a sudden violent attack and redirect suspicion toward Clara, Julian, or Beatrice."
+    "description": "Henry used his medical knowledge and access to medicine to weaken Edward by adding a sedative or cardiac drug to Edward's brandy. After Edward was weakened, Henry used the silver letter opener to stage the murder as a sudden violent attack and distract attention from the medical evidence."
   },
   "opportunity": {
     "description": "Edward had arranged to meet Henry privately after dinner. Henry entered the library around 9:22 PM, drugged Edward's brandy, killed him, staged the scene, and returned to his assigned room before the body was discovered.",
@@ -173,7 +173,7 @@
     },
     "wrong_clara": {
       "title": "Incorrect Accusation: Clara Vale",
-      "message": "Clara had a financial motive, and the letter opener points toward her, but the medical evidence does not fit her. The inheritance conflict was real, but the letter opener was used to mislead you."
+      "message": "Clara had a financial motive and hid evidence about Edward's will revision, but the medical evidence does not fit her. The inheritance conflict was real, but it was not the reason Edward died."
     },
     "wrong_beatrice": {
       "title": "Incorrect Accusation: Beatrice Ashford",
