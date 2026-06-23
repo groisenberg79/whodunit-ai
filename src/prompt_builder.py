@@ -130,6 +130,7 @@ def format_confronted_clues(
     return "\n\n".join(lines)
 
 
+
 def format_evidence_acknowledgement_checklist(
     confronted_clues: list[dict[str, Any]],
 ) -> str:
@@ -152,6 +153,75 @@ def format_evidence_acknowledgement_checklist(
     )
 
     return "\n".join(lines)
+
+
+# --- Inserted helper: format_repeated_evidence_context ---
+def format_repeated_evidence_context(
+    repeated_clue_ids: list[str],
+    new_clue_ids: list[str],
+    confronted_clues: list[dict[str, Any]],
+) -> str:
+    """
+    Format whether presented evidence has already been shown to this suspect.
+
+    Args:
+        repeated_clue_ids: Presented clue IDs already revealed to this suspect.
+        new_clue_ids: Presented clue IDs not yet revealed to this suspect.
+        confronted_clues: Full clue dictionaries presented in this confrontation.
+
+    Returns:
+        Repeated-evidence guidance for the NPC prompt.
+    """
+    if not confronted_clues:
+        return "No evidence was presented."
+
+    clue_names_by_id = {
+        clue["id"]: clue["name"]
+        for clue in confronted_clues
+    }
+
+    repeated_names = [
+        clue_names_by_id[clue_id]
+        for clue_id in repeated_clue_ids
+        if clue_id in clue_names_by_id
+    ]
+    new_names = [
+        clue_names_by_id[clue_id]
+        for clue_id in new_clue_ids
+        if clue_id in clue_names_by_id
+    ]
+
+    repeated_text = format_list(repeated_names)
+    new_text = format_list(new_names)
+
+    if repeated_names and not new_names:
+        repeated_guidance = (
+            "All evidence presented in this question has already been shown to this suspect. "
+            "The suspect must make this repetition noticeable in the response. "
+            "They should explicitly indicate that the detective has already raised these same items before, "
+            "then restate or sharpen their previous position in character. "
+            "They should sound more impatient, weary, colder, more defensive, or more emotionally strained than before."
+        )
+    elif repeated_names:
+        repeated_guidance = (
+            "Some evidence presented in this question has already been shown to this suspect. "
+            "The suspect should distinguish repeated evidence from newly presented evidence. "
+            "They should not act newly surprised by repeated items, and should briefly refer back to having addressed them before."
+        )
+    else:
+        repeated_guidance = (
+            "All evidence presented in this question is new to this suspect. "
+            "The suspect may react as though encountering these items for the first time."
+        )
+
+    return f"""Repeated evidence already shown to this suspect:
+{repeated_text}
+
+Newly presented evidence for this suspect:
+{new_text}
+
+Repeated-evidence behavior requirement:
+{repeated_guidance}"""
 
 
 def format_evidence_reaction(
@@ -304,6 +374,12 @@ def build_npc_user_prompt(interview_context: dict[str, Any]) -> str:
     evidence_acknowledgement_checklist = format_evidence_acknowledgement_checklist(
         interview_context.get("confronted_clues", [])
     )
+    # Insert repeated evidence context block
+    repeated_evidence_text = format_repeated_evidence_context(
+        repeated_clue_ids=interview_context.get("repeated_confronted_clue_ids", []),
+        new_clue_ids=interview_context.get("new_confronted_clue_ids", []),
+        confronted_clues=interview_context.get("confronted_clues", []),
+    )
     dialogue_history_text = format_dialogue_history(
         interview_context["dialogue_history"]
     )
@@ -334,6 +410,9 @@ Evidence reaction guidance:
 Mandatory evidence acknowledgement checklist:
 {evidence_acknowledgement_checklist}
 
+Repeated evidence context:
+{repeated_evidence_text}
+
 Clues discovered by the player so far:
 {discovered_clues}
 
@@ -357,6 +436,8 @@ Constraints:
 - If two or three pieces of evidence were presented, answer in 2 to 4 short paragraphs, with a more developed emotional or defensive progression.
 - Reply only with spoken dialogue; do not use stage directions, parenthetical actions, or narration.
 - If evidence was presented, explicitly acknowledge every presented evidence item before giving a general denial or philosophical objection.
+- If all presented evidence has already been shown to this suspect, explicitly say or clearly imply that the detective has already raised these same items before. Do not answer as if the repeated evidence is new.
+- If some presented evidence is repeated and some is new, distinguish the repeated evidence from the new evidence in the response.
 - Do not answer a confrontation with only a generic phrase such as "speculation is not proof", "you have no proof", or "I will not dignify that accusation." Those phrases may appear only after you have addressed each presented item.
 - For evidence directly related to you, respond with stronger emotion, pressure, defensiveness, confession of the allowed secret, or denial according to the evidence reaction guidance.
 - For evidence not directly related to you, still acknowledge it. Say whether you recognize it, deny ownership, deny expertise, or refuse its relevance, without inventing a new explanation.
