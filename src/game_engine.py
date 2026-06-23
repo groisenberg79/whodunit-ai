@@ -5,6 +5,9 @@ from typing import Any
 from src.game_state import GameState
 
 
+MAX_EVIDENCE_PER_CONFRONTATION = 3
+
+
 class GameEngineError(Exception):
     """Raised when a game engine operation fails."""
 
@@ -129,6 +132,7 @@ def get_available_evidence_for_interview(
             available_evidence.append(clue)
 
     return available_evidence
+
 
 def can_confront_suspect_with_clue(
     state: GameState,
@@ -269,9 +273,15 @@ def build_interview_context(
     confronted_clues = []
     evidence_reaction = None
 
-    presented_clue_ids = confronted_clue_ids or []
+    presented_clue_ids = list(confronted_clue_ids or [])
     if confronted_clue_id is not None and confronted_clue_id not in presented_clue_ids:
         presented_clue_ids = [confronted_clue_id, *presented_clue_ids]
+
+    if len(presented_clue_ids) > MAX_EVIDENCE_PER_CONFRONTATION:
+        raise ValueError(
+            "A confrontation can include at most "
+            f"{MAX_EVIDENCE_PER_CONFRONTATION} pieces of evidence."
+        )
 
     previously_revealed_clue_ids = state.revealed_clues[suspect_id]
     repeated_confronted_clue_ids = [
@@ -387,6 +397,7 @@ def record_interview_exchange(
     )
 
     return entry.__dict__
+
 
 def check_accusation(
     solution_data: dict[str, Any],

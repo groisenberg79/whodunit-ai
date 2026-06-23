@@ -9,6 +9,10 @@ from src.rag_index import load_embedding_model, load_rag_index
 import streamlit as st
 from pathlib import Path
 
+
+MAX_EVIDENCE_PER_CONFRONTATION = 3
+
+
 def initialize_session_state() -> None:
     """
     Initialize Streamlit session state for the game.
@@ -189,10 +193,16 @@ def main() -> None:
             for clue_name in clue_options.keys()
             if clue_name != "No evidence"
         ],
+        max_selections=MAX_EVIDENCE_PER_CONFRONTATION,
         help=(
-            "You may present one or more discovered clues. Some suspects may react "
-            "differently when confronted with a combination of evidence."
+            f"You may present up to {MAX_EVIDENCE_PER_CONFRONTATION} discovered clues. "
+            "Some suspects may react differently when confronted with a combination "
+            "of evidence."
         ),
+    )
+    st.caption(
+        f"You may present up to {MAX_EVIDENCE_PER_CONFRONTATION} pieces of evidence "
+        "in one confrontation."
     )
 
     confronted_clue_ids = [
@@ -209,8 +219,11 @@ def main() -> None:
     if st.button("Ask suspect"):
         if not player_question.strip():
             st.warning("Please enter a question before interviewing the suspect.")
-        elif len(confronted_clue_ids) > 3:
-            st.warning("Please present at most 3 pieces of evidence in a single confrontation.")
+        elif len(confronted_clue_ids) > MAX_EVIDENCE_PER_CONFRONTATION:
+            st.warning(
+                f"Please present at most {MAX_EVIDENCE_PER_CONFRONTATION} pieces "
+                "of evidence in a single confrontation."
+            )
         else:
             initial_graph_state = {
                 "game_data": game_data,
