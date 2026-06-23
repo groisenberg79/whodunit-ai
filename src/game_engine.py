@@ -273,6 +273,18 @@ def build_interview_context(
     if confronted_clue_id is not None and confronted_clue_id not in presented_clue_ids:
         presented_clue_ids = [confronted_clue_id, *presented_clue_ids]
 
+    previously_revealed_clue_ids = state.revealed_clues[suspect_id]
+    repeated_confronted_clue_ids = [
+        clue_id
+        for clue_id in presented_clue_ids
+        if clue_id in previously_revealed_clue_ids
+    ]
+    new_confronted_clue_ids = [
+        clue_id
+        for clue_id in presented_clue_ids
+        if clue_id not in previously_revealed_clue_ids
+    ]
+
     confronted_clue_is_related_to_suspect = False
 
     if presented_clue_ids:
@@ -311,6 +323,8 @@ def build_interview_context(
         "confronted_clue": confronted_clue,
         "confronted_clues": confronted_clues,
         "confronted_clue_ids": presented_clue_ids,
+        "repeated_confronted_clue_ids": repeated_confronted_clue_ids,
+        "new_confronted_clue_ids": new_confronted_clue_ids,
         "confronted_clue_is_related_to_suspect": confronted_clue_is_related_to_suspect,
         "evidence_reaction": evidence_reaction,
         "discovered_clue_ids": state.discovered_clues,
@@ -331,6 +345,7 @@ def record_interview_exchange(
     player_question: str,
     npc_response: str,
     confronted_clue_id: str | None = None,
+    confronted_clue_ids: list[str] | None = None,
 ) -> dict[str, Any]:
     """
     Record an interview exchange and update evidence confrontation state.
@@ -368,6 +383,7 @@ def record_interview_exchange(
         player_question=player_question,
         npc_response=npc_response,
         confronted_clue_id=confronted_clue_id,
+        confronted_clue_ids=confronted_clue_ids,
     )
 
     return entry.__dict__

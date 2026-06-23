@@ -22,6 +22,7 @@ class DialogueEntry:
     player_question: str
     npc_response: str
     confronted_clue_id: str | None = None
+    confronted_clue_ids: list[str] = field(default_factory=list)
     timestamp: str = field(
         default_factory=lambda: datetime.now(timezone.utc).isoformat()
     )
@@ -232,6 +233,7 @@ class GameState:
         player_question: str,
         npc_response: str,
         confronted_clue_id: str | None = None,
+        confronted_clue_ids: list[str] | None = None,
     ) -> DialogueEntry:
         """
         Add a dialogue exchange to the game state.
@@ -247,14 +249,20 @@ class GameState:
         """
         self.mark_suspect_interviewed(suspect_id)
 
-        if confronted_clue_id is not None:
-            self.mark_clue_revealed_to_suspect(suspect_id, confronted_clue_id)
+        all_confronted_clue_ids = list(confronted_clue_ids or [])
+
+        if confronted_clue_id is not None and confronted_clue_id not in all_confronted_clue_ids:
+            all_confronted_clue_ids.insert(0, confronted_clue_id)
+
+        for clue_id in all_confronted_clue_ids:
+            self.mark_clue_revealed_to_suspect(suspect_id, clue_id)
 
         entry = DialogueEntry(
             suspect_id=suspect_id,
             player_question=player_question,
             npc_response=npc_response,
             confronted_clue_id=confronted_clue_id,
+            confronted_clue_ids=all_confronted_clue_ids,
         )
 
         self.dialogue_history.append(entry)
