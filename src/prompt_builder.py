@@ -93,6 +93,67 @@ def format_confronted_clue(confronted_clue: dict[str, Any] | None) -> str:
     )
 
 
+def format_confronted_clues(
+    confronted_clues: list[dict[str, Any]],
+    suspect_id: str,
+) -> str:
+    """
+    Format all clues explicitly presented in the current confrontation.
+
+    Args:
+        confronted_clues: List of clue dictionaries selected by the player.
+        suspect_id: Current suspect ID.
+
+    Returns:
+        Human-readable evidence summary.
+    """
+    if not confronted_clues:
+        return "No evidence was presented."
+
+    lines = []
+    for index, clue in enumerate(confronted_clues, start=1):
+        confrontation_targets = clue.get("confrontation_targets", [])
+        relation = (
+            "directly related to this suspect"
+            if suspect_id in confrontation_targets
+            else "not directly related to this suspect"
+        )
+
+        lines.append(
+            f"{index}. {clue['name']}\n"
+            f"   Relevance: {relation}\n"
+            f"   Description: {clue['description']}\n"
+            f"   What it suggests: {clue['what_it_suggests']}\n"
+            f"   Dialogue effect: {clue['dialogue_effects']['default']}"
+        )
+
+    return "\n\n".join(lines)
+
+
+def format_evidence_acknowledgement_checklist(
+    confronted_clues: list[dict[str, Any]],
+) -> str:
+    """
+    Build a mandatory checklist forcing the NPC to acknowledge each presented clue.
+    """
+    if not confronted_clues:
+        return "No evidence acknowledgement is required because no evidence was presented."
+
+    lines = [
+        "The response must explicitly acknowledge each of the following evidence items:"
+    ]
+
+    for clue in confronted_clues:
+        lines.append(f"- {clue['name']}")
+
+    lines.append(
+        "Do not give only a general denial, emotional reaction, or philosophical objection. "
+        "Each listed item must be mentioned directly or by an unmistakable paraphrase."
+    )
+
+    return "\n".join(lines)
+
+
 def format_evidence_reaction(
     evidence_reaction: dict[str, Any] | None,
     confronted_clue: dict[str, Any] | None,
@@ -133,7 +194,7 @@ def format_evidence_reaction(
         f"Reaction type: {evidence_reaction['reaction_type']}\n"
         f"Response guidance: {evidence_reaction['response_guidance']}\n"
         f"May reveal:\n{format_list(may_reveal)}\n"
-        f"Sample response tone/content: {evidence_reaction.get('sample_response', 'None')}"
+        "Do not copy sample responses from the data verbatim. Generate a fresh response that obeys the presented-evidence checklist."
     )
 
 
@@ -155,9 +216,13 @@ def build_npc_system_prompt(
     knowledge = format_list(suspect["knowledge"])
     lies = format_list(suspect["lies"])
     forbidden_behavior = format_list(suspect["forbidden_behavior"])
-    crime_time_location_id = suspect["alibi"].get(
-        "crime_time_location_id",
+    crime_time_location_name = suspect["alibi"].get(
+        "crime_time_location_name",
         "No specific crime-time location is provided.",
+    )
+    crime_time_location_spoken_name = suspect["alibi"].get(
+        "crime_time_location_spoken_name",
+        crime_time_location_name,
     )
 
     return f"""
@@ -190,7 +255,8 @@ Real secret:
 
 Alibi:
 Public claim: {suspect['alibi']['public_claim']}
-Crime-time location ID: {crime_time_location_id}
+Crime-time location display name: {crime_time_location_name}
+Crime-time location spoken name: {crime_time_location_spoken_name}
 Hidden truth: {suspect['alibi']['hidden_truth']}
 Weakness: {suspect['alibi']['weakness']}
 
@@ -224,8 +290,9 @@ def build_npc_user_prompt(interview_context: dict[str, Any]) -> str:
     Returns:
         User prompt string.
     """
-    confronted_clue_text = format_confronted_clue(
-        interview_context["confronted_clue"]
+    confronted_clue_text = format_confronted_clues(
+        confronted_clues=interview_context.get("confronted_clues", []),
+        suspect_id=interview_context["suspect"]["id"],
     )
     evidence_reaction_text = format_evidence_reaction(
         evidence_reaction=interview_context["evidence_reaction"],
@@ -233,6 +300,9 @@ def build_npc_user_prompt(interview_context: dict[str, Any]) -> str:
         clue_is_related_to_suspect=interview_context[
             "confronted_clue_is_related_to_suspect"
         ],
+    )
+    evidence_acknowledgement_checklist = format_evidence_acknowledgement_checklist(
+        interview_context.get("confronted_clues", [])
     )
     dialogue_history_text = format_dialogue_history(
         interview_context["dialogue_history"]
@@ -261,6 +331,9 @@ Evidence explicitly presented in this question:
 Evidence reaction guidance:
 {evidence_reaction_text}
 
+Mandatory evidence acknowledgement checklist:
+{evidence_acknowledgement_checklist}
+
 Clues discovered by the player so far:
 {discovered_clues}
 
@@ -279,10 +352,16 @@ Previous dialogue with this suspect:
 Respond to the player's question in character.
 
 Constraints:
-- Keep the response concise: 2 to 4 sentences.
+- If no evidence was presented, answer in 2 to 4 sentences.
+- If one piece of evidence was presented, answer in 1 to 2 short paragraphs.
+- If two or three pieces of evidence were presented, answer in 2 to 4 short paragraphs, with a more developed emotional or defensive progression.
 - Reply only with spoken dialogue; do not use stage directions, parenthetical actions, or narration.
-- React directly to confronted evidence if evidence was presented.
-- Follow the evidence reaction guidance when it exists.
+- If evidence was presented, explicitly acknowledge every presented evidence item before giving a general denial or philosophical objection.
+- Do not answer a confrontation with only a generic phrase such as "speculation is not proof", "you have no proof", or "I will not dignify that accusation." Those phrases may appear only after you have addressed each presented item.
+- For evidence directly related to you, respond with stronger emotion, pressure, defensiveness, confession of the allowed secret, or denial according to the evidence reaction guidance.
+- For evidence not directly related to you, still acknowledge it. Say whether you recognize it, deny ownership, deny expertise, or refuse its relevance, without inventing a new explanation.
+- Maintain your character's distinct personality and dialogue style. Clara should sound controlled and bitter; Julian wounded and volatile; Beatrice elegant and emotionally exposed; Henry precise, cold, and clinical.
+- Follow the evidence reaction guidance when it exists, but the mandatory evidence acknowledgement checklist has priority over sample-like phrasing.
 - Use retrieved context only if it is relevant and consistent with the suspect's knowledge and game state.
 - Do not treat retrieved context as permission to reveal hidden solution details.
 - Do not confess to the murder unless explicitly allowed by the ending logic.
@@ -291,8 +370,8 @@ Constraints:
 - Do not invent new clues, motives, alibis, suspects, locations, crimes, documents, relationships, habits, substances, or solution details.
 - Do not invent specific alternative explanations for evidence unless they are explicitly provided in the prompt.
 - If challenged about evidence and no explicit alternative explanation is provided, cast doubt on the player's interpretation without suggesting any cause, alternative source, contamination, accident, mistake, or innocent explanation.
-- If asked where you were or what you were doing when the crime occurred, use only the public alibi and Crime-time location ID from the character profile. Do not invent a new room, location, errand, activity, or witness.
-- If a Crime-time location ID is provided, do not replace it with a different room or a generic phrase like "my room" unless that exact phrase is in the public alibi. If no Crime-time location ID is provided, do not supply a location.
+- If asked where you were or what you were doing when the crime occurred, use only the public alibi and Crime-time location spoken name from the character profile. Do not invent a new room, location, errand, activity, or witness.
+- Use the Crime-time location spoken name in your answer, not the display name. For example, if the spoken name is "my room", say "my room"; do not refer to yourself in the third person by saying "Dr. Ashford's Room" or "Beatrice's Room".
 - If asked about an unprovided harmless personal opinion or atmospheric detail, answer in character without creating new mystery facts.
 - Stay consistent with established improvised personal facts, but never let improvised details become evidence, alibi information, or solution logic.
 

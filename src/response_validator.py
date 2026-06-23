@@ -60,7 +60,7 @@ def contains_stage_directions(response: str) -> bool:
 
 def validate_npc_response(
     response: str,
-    max_sentences: int = 5,
+    max_sentences: int = 12,
 ) -> ValidationResult:
     """
     Validate an NPC response using deterministic checks.
@@ -110,14 +110,15 @@ def validate_npc_response(
         violations=violations,
     )
 
+
 def build_fallback_response() -> str:
     """
     Build a safe fallback response when an NPC response fails validation.
 
     Returns:
-        Safe in-character fallback response.
+        Safe fallback response.
     """
     return (
-        "I will not dignify that accusation with a theatrical answer. "
-        "You may present evidence, Inspector, but speculation is not proof."
+        "I cannot answer that plainly without saying more than I should. "
+        "Ask me again, Inspector, and be precise about what you believe the evidence proves."
     )

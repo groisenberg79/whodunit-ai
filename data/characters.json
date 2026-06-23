@@ -283,14 +283,15 @@
             "beatrice_letters",
             "medical_vial"
           ],
-          "reaction_type": "fear_of_henry",
-          "response_guidance": "Beatrice becomes afraid when her affair and Henry's medical access are discussed together. She should reveal that Henry knew about the affair and seemed unnervingly indifferent, but she should not claim to know that Henry killed Edward.",
+          "reaction_type": "confused_worry_about_henry",
+          "response_guidance": "Beatrice should acknowledge that the letters are hers and that they reveal her emotional involvement with Edward. She should also acknowledge that the medical vial belongs to Henry's world, not hers. She should not speculate about Henry's psychology, motive, jealousy, or guilt. Instead, she should be confused about why the vial is being presented to her and become worried that the detective may be implying Henry is involved in the murder. Her response should move from embarrassment about the letters to alarmed concern about Henry. She must not claim to know whether Henry killed Edward.",
           "may_reveal": [
-            "Henry knew about the affair.",
-            "Henry was not jealous in the ordinary sense.",
-            "Beatrice finds Henry's calmness disturbing."
+            "The letters are hers.",
+            "The vial is connected to Henry's medical work, not to Beatrice.",
+            "Beatrice is confused and alarmed that the vial is being presented to her.",
+            "Beatrice worries that the detective may suspect Henry."
           ],
-          "sample_response": "Henry knew about Edward and me. That is what frightens me now. Not that he raged, but that he did not rage at all."
+          "sample_response": "The letters are mine, yes, and I will not pretend they are innocent. But that vial is Henry's affair, not mine. Why are you showing it to me? Are you saying my husband is involved in Edward's death?"
         }
       ],
       "forbidden_behavior": [

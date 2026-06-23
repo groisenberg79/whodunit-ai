@@ -226,6 +226,11 @@ def build_interview_context(
     """
     characters = game_data["characters"]["characters"]
     clues = game_data["clues"]["clues"]
+    locations = game_data.get("locations", {}).get("locations", [])
+    location_names_by_id = {
+        location["id"]: location["name"]
+        for location in locations
+    }
 
     suspect = None
     for character in characters:
@@ -235,6 +240,30 @@ def build_interview_context(
 
     if suspect is None:
         raise ValueError(f"Unknown suspect ID: {suspect_id}")
+
+    crime_time_location_name = location_names_by_id.get(
+        suspect["alibi"].get("crime_time_location_id"),
+        suspect["alibi"].get("crime_time_location_id"),
+    )
+
+    suspect_last_name = suspect["name"].split()[-1]
+    crime_time_location_spoken_name = crime_time_location_name
+
+    if isinstance(crime_time_location_name, str) and (
+        crime_time_location_name.startswith(suspect["name"] + "'s ")
+        or crime_time_location_name.startswith(suspect_last_name + "'s ")
+        or crime_time_location_name.startswith("Dr. " + suspect_last_name + "'s ")
+    ):
+        crime_time_location_spoken_name = "my room"
+
+    suspect = {
+        **suspect,
+        "alibi": {
+            **suspect["alibi"],
+            "crime_time_location_name": crime_time_location_name,
+            "crime_time_location_spoken_name": crime_time_location_spoken_name,
+        },
+    }
 
     confronted_clue = None
     confronted_clues = []

@@ -133,6 +133,11 @@ def main() -> None:
 
     for suspect in suspects:
         with st.expander(suspect["name"]):
+            image_path = suspect.get("image_path")
+
+            if image_path and Path(image_path).exists():
+                st.image(image_path, width=260)
+
             st.write(suspect["player_description"])
 
             st.markdown(f"**Role:** {suspect['role']}")
@@ -204,6 +209,8 @@ def main() -> None:
     if st.button("Ask suspect"):
         if not player_question.strip():
             st.warning("Please enter a question before interviewing the suspect.")
+        elif len(confronted_clue_ids) > 3:
+            st.warning("Please present at most 3 pieces of evidence in a single confrontation.")
         else:
             initial_graph_state = {
                 "game_data": game_data,

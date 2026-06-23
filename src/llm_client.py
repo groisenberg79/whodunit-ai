@@ -130,7 +130,7 @@ def generate_openrouter_response(
         "model": model_name,
         "messages": messages,
         "temperature": 0.2,
-        "max_tokens": 500,
+        "max_tokens": 800,
     }
 
     headers = {

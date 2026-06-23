@@ -17,6 +17,39 @@ from src.prompt_builder import build_npc_messages
 from src.rag_filter import filter_documents_for_interview, format_retrieved_context
 from src.rag_index import search_rag_index
 
+
+def clean_npc_response_formatting(response: str) -> str:
+    """
+    Remove formatting artifacts from an NPC response without changing its content.
+
+    This is mainly used to remove quotation marks that the LLM may add because it
+    understands the response as spoken dialogue.
+    """
+    cleaned_paragraphs = []
+
+    for paragraph in response.strip().split("\n\n"):
+        cleaned = paragraph.strip()
+
+        quote_pairs = [
+            ('"', '"'),
+            ("'", "'"),
+            ("“", "”"),
+            ("‘", "’"),
+        ]
+
+        for opening_quote, closing_quote in quote_pairs:
+            if cleaned.startswith(opening_quote) and cleaned.endswith(closing_quote):
+                cleaned = cleaned[1:-1].strip()
+                break
+
+        cleaned_paragraphs.append(cleaned)
+
+    return "\n\n".join(
+        paragraph
+        for paragraph in cleaned_paragraphs
+        if paragraph
+    )
+
 def build_context_node(state: InterviewGraphState) -> InterviewGraphState:
     """
     Build deterministic interview context for the current NPC interaction.
@@ -109,6 +142,8 @@ def generate_response_node(state: InterviewGraphState) -> InterviewGraphState:
         model_name=state["model_name"],
     )
 
+    npc_response = clean_npc_response_formatting(npc_response)
+
     return {
         **state,
         "npc_response": npc_response,
@@ -145,6 +180,15 @@ def fallback_response_node(state: InterviewGraphState) -> InterviewGraphState:
     """
     Replace an invalid NPC response with a safe fallback response.
     """
+    validation_result = state.get("validation_result")
+
+    if validation_result is not None:
+        print("NPC response failed validation:")
+        for violation in validation_result.violations:
+            print(f"- {violation}")
+        print("Original NPC response:")
+        print(state["npc_response"])
+
     fallback_response = build_fallback_response()
 
     return {
