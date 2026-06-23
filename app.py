@@ -7,6 +7,7 @@ from src.game_state import GameState
 from src.interview_graph import build_interview_graph
 from src.rag_index import load_embedding_model, load_rag_index
 import streamlit as st
+from pathlib import Path
 
 def initialize_session_state() -> None:
     """
@@ -272,6 +273,11 @@ def main() -> None:
     selected_location = location_options[selected_location_name]
 
     st.subheader(selected_location["name"])
+
+    location_image_path = selected_location.get("image_path")
+    if location_image_path and Path(location_image_path).exists():
+        st.image(location_image_path, use_container_width=True)
+
     st.write(selected_location["description"])
 
     area_options = {
