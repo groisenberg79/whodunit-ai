@@ -35,8 +35,8 @@ class AccusationAttempt:
 
     Args:
         culprit_id: Suspect accused by the player.
-        motive_id: Motive selected by the player.
-        method_id: Method selected by the player.
+        motive_id: Motive interpreted from the player's accusation, or None.
+        method_id: Method interpreted from the player's accusation, or None.
         evidence_ids: Evidence IDs selected by the player.
         result: Result label returned by the accusation checker.
         score: Numeric score returned by the accusation checker.
@@ -45,8 +45,8 @@ class AccusationAttempt:
     """
 
     culprit_id: str
-    motive_id: str
-    method_id: str
+    motive_id: str | None
+    method_id: str | None
     evidence_ids: list[str]
     result: str
     score: float
@@ -181,7 +181,7 @@ class GameState:
 
         self.revealed_clues[suspect_id].append(clue_id)
         return True
-    
+
     def mark_suspect_interviewed(self, suspect_id: str) -> bool:
         """
         Mark a suspect as interviewed.
@@ -197,7 +197,7 @@ class GameState:
 
         self.interviewed_suspects.append(suspect_id)
         return True
-    
+
     def add_improvised_fact(self, suspect_id: str, fact: str) -> bool:
         """
         Store a harmless improvised fact for a suspect.
@@ -242,7 +242,8 @@ class GameState:
             suspect_id: ID of the suspect being interviewed.
             player_question: Free-form question asked by the player.
             npc_response: Response generated for the suspect.
-            confronted_clue_id: Optional clue ID used in the confrontation.
+            confronted_clue_id: Optional primary clue ID used in the confrontation.
+            confronted_clue_ids: Optional list of all clue IDs used in the confrontation.
 
         Returns:
             The created DialogueEntry.
@@ -251,7 +252,10 @@ class GameState:
 
         all_confronted_clue_ids = list(confronted_clue_ids or [])
 
-        if confronted_clue_id is not None and confronted_clue_id not in all_confronted_clue_ids:
+        if (
+            confronted_clue_id is not None
+            and confronted_clue_id not in all_confronted_clue_ids
+        ):
             all_confronted_clue_ids.insert(0, confronted_clue_id)
 
         for clue_id in all_confronted_clue_ids:
@@ -271,8 +275,8 @@ class GameState:
     def add_accusation_attempt(
         self,
         culprit_id: str,
-        motive_id: str,
-        method_id: str,
+        motive_id: str | None,
+        method_id: str | None,
         evidence_ids: list[str],
         result: str,
         score: float,
@@ -283,8 +287,8 @@ class GameState:
 
         Args:
             culprit_id: Suspect accused by the player.
-            motive_id: Motive selected by the player.
-            method_id: Method selected by the player.
+            motive_id: Motive interpreted from the player's accusation, or None.
+            method_id: Method interpreted from the player's accusation, or None.
             evidence_ids: Evidence selected by the player.
             result: Result label returned by the accusation checker.
             score: Numeric score returned by the accusation checker.

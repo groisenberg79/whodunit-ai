@@ -402,8 +402,8 @@ def record_interview_exchange(
 def check_accusation(
     solution_data: dict[str, Any],
     culprit_id: str,
-    motive_id: str,
-    method_id: str,
+    motive_id: str | None,
+    method_id: str | None,
     evidence_ids: list[str],
 ) -> dict[str, Any]:
     """
@@ -412,8 +412,8 @@ def check_accusation(
     Args:
         solution_data: Loaded solution data from solution.json.
         culprit_id: Suspect ID selected by the player.
-        motive_id: Motive ID selected by the player.
-        method_id: Method ID selected by the player.
+        motive_id: Motive ID interpreted from the player's accusation, or None.
+        method_id: Method ID interpreted from the player's accusation, or None.
         evidence_ids: Evidence IDs selected by the player.
 
     Returns:
@@ -518,8 +518,8 @@ def submit_accusation(
     state: GameState,
     game_data: dict[str, dict[str, Any]],
     culprit_id: str,
-    motive_id: str,
-    method_id: str,
+    motive_id: str | None,
+    method_id: str | None,
     evidence_ids: list[str],
 ) -> dict[str, Any]:
     """
@@ -529,8 +529,8 @@ def submit_accusation(
         state: Current GameState object.
         game_data: Dictionary containing all loaded game data.
         culprit_id: Suspect ID selected by the player.
-        motive_id: Motive ID selected by the player.
-        method_id: Method ID selected by the player.
+        motive_id: Motive ID interpreted from the player's accusation, or None.
+        method_id: Method ID interpreted from the player's accusation, or None.
         evidence_ids: Evidence IDs selected by the player.
 
     Returns:

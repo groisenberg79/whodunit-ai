@@ -259,13 +259,41 @@ def format_evidence_reaction(
         )
 
     may_reveal = evidence_reaction.get("may_reveal", [])
+    must_show = evidence_reaction.get("must_show", [])
+    must_not_reveal = evidence_reaction.get("must_not_reveal", [])
 
     return (
         f"Reaction type: {evidence_reaction['reaction_type']}\n"
         f"Response guidance: {evidence_reaction['response_guidance']}\n"
         f"May reveal:\n{format_list(may_reveal)}\n"
+        f"Must show in this response:\n{format_list(must_show)}\n"
+        f"Must not reveal:\n{format_list(must_not_reveal)}\n"
         "Do not copy sample responses from the data verbatim. Generate a fresh response that obeys the presented-evidence checklist."
     )
+# --- Inserted helper: format_repeated_evidence_context ---
+def format_critical_reaction_requirement(
+    evidence_reaction: dict[str, Any] | None,
+) -> str:
+    """
+    Format high-priority reaction requirements that override default composure.
+    """
+    if evidence_reaction is None:
+        return "No special reaction requirement."
+
+    reaction_type = evidence_reaction.get("reaction_type")
+
+    if reaction_type == "culprit_pressure_mask_slipping":
+        return (
+            "CRITICAL: Henry's composure must visibly weaken in this response. "
+            "Do not make him sound calmly superior throughout the whole answer. "
+            "He should show controlled emotional strain through wording, not stage directions: "
+            "shorter sentences, repeated denial, sharper defensiveness, or a sudden personal warning. "
+            "He may say things like 'No. That is not what it proves.' or "
+            "'You are very close to making an accusation you do not understand.' "
+            "He must still acknowledge all evidence, must not confess, and should recover some cold control by the end."
+        )
+
+    return "No special reaction requirement."
 
 
 def build_npc_system_prompt(
@@ -371,6 +399,9 @@ def build_npc_user_prompt(interview_context: dict[str, Any]) -> str:
             "confronted_clue_is_related_to_suspect"
         ],
     )
+    critical_reaction_requirement = format_critical_reaction_requirement(
+        interview_context["evidence_reaction"]
+    )
     evidence_acknowledgement_checklist = format_evidence_acknowledgement_checklist(
         interview_context.get("confronted_clues", [])
     )
@@ -407,6 +438,9 @@ Evidence explicitly presented in this question:
 Evidence reaction guidance:
 {evidence_reaction_text}
 
+Critical reaction requirement:
+{critical_reaction_requirement}
+
 Mandatory evidence acknowledgement checklist:
 {evidence_acknowledgement_checklist}
 
@@ -442,7 +476,8 @@ Constraints:
 - For evidence directly related to you, respond with stronger emotion, pressure, defensiveness, confession of the allowed secret, or denial according to the evidence reaction guidance.
 - For evidence not directly related to you, still acknowledge it. Say whether you recognize it, deny ownership, deny expertise, or refuse its relevance, without inventing a new explanation.
 - Maintain your character's distinct personality and dialogue style. Clara should sound controlled and bitter; Julian wounded and volatile; Beatrice elegant and emotionally exposed; Henry precise, cold, and clinical.
-- Follow the evidence reaction guidance when it exists, but the mandatory evidence acknowledgement checklist has priority over sample-like phrasing.
+- Follow the evidence reaction guidance when it exists. If there is a Critical reaction requirement, it is mandatory and overrides the suspect's usual composure or default personality style.
+- If the evidence reaction includes a "Must show in this response" checklist, every item in that checklist is mandatory. The mandatory evidence acknowledgement checklist, the Critical reaction requirement, and the "Must show" checklist all have priority over sample-like phrasing.
 - Use retrieved context only if it is relevant and consistent with the suspect's knowledge and game state.
 - Do not treat retrieved context as permission to reveal hidden solution details.
 - Do not confess to the murder unless explicitly allowed by the ending logic.

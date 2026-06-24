@@ -394,10 +394,13 @@ def main() -> None:
                     discovered_clues=discovered_clues,
                 )
 
+            # Use the culprit selected from the dropdown as authoritative
+            selected_culprit_id = culprit_options[selected_culprit_label]
+
             accusation_output = submit_accusation(
                 state=game_state,
                 game_data=game_data,
-                culprit_id=interpreted_accusation["culprit_id"],
+                culprit_id=selected_culprit_id,
                 motive_id=interpreted_accusation["motive_id"],
                 method_id=interpreted_accusation["method_id"],
                 evidence_ids=interpreted_accusation["evidence_ids"],

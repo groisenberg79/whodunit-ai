@@ -454,6 +454,47 @@
             "Henry tries to make the appointment note seem ambiguous."
           ],
           "sample_response": "Edward had a habit of mistaking old paper for truth. A dangerous habit, as it happens."
+        },
+        {
+          "reaction_type": "culprit_pressure_mask_slipping",
+          "required_clue_ids": [
+            "medical_vial",
+            "brandy_glass_residue",
+            "altered_death_certificate"
+          ],
+          "trigger_clue_ids": [
+            "medical_vial",
+            "brandy_glass_residue",
+            "altered_death_certificate"
+          ],
+          "response_guidance": "This is the strongest pre-accusation pressure point against Henry. He must acknowledge all three items: the small medical vial, the brandy glass residue, and the altered death certificate. He must not confess and must not explain exactly how Edward died. However, he must sound nervous in this response. This is not optional. His usual clinical arrogance should crack because the detective is pointing at the real chain of evidence. He should not answer with smooth sarcasm or calm superiority. He should use shorter sentences, repeated denial, a defensive warning, or a visibly strained correction. He should briefly reveal that Edward had begun asking about old medical records or old treatments, but he must avoid fully revealing the true motive. By the end, he may recover some cold control, but the player must notice that this accusation has shaken him.",
+          "may_reveal": [
+            "The small medical vial is his or belongs to his medical bag.",
+            "The brandy glass residue is a serious allegation.",
+            "The altered death certificate bears his signature or concerns old medical records.",
+            "Edward had begun asking about old medical records, old treatments, or old medical matters.",
+            "Henry is personally shaken because the detective is close to the real accusation."
+          ],
+          "must_not_reveal": [
+            "Do not confess to killing Edward.",
+            "Do not explicitly say that Henry drugged Edward.",
+            "Do not reveal the full true motive.",
+            "Do not say that Edward discovered the complete truth.",
+            "Do not invent an innocent alternative source for the brandy residue.",
+            "Do not use stage directions or parenthetical actions.",
+            "Do not use comic stuttering such as 'I-I-I'."
+          ],
+          "sample_response": "No. No, that is not what those things prove. The vial is mine because I am a physician. The residue is a trace in a glass. The certificate is an old medical record, and yes, Edward had begun asking questions about records he did not understand. You do not understand what you are accusing me of. Be careful, Inspector. Very careful. Suspicion is not the same thing as proof.",
+          "must_show": [
+            "Acknowledge the small medical vial.",
+            "Acknowledge the brandy glass residue.",
+            "Acknowledge the altered death certificate.",
+            "Henry must sound nervous, not merely cold or sarcastic.",
+            "Do not make Henry sound calmly superior throughout the whole response.",
+            "Use shorter sentences, repeated denial, a defensive warning, or a visibly strained emotional reaction.",
+            "Mention that Edward had begun asking about old medical records, old treatments, or old medical matters.",
+            "Recover some cold control by the end."
+          ]
         }
       ],
       "forbidden_behavior": [
