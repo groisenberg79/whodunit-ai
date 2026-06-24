@@ -52,6 +52,19 @@ def evaluate_free_form_accusation(
     method_options = _format_options(accusation_options["methods"])
     discovered_clue_options = _format_discovered_clues(discovered_clues)
 
+    valid_motive_ids = {
+        option["id"]
+        for option in accusation_options["motives"]
+    }
+    valid_method_ids = {
+        option["id"]
+        for option in accusation_options["methods"]
+    }
+    valid_evidence_ids = {
+        clue["id"]
+        for clue in discovered_clues
+    }
+
     system_message = """
 You are an accusation parser for a detective mystery game.
 
@@ -62,9 +75,12 @@ Rules:
 - Return valid JSON only.
 - Do not include markdown.
 - Do not explain your reasoning outside the JSON.
-- Use only the IDs provided in the option lists.
+- The culprit selected by the player is authoritative. Return that culprit ID even if the written accusation mentions another suspect.
+- Interpret motive, method, and evidence from the written accusation.
+- Use only the motive, method, and evidence IDs provided in the option lists.
 - For evidence, use only discovered clue IDs listed in the prompt.
-- If the player implies a correct option using different wording, map it to the closest provided ID.
+- If the player clearly implies a provided motive, method, or evidence item using different wording, map it to the closest provided ID.
+- Do not force a perfect solution. If the player gives a partial, vague, or incomplete accusation, preserve that incompleteness by using null or an empty list.
 - If the player does not clearly specify motive, method, or evidence, use null or an empty list.
 """.strip()
 
@@ -89,11 +105,11 @@ Discovered clue IDs available as evidence:
 
 Return JSON with exactly this shape:
 {{
-  "culprit_id": "one culprit id",
+  "culprit_id": "the accused culprit selected by the player",
   "motive_id": "one motive id or null",
   "method_id": "one method id or null",
   "evidence_ids": ["zero or more discovered clue ids"],
-  "summary": "one short sentence explaining how you interpreted the accusation"
+  "summary": "one short sentence explaining how you interpreted the accusation, including whether it was complete or partial"
 }}
 """.strip()
 
@@ -128,11 +144,25 @@ Return JSON with exactly this shape:
             "summary": "The accusation judge returned invalid JSON, so only the selected culprit was used.",
         }
 
+    motive_id = parsed_response.get("motive_id")
+    if motive_id not in valid_motive_ids:
+        motive_id = None
+
+    method_id = parsed_response.get("method_id")
+    if method_id not in valid_method_ids:
+        method_id = None
+
+    evidence_ids = [
+        evidence_id
+        for evidence_id in parsed_response.get("evidence_ids", [])
+        if evidence_id in valid_evidence_ids
+    ]
+
     return {
-        "culprit_id": parsed_response.get("culprit_id") or accused_culprit_id,
-        "motive_id": parsed_response.get("motive_id"),
-        "method_id": parsed_response.get("method_id"),
-        "evidence_ids": parsed_response.get("evidence_ids", []),
+        "culprit_id": accused_culprit_id,
+        "motive_id": motive_id,
+        "method_id": method_id,
+        "evidence_ids": evidence_ids,
         "summary": parsed_response.get(
             "summary",
             "The accusation was interpreted from the player's written explanation.",

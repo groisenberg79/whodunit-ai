@@ -58,7 +58,10 @@
   ],
   "red_herring_evidence_ids": [
     "torn_will_note",
-    "beatrice_letters"
+    "hidden_legal_fragment",
+    "beatrice_letters",
+    "gambling_debt_notice",
+    "torn_julian_cuff"
   ],
   "correct_accusation": {
     "culprit_id": "henry_ashford",
@@ -192,17 +195,14 @@
     "correct_ending": "The room falls silent as the pieces come together. The vial, the bitter residue in the brandy glass, the altered death certificate, and Edward's final appointment note form a chain Henry cannot break. The scandal of Beatrice's letters, Clara's fear over the will, and Julian's rage were all real, but they were shadows cast by a deeper crime. Henry did not kill for love, money, or anger. He killed because Edward Blackwood was about to drag an old death back into the light.",
     "incorrect_ending": "The accusation leaves too many questions unanswered. The suspect may have had motive, but the method and evidence do not align. The truth remains hidden somewhere among the clues."
   },
-  "free_form_accusation_stretch_goal": {
-    "enabled_for_mvp": false,
-    "description": "In a future version, the player may write a free-form accusation. An LLM can evaluate whether the explanation identifies the correct culprit, motive, method, evidence, and red herrings.",
-    "expected_llm_evaluation_schema": {
-      "culprit_correct": "boolean",
-      "motive_correct": "boolean",
-      "method_correct": "boolean",
-      "evidence_correct": "boolean",
-      "red_herring_understanding": "boolean",
-      "score": "integer",
-      "feedback": "string"
+  "free_form_accusation": {
+    "enabled_for_mvp": true,
+    "description": "The player writes a free-form accusation. An LLM parses the accusation into structured culprit, motive, method, and evidence IDs. The selected culprit dropdown remains authoritative, while the written explanation is used to interpret motive, method, and supporting evidence.",
+    "parsed_fields": {
+      "culprit_id": "selected from dropdown and treated as authoritative",
+      "motive_id": "interpreted from written accusation or null",
+      "method_id": "interpreted from written accusation or null",
+      "evidence_ids": "interpreted from discovered clues mentioned in the written accusation"
     }
   }
 }
