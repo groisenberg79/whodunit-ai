@@ -60,7 +60,7 @@ def contains_stage_directions(response: str) -> bool:
 
 def validate_npc_response(
     response: str,
-    max_sentences: int = 12,
+    max_sentences: int = 24,
 ) -> ValidationResult:
     """
     Validate an NPC response using deterministic checks.

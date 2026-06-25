@@ -254,25 +254,29 @@ def main() -> None:
             st.session_state.last_interview_result = updated_graph_state
             st.rerun()
 
+    selected_history = [
+        entry
+        for entry in game_state.dialogue_history
+        if entry.suspect_id == selected_suspect_id
+    ]
+
     if "last_interview_result" in st.session_state:
         interview_result = st.session_state.last_interview_result
 
-        st.subheader("Latest response")
-        st.write(interview_result["npc_response"])
+        if interview_result["suspect_id"] == selected_suspect_id:
+            st.subheader("Latest response")
+            st.write(interview_result["npc_response"])
 
-        st.subheader("Dialogue history with this suspect")
+    st.subheader("Dialogue history with this suspect")
 
-        selected_history = [
-            entry
-            for entry in game_state.dialogue_history
-            if entry.suspect_id == interview_result["suspect_id"]
-        ]
-
+    if not selected_history:
+        st.caption("No dialogue with this suspect yet.")
+    else:
         for entry in selected_history:
             with st.container(border=True):
                 st.markdown(f"**You:** {entry.player_question}")
                 st.markdown(f"**{selected_suspect_name}:** {entry.npc_response}")
-    
+
     st.divider()
 
     st.header("Investigate locations")
