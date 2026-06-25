@@ -43,6 +43,32 @@ def render_multiline_text(text: str) -> None:
     st.markdown(text.replace("\n", "  \n"))
 
 
+def render_clue_image(clue: dict) -> None:
+    """
+    Render a clue image if the clue defines an existing image path.
+    """
+    image_path = clue.get("image_path")
+
+    if image_path and Path(image_path).exists():
+        st.image(
+            image_path,
+            caption=clue["name"],
+            width=320,
+        )
+
+
+# New: Render optional extended evidence text for clues such as letters or notes.
+def render_evidence_text(clue: dict) -> None:
+    """
+    Render optional extended evidence text for clues such as letters or notes.
+    """
+    evidence_text = clue.get("evidence_text")
+
+    if evidence_text:
+        st.markdown("**Evidence text:**")
+        st.code(evidence_text, language=None)
+
+
 def reset_game() -> None:
     """
     Reset the game state while keeping the loaded game data.
@@ -127,7 +153,9 @@ def main() -> None:
     else:
         for clue in discovered_clue_details:
             with st.expander(clue["name"]):
+                render_clue_image(clue)
                 render_multiline_text(clue["description"])
+                render_evidence_text(clue)
 
     st.divider()
 
@@ -342,6 +370,8 @@ def main() -> None:
                     clue_id=result["clue_id"],
                 )
                 clue_name = clue["name"]
+
+                render_clue_image(clue)
 
                 if result["newly_discovered"]:
                     st.success(f"New clue discovered: **{clue_name}**")
