@@ -39,7 +39,8 @@ In other words, the mystery is a practical sandbox for testing stateful, constra
 - Response validation and fallback handling to reduce unsupported or solution-breaking NPC responses.
 - Free-form final accusation parsing, where an LLM maps the player's written explanation to structured motive, method, and evidence IDs.
 - Partial accusation scoring, so the player can be partly correct without solving every part of the case.
-- Generated visual assets for suspects and locations.
+- Generated visual assets for suspects, locations, and evidence items.
+- Extended evidence text for document-based clues, such as letters and notes.
 
 ## How to Run
 
@@ -71,6 +72,24 @@ The app can also be tested in mock or local modes depending on the configuration
 - Sentence embeddings
 - LangGraph-style interview flow
 - Pydantic/dataclass-style state modeling
+
+## Future Improvements
+
+The current version focuses on proving the GenAI architecture: structured data, persistent state, retrieval, evidence-aware prompting, validation, and free-form accusation parsing. Natural next steps fall into two categories.
+
+### Product and UX Direction
+
+- Rebuild the Streamlit prototype as a full-stack React and JavaScript application with a more polished and intuitive interface.
+- Turn location exploration into a point-and-click investigation experience, where players inspect objects visually instead of selecting areas from a simple interface.
+- Add witness characters, such as a maid, butler, or housekeeper, who can provide indirect hints without directly solving the case.
+
+### Technical and GenAI Direction
+
+- Add automated regression tests for suspect interviews, evidence confrontations, repeated-evidence behavior, and final accusation parsing.
+- Build a structured evaluation set for LLM responses, making it easier to detect hallucinations, ignored evidence, accidental confessions, or unsupported claims.
+- Improve logging and analytics for dialogue quality, including tracking when validation fails and why fallback responses are triggered.
+- Strengthen guardrails around character knowledge, hidden facts, and solution boundaries.
+- Improve the evidence rendering system, especially for documents where exact text matters and should not depend on image generation alone.
 
 ## Project Status
 
