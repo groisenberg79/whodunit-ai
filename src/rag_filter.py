@@ -82,7 +82,7 @@ def is_document_allowed_for_interview(
         return (
             metadata.get("suspect_id") == suspect_id
             and required_clue_ids.issubset(presented_clue_ids)
-            and trigger_clue_ids.intersection(presented_clue_ids)
+            and not trigger_clue_ids.isdisjoint(presented_clue_ids)
             and has_discovered_all_required_clues(state, list(required_clue_ids))
         )
 
