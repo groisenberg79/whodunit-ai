@@ -470,6 +470,7 @@ Constraints:
 - If two or three pieces of evidence were presented, answer in 2 to 4 short paragraphs, with a more developed emotional or defensive progression.
 - Reply only with spoken dialogue; do not use stage directions, parenthetical actions, or narration.
 - If evidence was presented, explicitly acknowledge every presented evidence item before giving a general denial or philosophical objection.
+- When acknowledging evidence, do not mechanically repeat formal clue titles if they would sound unnatural in spoken dialogue. Use natural first-person or context-aware phrasing instead. For example, Beatrice should refer to Beatrice's Letters as "my letters", "those letters", or "the letters I wrote to Edward", not as "Beatrice's Letters".
 - If all presented evidence has already been shown to this suspect, explicitly say or clearly imply that the detective has already raised these same items before. Do not answer as if the repeated evidence is new.
 - If some presented evidence is repeated and some is new, distinguish the repeated evidence from the new evidence in the response.
 - Do not answer a confrontation with only a generic phrase such as "speculation is not proof", "you have no proof", or "I will not dignify that accusation." Those phrases may appear only after you have addressed each presented item.
